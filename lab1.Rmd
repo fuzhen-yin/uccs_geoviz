@@ -1,0 +1,20 @@
+---
+title: "Lab 1"
+author: "Fuzhen Yin"
+date: "Fall 2024"
+output: 
+  html_document:
+    fig_caption: yes
+    theme: cosmo
+    toc: yes
+    toc_depth: 3
+    toc_float: 
+      collapsed: true
+---
+
+### R and RStudio
+
+R is the based app to process R programming language, and RStudio integrates with R to provide further functionality such as graphical user interface (GUI). We need to install both **R** and **RStudio** for this workshop. 
+
+
+

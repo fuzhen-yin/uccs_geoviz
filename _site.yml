@@ -5,7 +5,7 @@ navbar:
     - text: "Home"
       href: index.html
     - text: "Resources"
-      href: Resource.html
+      href: resource.html
     - text: "Lab 1"
       href: lab1.html
       
