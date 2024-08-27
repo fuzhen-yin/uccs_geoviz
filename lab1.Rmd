@@ -1,7 +1,5 @@
 ---
 title: "Lab 1"
-author: "Fuzhen Yin"
-date: "Fall 2024"
 output: 
   html_document:
     fig_caption: yes
@@ -12,9 +10,33 @@ output:
       collapsed: true
 ---
 
-### R and RStudio
+### 1. Software Installation
 
-R is the based app to process R programming language, and RStudio integrates with R to provide further functionality such as graphical user interface (GUI). We need to install both **R** and **RStudio** for this workshop. 
+#### 1.1 R and RStudio
+
+R is the based app to process R programming language, and RStudio integrates with R to provide further functionality such as graphical user interface (GUI). We need to install both **R** and **RStudio** for this workshop. \
+
+#### 1.2 Install R
+We will install R first. Please go to the website: https://cran.rstudio.com/ \
+
+Windows users: 
+
+
+* Download and install R
+* Download R for Windows
+* install R for the first time
+* Download R-4.4.1 for Windows (Remember the folder where you save it!!)
+* Go to the folder where you save the file “R-4.4.1-win.exe”, double click to run the installation, use default settings, click “Next” until the end 
+* Finish
+
+
+Mac users: 
+
+* Download R for macOS 
+* Under the “Latest release”, download the version that is suitable for your machine (“R-4.4.1-arm64.pkg” or “R-4.4.1-x86_64.pkg”) --> save 
+* Go to the folder where you save the file, run the installation, use default settings, click “Next” until the end
+* Finish
+
 
 
 
