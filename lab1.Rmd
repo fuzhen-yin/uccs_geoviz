@@ -64,3 +64,20 @@ Mac users:
 * Finish
 
 
+### 2. Good Practice - Organizing Folders  
+
+It happens to me all the time that my course A files are mixed with course B's. 
+To make things easier, I highly recommend organizing your folders in the following way: 
+
+* Create a folder specifically for this course (e.g., Geoviz_fall_2024). 
+* Under the course folder, create a series of sub-folders for different labs and assignments separately, for example, folders with  "lab1", "lab2", "lab3"....."assignment1", "assignment2"....(see Figure 1.1)
+* For each lab, work in that specific folder. For example, for this lab, you could work in the "lab1" folder under the "Geoviz_fall_2024" course folder.  \
+
+![Figure 1.1: Creating a course folder and a series of sub-folders for labs](figs/lab1_organizing folder.png){width=50%} 
+
+
+### 3. Launch RStudio
+
+
+
+
