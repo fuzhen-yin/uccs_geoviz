@@ -73,11 +73,11 @@ To make things easier, I highly recommend organizing your folders in the followi
 * Under the course folder, create a series of sub-folders for different labs and assignments separately, for example, folders with  "lab1", "lab2", "lab3"....."assignment1", "assignment2"....(see Figure 1.1)
 * For each lab, work in that specific folder. For example, for this lab, you could work in the "lab1" folder under the "Geoviz_fall_2024" course folder.  \
 
-![Figure 1.1: Creating a course folder and a series of sub-folders for labs](figs/lab1_organizing folder.png){width=50%} 
+![Figure 1.1: Creating a course folder and a series of sub-folders for labs](figs/lab1_organizing folder.png){width=70%} 
+<br>
+<br>
 
-
-### 3. Launch RStudio
-
-
+### 3. Launching RStudio
+Remember that we have installed both **R** and **RStudio** earlier? But for this lab and for all future ones, we only need to run **RStudio**. This is because **R** is the hidden computing infrastructure while **RStudio** is the interface.  
 
 
