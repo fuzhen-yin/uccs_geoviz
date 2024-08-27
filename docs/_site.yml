@@ -1,13 +1,12 @@
-name: "Matt Learns R"
+name: "GeoViz Labs"
 navbar:
-  title: "Matt Learns R"
+  title: "GeoViz Labs"
   left:
     - text: "Home"
       href: index.html
     - text: "Resources"
       href: Resource.html
-    - text: "R functions"
-      href: RFunctions.html
-    - text: "Links"
-      href: Links.html
+    - text: "Lab 1"
+      href: lab1.html
+      
 output_dir: "docs"
