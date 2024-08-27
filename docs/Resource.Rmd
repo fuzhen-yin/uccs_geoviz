@@ -1,0 +1,8 @@
+---
+title: "Resource"
+author: "Fuzhen Yin"
+date: "2024-08-27"
+output: html_document
+---
+
+This is resource pages
