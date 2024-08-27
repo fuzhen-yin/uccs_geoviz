@@ -1,0 +1,18 @@
+---
+title: "GES4070/5070: Geovisualization Labs"
+author: "Fuzhen Yin"
+date: "2024-08-27"
+output: 
+  html_document:
+    fig_caption: yes
+    theme: cerulean
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+---
+
+# Welcome to GES4070/5070 Labs
+
+ddddd. 
+
+## This is the website for all lab materials. 
