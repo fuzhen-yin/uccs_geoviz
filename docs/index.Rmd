@@ -5,7 +5,7 @@ date: "2024-08-27"
 output: 
   html_document:
     fig_caption: yes
-    theme: cerulean
+    # theme: cerulean
     toc: yes
     toc_depth: 3
     toc_float: yes
