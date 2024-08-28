@@ -80,4 +80,8 @@ To make things easier, I highly recommend organizing your folders in the followi
 ### 3. Launching RStudio
 Remember that we have installed both **R** and **RStudio** earlier? But for this lab and for all future ones, we only need to run **RStudio**. This is because **R** is the hidden computing infrastructure while **RStudio** is the interface.  
 
+Run RStudio.  
+
+![Figure 1.2: Lauching RStudio](figs/lab1_launch_Rstudio.png){width=70%}
+
 
