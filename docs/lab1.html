@@ -517,15 +517,27 @@ to print some words for us. Type the following command and run it.
 </div>
 <div id="lets-start-mapping" class="section level3">
 <h3>4. Let’s start mapping!</h3>
-<p>“tmap” is a commonly used package in R for mapping. We install this
-package first. Type the command in your script and click “run”.</p>
+<p><strong>tmap</strong> is a commonly used package in R for mapping. We
+install this package first. Type the command in your script and click
+“run”.</p>
+<pre class="r"><code>install.packages(&quot;tmap&quot;)</code></pre>
+<p>Then, we load the <strong>tmap</strong> package. Again, type –&gt;
+select –&gt; run</p>
 <pre class="r"><code># load &quot;tmap&quot;
 library(tmap)</code></pre>
-<pre><code>## Warning: package &#39;tmap&#39; was built under R version 4.0.5</code></pre>
-<pre><code>## Registered S3 methods overwritten by &#39;stars&#39;:
-##   method             from
-##   st_bbox.SpatRaster sf  
-##   st_crs.SpatRaster  sf</code></pre>
+<div id="hello-world" class="section level4">
+<h4>4.1. Hello World!</h4>
+<p>The package <strong>tmap</strong> itself has a dataset on countries.
+Let’s load the data first, and create a world map based on their level
+of inequality.</p>
+<p>Please run the command below. What</p>
+<pre class="r"><code># load the world data
+data(&quot;World&quot;)
+
+# create a map
+tm_shape(World) +
+    tm_polygons(&quot;inequality&quot;)</code></pre>
+</div>
 </div>
 
 

@@ -137,12 +137,32 @@ print("GES Geovisualization")
 
 
 ### 4. Let's start mapping! 
-"tmap" is a commonly used package in R for mapping. We install this package first. Type the command in your script and click "run". 
 
-```{r}
+
+**tmap** is a commonly used package in R for mapping. We install this package first. Type the command in your script and click "run". 
+
+```{r, eval=FALSE}
+install.packages("tmap")
+```
+
+Then, we load the **tmap** package. Again, type --> select --> run
+
+```{r, eval=FALSE}
 # load "tmap"
 library(tmap)
 ```
 
+#### 4.1. Hello World! 
+The package **tmap** itself has a dataset on countries. Let's load the data first, and create a world map based on their level of inequality.  
+
+Please run the command below on your local machine. What do you see? 
+```{r, eval=FALSE}
+# load the world data
+data("World")
+
+# create a map
+tm_shape(World) +
+    tm_polygons("inequality")
+```
 
 
