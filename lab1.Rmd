@@ -10,6 +10,11 @@ output:
       collapsed: true
 ---
 
+## Submission Requirement
+
+You are required to submit a report for this lab. Please follow the instructions below and complete the **Lab1: report**. 
+Download the report template here. 
+
 ### 1. Software Installation
 
 #### 1.1 R and RStudio
@@ -134,6 +139,12 @@ Next, let's asking the machine to print some words for us. Type the following co
 ```{r}
 print("GES Geovisualization")
 ```
+**Good Coding Practice:**
+
+* Always start a new line when writing a new command; 
+* In R & RStudio, scripts are !!case-sensitive!! Changing the capitalization of codes can run into errors. 
+
+
 
 
 ### 4. Let's start mapping! 
@@ -155,7 +166,8 @@ library(tmap)
 #### 4.1. Hello World! 
 The package **tmap** itself has a dataset on countries. Let's load the data first, and create a world map based on their level of inequality.  
 
-Please run the command below on your local machine. What do you see? 
+Please run the command below on your local machine. What do you see under the **Plot** tab on bottom right? Click "Zoom". 
+Please do a screenshot of the map and paste it to your "**Lab1 Report**". 
 ```{r, eval=FALSE}
 # load the world data
 data("World")
@@ -165,4 +177,19 @@ tm_shape(World) +
     tm_polygons("inequality")
 ```
 
+Close the "Plot Zoom" window and go back to the script. 
+
+#### 4.2 Interactive Map
+Next, we will create an interactive map to explore countries' happy planet index (HPI). The Happy Planet Index is a measure of sustainable well-being in considering human well-being and environmental impact. 
+
+We will use a different color palette (Yellow & Green) for this map. Type the code to your script --> select --> run.  
+```{r, eval=FALSE}
+tmap_mode("view")
+
+tm_shape(World) +
+    tm_polygons("HPI", palette = "YlGn")
+```
+
+Under the **Plot** tab, click "Zoom". Please do a screenshot of the map and paste it to your "**Lab1 Report**".\
+Hover over the map and click any country, you should be able to see their HPI index. Please report HPI indexes of any five countries to "**Lab1 Report**". 
 

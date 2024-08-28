@@ -343,6 +343,11 @@ div.tocify {
 </div>
 
 
+<div id="submission-requirement" class="section level2">
+<h2>Submission Requirement</h2>
+<p>You are required to submit a report for this lab. Please follow the
+instructions below and complete the <strong>Lab1: report</strong>.
+Download the report template here.</p>
 <div id="software-installation" class="section level3">
 <h3>1. Software Installation</h3>
 <div id="r-and-rstudio" class="section level4">
@@ -513,6 +518,12 @@ to print some words for us. Type the following command and run it.
 <em>Hint: to run codes, please select lines and click “Run” </em></p>
 <pre class="r"><code>print(&quot;GES Geovisualization&quot;)</code></pre>
 <pre><code>## [1] &quot;GES Geovisualization&quot;</code></pre>
+<p><strong>Good Coding Practice:</strong></p>
+<ul>
+<li>Always start a new line when writing a new command;</li>
+<li>In R &amp; RStudio, scripts are !!case-sensitive!! Changing the
+capitalization of codes can run into errors.</li>
+</ul>
 </div>
 </div>
 <div id="lets-start-mapping" class="section level3">
@@ -530,13 +541,36 @@ library(tmap)</code></pre>
 <p>The package <strong>tmap</strong> itself has a dataset on countries.
 Let’s load the data first, and create a world map based on their level
 of inequality.</p>
-<p>Please run the command below. What</p>
+<p>Please run the command below on your local machine. What do you see
+under the <strong>Plot</strong> tab on bottom right? Click “Zoom”.
+Please do a screenshot of the map and paste it to your “<strong>Lab1
+Report</strong>”.</p>
 <pre class="r"><code># load the world data
 data(&quot;World&quot;)
 
 # create a map
 tm_shape(World) +
     tm_polygons(&quot;inequality&quot;)</code></pre>
+<p>Close the “Plot Zoom” window and go back to the script.</p>
+</div>
+<div id="interactive-map" class="section level4">
+<h4>4.2 Interactive Map</h4>
+<p>Next, we will create an interactive map to explore countries’ happy
+planet index (HPI). The Happy Planet Index is a measure of sustainable
+well-being in considering human well-being and environmental impact.</p>
+<p>We will use a different color palette (Yellow &amp; Green) for this
+map. Type the code to your script –&gt; select –&gt; run.</p>
+<pre class="r"><code>tmap_mode(&quot;view&quot;)
+
+tm_shape(World) +
+    tm_polygons(&quot;HPI&quot;, palette = &quot;YlGn&quot;)</code></pre>
+<p>Under the <strong>Plot</strong> tab, click “Zoom”. Please do a
+screenshot of the map and paste it to your “<strong>Lab1
+Report</strong>”.<br />
+Hover over the map and click any country, you should be able to see
+their HPI index. Please report HPI indexes of any five countries to
+“<strong>Lab1 Report</strong>”.</p>
+</div>
 </div>
 </div>
 
