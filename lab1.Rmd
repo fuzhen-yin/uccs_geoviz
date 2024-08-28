@@ -115,7 +115,34 @@ Then, we also need to save the script to the "lab1" folder. File --> Save --> Sp
 
 ![Figure 1.4: Save script to folder "lab1"](figs/lab1_save_script.png){width=70%}
 
+After creating and saving the new script, you should see something similar to Figure 1.5. \
+![Figure 1.5: Interface after creating a new script](figs/lab1_Window.png){width=100%}
 
+Let's try to coding now. First, let's ask the machine to do math for us. 
+
+* Type the following command in the top-left window (red in Figure 1.5)
+* Select that line
+* click run
+
+```{r}
+2+5+8
+```
+![Figure 1.6: Simple coding - math](figs/lab1_first command_math.png){width=100%}
+Next, let's asking the machine to print some words for us. Type the following command and run it. 
+*Hint: to run codes, please select lines and click "Run" *
+
+```{r}
+print("GES Geovisualization")
+```
+
+
+### 4. Let's start mapping! 
+"tmap" is a commonly used package in R for mapping. We install this package first. Type the command in your script and click "run". 
+
+```{r}
+# load "tmap"
+library(tmap)
+```
 
 
 
