@@ -12,7 +12,7 @@ output:
 
 ## Submission Requirement
 
-**You are required to submit a report for this lab. Please follow the instructions below, complete "Lab1-report" and submit it on Canvas.  **
+**You are required to submit a report for this lab. Please follow the instructions below, complete "Lab1 report" and submit it on Canvas. **
 
 
 ### 1. Software Installation
