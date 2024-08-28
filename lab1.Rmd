@@ -82,6 +82,9 @@ Remember that we have installed both **R** and **RStudio** earlier? But for this
 
 Run RStudio.  
 
-![Figure 1.2: Lauching RStudio](figs/lab1_launch_Rstudio.png){width=70%}
+![Figure 1.2: Lauching RStudio](figs/lab1_launch_Rstudio.png){width=50%}
+
+If it is the first time to run RStudio, it may ask you to "select the version of R to use". Use the default option "64-bit version of R”, click "OK". "Enable automated crash reporting --> "Yes"
+
 
 
