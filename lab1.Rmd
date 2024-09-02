@@ -1,5 +1,5 @@
 ---
-title: "Lab 1 - Get Started"
+title: "Chapter 1: Get Started"
 output: 
   html_document:
     fig_caption: yes
@@ -82,7 +82,7 @@ To make things easier, I highly recommend organizing your folders in the followi
 <br>
 <br>
 
-### 1.3. Launching RStudio
+### 1.3. Launching RStudio {#sec1_launch}
 Remember that we have installed both **R** and **RStudio** earlier? But for this lab and for all future ones, we only need to run **RStudio**. This is because **R** is the hidden computing infrastructure while **RStudio** is the interface.  
 
 Run RStudio.  
