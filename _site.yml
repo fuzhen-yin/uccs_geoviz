@@ -8,5 +8,7 @@ navbar:
       href: resource.html
     - text: "Lab 1"
       href: lab1.html
+    - text: "Lab 2"
+      href: lab2.html
       
 output_dir: "docs"
