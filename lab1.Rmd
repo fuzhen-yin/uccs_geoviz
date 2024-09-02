@@ -193,3 +193,8 @@ tm_shape(World) +
 Under the **Plot** tab, click "Zoom". Please do a screenshot of the map and paste it to your "**Lab1 Report**".\
 Hover over the map and click any country, you should be able to see their HPI index. Please report HPI indexes of any five countries to "**Lab1 Report**". 
 
+### 5. Close R Project 
+To close an R project, please go "File"--> "Close Project" -- a pop window asking "Do you want to save these changes" --> "Yes".
+
+![](figs/lab1_closeproject.png){width=30%} 
+![Figure 1.7: Close & Save an R Project](figs/lab1_closeproject_save.png){width=50%}

@@ -20,7 +20,7 @@ Thanks to the following people who have provided references to style and structu
 * [CASA0005 Geographic Information Systems and Science](https://andrewmaclachlan.github.io/CASA0005repo/index.html) by [Andy MacLachlan](https://x.com/andymaclachlan) \
 * [Learning R](https://learning.oreilly.com/library/view/learning-r/9781449357160/) by [Richard Cotton](https://github.com/richierocks)
 
-### Data Visualization Ideas
+### Visualization Ideas
 Here are some websites where you can find inspirations and codes for visualization. \
 
 * [The R Graph Gallery](https://github.com/richierocks)
