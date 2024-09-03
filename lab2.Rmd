@@ -264,7 +264,7 @@ ggplot(CoData, aes(x=total_pop, y =total_housing_unit )) +
   theme_bw()
 ```
 
-Based on the code above, please make some changes to the plot and paste the final scatter plot to your "**Lab2 Report**". 
+Based on the code above, please **make some changes** to the plot and paste the final scatter plot to your "**Lab2 Report**". 
 
 
 
