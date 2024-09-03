@@ -347,6 +347,14 @@ Calculator</h1>
 </div>
 
 
+<style type="text/css">
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 15px;
+    border-left: 5px solid #90e0ef;
+}
+</style>
 <div id="lab-goals" class="section level3">
 <h3>2.1 Lab Goals</h3>
 <p>After completing this chapter, you should be able to:</p>
@@ -407,6 +415,97 @@ project &amp; script for Lab 2.</div>
 </div>
 <div id="intro-to-programming-using-r" class="section level3">
 <h3>2.3 Intro to Programming using R</h3>
+<p>R is a mixture of programming paragrams (Cotton, 2013). At its core,
+it is an <strong>imperative language</strong>.</p>
+<blockquote>
+<p>An <strong>imperative language</strong> provides step-by-step
+instructions for a computer to perform a task. Your write a script that
+does one calculation after another. Therefore, the order to run codes in
+your script can affect outcomes.</p>
+</blockquote>
+<p>But it is also supports <strong>object-oriented programming</strong>
+and <strong>functional programming</strong>.</p>
+<blockquote>
+<p><strong>Object-oriented programming (OOP)</strong> is based on the
+concept of objects, which can contain data and code. Data in the form of
+fields (e.g., variables) and code in the form of procedures.</p>
+</blockquote>
+<blockquote>
+<p><strong>Functional programming</strong> is constructed by applying
+and composing functions. In R functions are first-class objects. You can
+treat them like any other variable and call them recursively.</p>
+</blockquote>
+</div>
+<div id="variables-data-types" class="section level3">
+<h3>2.3.1 Variables &amp; Data Types</h3>
+<p>Let’s create some variables. <em>Note: the codes below are pretty
+simple. Please try to re-write them by yourself and understand the
+purpose of each line.</em></p>
+<ol style="list-style-type: lower-alpha">
+<li><strong>Integers (int)</strong> are whole numbers, e.g., 1, 10, -10.
+Run the code below and observe what do you see in the
+<strong>Environment</strong> panel on the top-right corner (see Figure
+2.2). Do you see a new variable <em>“var_int”</em>?</li>
+</ol>
+<pre class="r"><code>var_int &lt;- 99</code></pre>
+<div class="float">
+<img src="figs/lab2_environment_new_var.png"
+alt="Figure 2.2: Monitoring the environment panel." />
+<div class="figcaption">Figure 2.2: Monitoring the environment
+panel.</div>
+</div>
+<p><br> We can also create consecutive integers by using the symbol
+<code>:</code></p>
+<pre class="r"><code># create consecutive integers 
+var_ints &lt;- -5:5
+
+# let&#39;s check this variable
+print(var_ints)</code></pre>
+<p><strong>Note:</strong></p>
+<ul>
+<li>The symbol <code>#</code> is used to write comments. Comments are
+completed ignored by R and just there to make the code more
+readable.<br />
+</li>
+<li>The shortcut to write <code>&lt;-</code> is <code>Ctrl</code> +
+<code>-</code> .</li>
+</ul>
+<ol start="2" style="list-style-type: lower-alpha">
+<li><strong>Other numerics</strong> such as the floating-point number
+(float) often includes a decimal point, e.g., 3,14, -99,99, 5.0.</li>
+</ol>
+<pre class="r"><code># Let&#39;s create floats by using the coordinates of UCCS as an example
+var_long &lt;- -104.801     
+var_lat &lt;- 38.892    </code></pre>
+<ol start="3" style="list-style-type: lower-alpha">
+<li><strong>Characters</strong> are used to store text (also called
+“strings”). To indicate something is a character, we put <em>quotation
+marks</em> around it <code>""</code>.</li>
+</ol>
+<pre class="r"><code># Create a character to indicate a city name. 
+var_char &lt;- &quot;colorado springs&quot;
+
+# Check the class of this variable &quot;var_char&quot;
+class(var_char)</code></pre>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>The <strong>Logical</strong> class only has two possible values:
+<code>TRUE</code> or <code>FALSE</code>. They can also be written as
+<code>T</code> or <code>F</code>, but never <em>true</em> or
+<em>false</em> because R programming is case-sensitive. Logicals are
+useful to evaluate logical statements.</li>
+</ol>
+<pre class="r"><code># We can ask the machine to compare numbers. For example, we assign values to &quot;a&quot; and &quot;b&quot;.
+a &lt;- -5
+b &lt;- 5
+
+# Then, we ask the machine to compare the two values. 
+a &gt; b</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+</div>
+<div id="references" class="section level3">
+<h3>References</h3>
+<p>Cotton, R. (2013). Learning R: A step-by-step function guide to data
+analysis. ” O’Reilly Media, Inc.”.</p>
 </div>
 
 
