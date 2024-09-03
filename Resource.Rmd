@@ -23,4 +23,4 @@ Thanks to the following people who have provided references to style and structu
 ### Visualization Ideas
 Here are some websites where you can find inspirations and codes for visualization. \
 
-* [The R Graph Gallery](https://github.com/richierocks)
+* [The R Graph Gallery](https://r-graph-gallery.com/)
