@@ -536,6 +536,7 @@ about it in future chapters.<br />
 frame called “<em>df_city_pop</em>” to record the number of population
 in four cities in Colorado.</p>
 <pre class="r"><code># We create a table with two columns (&quot;city&quot; and &quot;population&quot;) and four rows
+# Hint: to make this code work, you need to select all four lines and run them together. 
 df_city_pop &lt;- data.frame(
   city = var_vec_char, 
   population = var_vec_num1
@@ -564,6 +565,102 @@ mean(df_city_pop$population)
 
 # Median 
 median(df_city_pop$population)</code></pre>
+</div>
+</div>
+<div id="cities-and-towns-in-colorado" class="section level3">
+<h3>2.4 Cities and Towns in Colorado</h3>
+<div id="reading-an-external-.csv-file-as-a-data-frame."
+class="section level4">
+<h4>2.4.1 Reading an External .csv File as a Data Frame.</h4>
+<p>Let’s play with some external data! I have used <a
+href="https://data.census.gov/">US Census Bureau</a> to collect the
+total population and total housing unit in cities and towns in Colorado.
+This data was collected by <strong>US Census Bureau</strong> on 2022
+through the <strong>5-year American Community Survey (ACS)</strong>
+survey. <strong>US Census Bureau</strong> contains a lot of good
+dataset. We will explore that later.  </p>
+<p>Let’s pull the data in straight from the web using the function
+<code>read.csv()</code> and save it into a new variable “CoData”.</p>
+<pre class="r"><code>CoData &lt;- read.csv(url(&quot;https://raw.githubusercontent.com/fuzhen-yin/uccs_geoviz/main/data/00_ACS_5yrs_estimate_2022_places_colorado_population_housing.csv&quot;))</code></pre>
+<p>Click “CoData” in the Environment panel and examine the table a
+little bit. Report the following information to your “<strong>Lab2
+Report</strong>”. In the table, by clicking a particular column name,
+you can <strong>order</strong> the table based the column’s value (see
+Figure 2.3).</p>
+<ul>
+<li>How many rows or records in this table?</li>
+<li>How many columns and what are their names?</li>
+<li>What are the top three cities with the highest number of populations
+and housing units?</li>
+</ul>
+<div class="float">
+<img src="figs/lab2_CoData_click.png" style="width:50.0%"
+alt="Figure 2.3: CoData data frame." />
+<div class="figcaption">Figure 2.3: CoData data frame.</div>
+</div>
+<p><br></p>
+</div>
+<div id="descriptive-statistics" class="section level4">
+<h4>2.4.2 Descriptive Statistics</h4>
+<p>Let’s examine the “CoData” column by column. Let’s check What are the
+columns in the “CoData” data frame using <code>names()</code>.</p>
+<pre class="r"><code>names(CoData)</code></pre>
+<p>Next, we check their data types using <code>str()</code>.</p>
+<pre class="r"><code>str(CoData)</code></pre>
+<p>The column “name” is <strong>characters</strong>, while the other two
+columns “total_pop” and “total_housing_unit” are
+<strong>integers.</strong> For these two numerical columns, we calculate
+some basic statistics for them. Remember the symbol <code>$</code>, we
+will use it again to pull out a particular column.</p>
+<pre class="r"><code># First, let&#39;s calculate the statistics of &quot;total_pop&quot; 
+summary(CoData$total_pop)</code></pre>
+<p>The <code>summary()</code> function gives us the <em>(1) minimum, (2)
+1st quartile, (3) median, (4) mean, (5) 3rd quartile and (6)
+maximum</em>.</p>
+<p>Please write the code by yourself to calculate the above statistics
+for the column “total_housing_unit” and paste the outputs to
+“<strong>Lab2 Report</strong>”.</p>
+</div>
+<div id="visualization" class="section level4">
+<h4>2.4.3 Visualization</h4>
+<p>We are going to use the library <code>ggplot2</code> visualization.
+<code>ggplot2</code> is a very popular open-source data visualization
+package. Let’s install this package and launch it.</p>
+<pre class="r"><code># install packages (only need to install once)
+install.packages(&quot;ggplot2&quot;)
+
+# launch it (have to launch it everytime we open RStudio). 
+library(ggplot2)</code></pre>
+<p>This chapter is already pretty lengthy. Let’s just do some basic
+visualization stuff and we will go back to this package for much cooler
+visualization later this semester.</p>
+<p>We create a scatter plot to explore how cities’ total population are
+associated with the numbers of their total housing units.</p>
+<pre class="r"><code>ggplot(CoData, aes(x=total_pop, y =total_housing_unit )) + 
+  geom_point()</code></pre>
+<p>We can improve the design of this scatter plot by using different
+color palette, background color, transparency etc.</p>
+<ul>
+<li><code>color =</code>: shape outline color;</li>
+<li><code>fill =</code> : shape fill color;</li>
+<li><code>shape =</code>: shape. Please google <em>ggplot2 shape
+code</em> for more information;</li>
+<li><code>alpha =</code>: shape transparency;</li>
+<li><code>size =</code>: shape size;</li>
+<li><code>stroke =</code>: stroke.</li>
+</ul>
+<pre class="r"><code>ggplot(CoData, aes(x=total_pop, y =total_housing_unit )) + 
+  geom_point(
+    color=&quot;black&quot;,
+    fill=&quot;#fb8500&quot;,
+    shape=22,
+    alpha=0.5,
+    size=4,
+    stroke = 1
+  ) + 
+  theme_bw()</code></pre>
+<p>Based on the code above, please make some changes to the plot and
+paste the final scatter plot to your “<strong>Lab2 Report</strong>”.</p>
 </div>
 </div>
 <div id="references" class="section level3">

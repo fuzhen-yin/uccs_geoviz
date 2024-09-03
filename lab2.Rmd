@@ -147,6 +147,7 @@ Let's use the function ``` data.frame() ``` to create a data frame called "*df_c
 
 ```{r, eval=FALSE}
 # We create a table with two columns ("city" and "population") and four rows
+# Hint: to make this code work, you need to select all four lines and run them together. 
 df_city_pop <- data.frame(
   city = var_vec_char, 
   population = var_vec_num1
@@ -175,6 +176,95 @@ median(df_city_pop$population)
 ```
 
 
+### 2.4 Cities and Towns in Colorado
+
+#### 2.4.1 Reading an External .csv File as a Data Frame. 
+Let's play with some external data! I have used [US Census Bureau](https://data.census.gov/) to collect the total population and total housing unit in cities and towns in Colorado. This data was collected by **US Census Bureau** on 2022 through the **5-year American Community Survey (ACS)** survey. **US Census Bureau** contains a lot of good dataset. We will explore that later. \ 
+
+Let's pull the data in straight from the web using the function ``` read.csv() ``` and save it into a new variable "CoData". 
+```{r, eval=FALSE}
+CoData <- read.csv(url("https://raw.githubusercontent.com/fuzhen-yin/uccs_geoviz/main/data/00_ACS_5yrs_estimate_2022_places_colorado_population_housing.csv"))
+```
+
+Click "CoData" in the Environment panel and examine the table a little bit. Report the following information to your "**Lab2 Report**". In the table, by clicking a particular column name, you can **order** the table based the column's value (see Figure 2.3).
+
+* How many rows or records in this table? 
+* How many columns and what are their names? 
+* What are the top three cities with the highest number of populations and housing units?
+
+
+![Figure 2.3: CoData data frame.](figs/lab2_CoData_click.png){width=50%}
+
+<br>
+
+#### 2.4.2 Descriptive Statistics 
+
+Let's examine the "CoData" column by column. Let's check What are the columns in the "CoData" data frame using ``` names() ```.
+```{r, eval=FALSE}
+names(CoData)
+```
+Next, we check their data types using ``` str() ```. 
+```{r, eval=FALSE}
+str(CoData)
+```
+
+The column "name" is **characters**, while the other two columns "total_pop" and "total_housing_unit" are **integers.** For these two numerical columns, we calculate some basic statistics for them. Remember the symbol ``` $ ```, we will use it again to pull out a particular column. 
+
+```{r, eval=FALSE}
+# First, let's calculate the statistics of "total_pop" 
+summary(CoData$total_pop)
+```
+
+The ``` summary() ``` function gives us the *(1) minimum, (2) 1st quartile, (3) median, (4) mean, (5) 3rd quartile and (6) maximum*. 
+
+Please write the code by yourself to calculate the above statistics for the column "total_housing_unit" and paste the outputs to "**Lab2 Report**". 
+
+
+#### 2.4.3 Visualization 
+
+We are going to use the library ``` ggplot2 ``` visualization. ``` ggplot2 ``` is a very popular open-source data visualization package. Let's install this package and launch it. 
+```{r, eval=FALSE}
+# install packages (only need to install once)
+install.packages("ggplot2")
+
+# launch it (have to launch it everytime we open RStudio). 
+library(ggplot2)
+```
+
+This chapter is already pretty lengthy. Let's just do some basic visualization stuff and we will go back to this package for much cooler visualization later this semester. 
+
+We create a scatter plot to explore how cities' total population are associated with the numbers of their total housing units.  
+
+```{r, eval=FALSE}
+ggplot(CoData, aes(x=total_pop, y =total_housing_unit )) + 
+  geom_point()
+```
+
+
+We can improve the design of this scatter plot by using different color palette, background color, transparency etc. 
+
+* ``` color = ```: shape outline color;
+* ``` fill = ``` : shape fill color;
+* ``` shape = ```: shape. Please google *ggplot2 shape code* for more information; 
+* ``` alpha = ```: shape transparency;
+* ``` size = ```: shape size;
+* ``` stroke = ```: stroke. 
+
+
+```{r, eval=FALSE}
+ggplot(CoData, aes(x=total_pop, y =total_housing_unit )) + 
+  geom_point(
+    color="black",
+    fill="#fb8500",
+    shape=22,
+    alpha=0.5,
+    size=4,
+    stroke = 1
+  ) + 
+  theme_bw()
+```
+
+Based on the code above, please make some changes to the plot and paste the final scatter plot to your "**Lab2 Report**". 
 
 
 
@@ -182,13 +272,6 @@ median(df_city_pop$population)
 Cotton, R. (2013). Learning R: A step-by-step function guide to data analysis. " O'Reilly Media, Inc.".
 
 
-
-
-
-
-```{r, eval=FALSE}
-
-```
 
 
 
