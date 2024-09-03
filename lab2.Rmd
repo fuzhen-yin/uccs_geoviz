@@ -65,7 +65,7 @@ But it is also supports **object-oriented programming** and **functional program
 
 > **Functional programming** is constructed by applying and composing functions. In R functions are first-class objects. You can treat them like any other variable and call them recursively.
 
-### 2.3.1 Variables & Data Types
+#### 2.3.1 Variables & Data Types
 
 Let's create some variables. 
 *Note: the codes below are pretty simple. Please try to re-write them by yourself and understand the purpose of each line.*
@@ -123,7 +123,7 @@ a > b
 e) A **vector** is an ordered set of values by using the function ``` c() ```. Vectors are extremely important in statistics and data science, since we usually want to analyze a whole dataset rather than just a piece of data. 
 ```{r, eval=FALSE}
 # Vector can include a series of numeric values, by specifying them one by one
-var_vec_num1 <- c(1,3,5,7,9,-11)
+var_vec_num1 <- c(478961, 715522, 108250, 386261)      
 var_vec_num1
 
 # or by using the symbol : to create consecutive integers 
@@ -138,6 +138,44 @@ var_vec_char
 var_vec_mix <- c(1,3,5, "Aspen", "Pueble", 99)
 var_vec_mix
 ```
+
+#### 2.3.2 Data frame Basics
+
+**Data frames** are used to store spreadsheet-like data. It provides a *table-like* way to organize multiple vectors into one object.   Data frames are also the most widely used format to *clean, manipulate and analyze* data. In this lab, we only learn the very basics of creating a simple data frame. We will learn more about it in future chapters. \
+
+Let's use the function ``` data.frame() ``` to create a data frame called "*df_city_pop*" to record the number of population in four cities in Colorado. 
+
+```{r, eval=FALSE}
+# We create a table with two columns ("city" and "population") and four rows
+df_city_pop <- data.frame(
+  city = var_vec_char, 
+  population = var_vec_num1
+)
+```
+
+After ruining the code above, do you see a new variable *df_city_pop* in the Environment panel? Try to click on that variable and see what happens. Do you see the table? Please do a screenshot of the table and paste it to your "**Lab2 Report**". 
+
+#### 2.3.3 Scientific Calculators 
+
+Next, we calculate some statistics for the four cities in the data frame *df_city_pop*. Please close the table and go back to your script. \
+To exact a particular column from a data frame, we use the symbol ``` $ ```. 
+
+```{r, eval=FALSE}
+# Let's examine the values in the "population" column 
+print(df_city_pop$population)
+
+# Calculate the total number of population 
+sum(df_city_pop$population)
+
+# The mean value
+mean(df_city_pop$population)
+
+# Median 
+median(df_city_pop$population)
+```
+
+
+
 
 
 ### References 
