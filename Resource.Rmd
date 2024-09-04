@@ -24,3 +24,8 @@ Thanks to the following people who have provided references to style and structu
 Here are some websites where you can find inspirations and codes for visualization. \
 
 * [The R Graph Gallery](https://r-graph-gallery.com/)
+
+
+### Portfolio Inspirations 
+
+* [JHA](https://www.julian-hoffmann-anton.com/)
