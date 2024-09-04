@@ -29,3 +29,4 @@ Here are some websites where you can find inspirations and codes for visualizati
 ### Portfolio Inspirations 
 
 * [JHA](https://www.julian-hoffmann-anton.com/)
+* [Atlas Guo](https://cartoguophy.com/)
