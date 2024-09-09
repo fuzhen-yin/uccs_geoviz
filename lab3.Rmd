@@ -22,6 +22,20 @@ blockquote {
     font-size: 15px;
     border-left: 5px solid #90e0ef;
 }
+
+.blackbox {
+  padding: 1em;
+  background: #f0e8fa;
+  color: #5c24a1;
+  border: 2px dotted #926dc0;
+  border-radius: 4px;
+}
+.center {
+  text-align: center;
+}
+.left {
+  text-align: left;
+}
 ```
 
 
@@ -68,14 +82,23 @@ Again, we would like to start a **new project** from scratch with a **clean R Sc
 
 #### 3.2.3 Heads-Up
 
-::: {.infobox .assignment data-latex="{note}"}
-
-Heads-Up:
-
-This is a pretty long 
-
+:::: {.blackbox data-latex=""}
+::: {.left data-latex=""}
+[**Heads-Up!**]{.ul}
 :::
 
+This is a pretty **long tutorial** but it will guide you through a complete workflow of data analysis and visualization. As you can imagine, this will be a steep learning curve. Please take _regular breaks_. 
+
+This tutorial covers most of the techniques for **Assignment 2**. Please try to:
+
+* Re-write the script by yourself. 
+* Read through the text carefully and try to understand what bits of code are doing as you go. 
+* It's okay that you don't fully understand some codes. Don't worry as the key is to revisit later and try to work out what is going on. Learning (R or others) is a iterative process. 
+* Start to think about how you can adapt a particular line of code or functions for your own script. 
+* Be CURIOUS!! Ask QUESTIONS!! Discuss with FRIENDS!!
+
+
+::::
 
 
 
