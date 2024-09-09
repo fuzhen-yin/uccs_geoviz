@@ -14,22 +14,41 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{css style settings, echo = FALSE}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 15px;
+    border-left: 5px solid #90e0ef;
+}
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+### 3.1 Lab Goals 
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+This chapter aims to introduce the complete workflow of data analysis and visualization using R. After reading it, you should be able to:
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+* **import** data from local files 
+* **clean** and **transforming** data, such as: 
+  + extract data corpus 
+  + join and merge data frames 
+  + understand sorting and ordering 
+* **draw** standard plots including:
+  + histograms
+  + bar charts 
+  + line plots
+  + scatter plots 
+* **export** plots in different formats and know the differences between different formats 
+
+### 3.2 Good Practice 
+
+Okay, I guess you already know what I am going to repeat. However, there are something [new]{.ul} for this lab. 
+Anyway, I will try to be brief :) 
+
+
+#### 3.3 Organizing Folders
+
+Similar to what we have done in previous labs, under the course folder, please create a folder called **lab 3**. Next, in the **lab 3** folder, please create two sub-folders that one is  **data** and another one is **plot**. 
+
+
