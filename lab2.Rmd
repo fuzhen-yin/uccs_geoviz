@@ -43,7 +43,7 @@ We'll use RStudio again for this chapter. Please open RStudio as we have explain
 Before starting any works, please make sure you are in fresh **new project** with a **blank script**. Please follow the action checklist below: 
 
 * Step 1: Is the previous project "Lab 1" closed? 
-  + If *not*, please close it by go to *File* --> *Close Project* --> *Save* changes. 
+  + If *not*, please close it by going to *File* --> *Close Project* --> *Save* changes. 
 * Step 2: Create a **New Project** using **Existing Directory**, navigate to **lab2**, click **open**, then **Create Project**. 
 * Step 3: Create a **New Script** by go to **File** --> **New File** --> **R Script**. **Save** the script by giving it a proper name.
 
