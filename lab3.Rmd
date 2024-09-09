@@ -66,8 +66,15 @@ Again, we would like to start a **new project** from scratch with a **clean R Sc
 * Step 3: Create a **New Script** by go to **File** --> **New File** --> **R Script**. **Save** the script by giving it a proper name.
 
 
+#### 3.2.3 Heads-Up
 
+::: {.infobox .assignment data-latex="{note}"}
 
+Heads-Up:
+
+This is a pretty long 
+
+:::
 
 
 
