@@ -267,6 +267,12 @@ ggplot(CoData, aes(x=total_pop, y =total_housing_unit )) +
 Based on the code above, please **make some changes** to the plot and paste the final scatter plot to your "**Lab2 Report**". 
 
 
+### 2.5. Close & Exit
+To close an R project, please go "File"--> "Close Project" -- a pop window asking "Do you want to save these changes" --> "Yes".
+
+![](figs/lab1_closeproject.png){width=30%} 
+![Figure 2.4: Close & Save an R Project](figs/lab1_closeproject_save.png){width=50%}
+
 
 ### References 
 Cotton, R. (2013). Learning R: A step-by-step function guide to data analysis. " O'Reilly Media, Inc.".
