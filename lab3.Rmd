@@ -23,13 +23,22 @@ blockquote {
     border-left: 5px solid #90e0ef;
 }
 
-.blackbox {
+.purplebox {
   padding: 1em;
   background: #f0e8fa;
   color: #5c24a1;
   border: 2px dotted #926dc0;
   border-radius: 4px;
 }
+
+.purple_border {
+  padding: 1em;
+  background: white;
+  color: #5c24a1;
+  border: 2px dotted #926dc0;
+  border-radius: 4px;
+}
+
 .center {
   text-align: center;
 }
@@ -80,28 +89,49 @@ Again, we would like to start a **new project** from scratch with a **clean R Sc
 * Step 3: Create a **New Script** by go to **File** --> **New File** --> **R Script**. **Save** the script by giving it a proper name.
 
 
-#### 3.2.3 Heads-Up
+#### 3.2.3 Before You Start
 
-:::: {.blackbox data-latex=""}
+:::: {.purplebox data-latex=""}
 ::: {.left data-latex=""}
 [**Heads-Up!**]{.ul}
 :::
 
-This is a pretty **long tutorial** but it will guide you through a complete workflow of data analysis and visualization. As you can imagine, this will be a steep learning curve. Please take _regular breaks_. 
+This is a pretty **long tutorial** but it will guide you through a complete workflow of data analysis and visualization. As you can imagine, this will be a steep learning curve. Please take _regular breaks_ (see instructions below). 
 
 This tutorial covers most of the techniques for **Assignment 2**. Please try to:
 
 * Re-write the script by yourself. 
 * Read through the text carefully and try to understand what bits of code are doing as you go. 
-* It's okay that you don't fully understand some codes. Don't worry as the key is to revisit later and try to work out what is going on. Learning (R or others) is a iterative process. 
-* Start to think about how you can adapt a particular line of code or functions for your own script. 
-* Be CURIOUS!! Ask QUESTIONS!! Discuss with FRIENDS!!
+* It's okay that you don't fully understand some codes. Don't worry as the key is to revisit later and try to work out what is going on. Learning is a iterative process. 
+* Start to think about how you can adapt a particular line of code or functions to your own project. 
+* Be CURIOUS!! Ask QUESTIONS!!
 
+::::
+
+
+<br>
+
+:::: {.purple_border data-latex=""}
+::: {.left data-latex=""}
+[**Only Read This If You Plan to Take Breaks!**]{.ul}
+:::
+
+If you plan to work on this lab later, please remember to **save your script**, and **properly close** the [project]{.ul} and [RStudio]{.ul}. To **reopen** your project, please:
+
+* Step 1: launch RStudio.
+* Step 2: open project by going to _"File"_ --> _"Open [Project]{.ul}"_ --> Navigate to your _"lab3"_ folder, click to open [**lab3.Rproj**]{.ul}.
+* Step 3: You should be able to see your script for lab3. 
+  + If not, go to _"File"_ --> _"Open [File]{.ul}"_ --> Navigate to your _"lab3"_ folder, and open the script with the suffix **[.R]{.ul}**. 
+* Step 4: Before writing new lines, please run the existing script from top to bottom.  
 
 ::::
 
 
 
+
+
+
+<br>
 
 ### 3.X. Close & Exit
 
