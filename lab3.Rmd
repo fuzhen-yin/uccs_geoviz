@@ -207,7 +207,7 @@ View(pop_cos)
 
 Okay, let's go back to the script and create another data frame for Buffalo (NY) and assign the data frame to the variable _"pop_buf"_. 
 
-```{r}
+```{r, eval=FALSE}
 ## Buffalo, NY (BUF)'s Population Change 2010-2022 
 pop_buf <- data.frame(
   year = c(2010:2022),
@@ -215,6 +215,75 @@ pop_buf <- data.frame(
   city = "Buffalo"
 )
 ```
+
+
+#### 3.3.2 Data Query & Analysis
+
+Let's explore these two data frames _"pop_cos"_ and _"pop_buf"_ a little bit. Remember the ``` $ ``` symbol? It can be used to select a particular column from a data frame. Let's check the summary statistics of population in the two cities by using ``` summary() ```. 
+```{r, eval=FALSE}
+# What are the column names? 
+names(pop_cos)
+names(pop_buf)
+
+# Summary statistics of the population column - COS? 
+summary(pop_cos$population)
+
+# Summary statistics of the population column - BUF? 
+summary(pop_buf$population)
+```
+
+The summary statistic suggests that Colorado Springs has more population than BUF. Next, let's look at the data frame more carefully by sub-setting particular records based some conditions. 
+
+* Extract a particular column within the data frame by calling the column name. 
+```{r, eval=FALSE}
+# subset the "population" column from the "pop_cos" data frame
+pop_cos['population']
+```
+
+* Exacting two or more column by calling column names. The ``` c() ``` function combines two elements ``` "year" ``` and ``` "population" ``` into a vector. 
+```{r, eval=FALSE}
+# subset two columns "year" and "population" from the "pop_cos" data frame
+pop_cos[c('year','population')]
+```
+
+* Select records based on conditions (e.g., when population is over 450000). The code below gives you all rows that with a population over 450000. 
+```{r, eval=FALSE}
+# Check at what years COS has more than 450000 population 
+pop_cos[pop_cos$population > 450000,]
+```
+
+Okay, the output suggests that since 2018, Colorado Springs has population exceeding 450000. Now, let's check that for Buffalo. 
+```{r, eval=FALSE}
+# Check at what years BUF has more than 450000 population 
+pop_buf[pop_buf$population > 450000,]
+```
+
+Oops! It seems Buffalo never had its population over 450000. All these comparison suggests at least in the last decade, Colorado Springs is more populated than Buffalo. 
+
+Next, let's calculate the **population growth rate** from 2010 to 2022 for the two cities. The population growth rate is calculated using the equation below (Eq. 3.1):
+
+$$ Growth Rate = 100 * \frac {Population_{2022} - Population_{2010}} {Population_{2010}} $$
+
+<br> 
+
+Calculate the population growth rate for Colorado Springs. We extract the # of population in 2010 and 2022 separately. 
+
+The code below is (1) asking the machine to locate the record (or row) in the data frame _"pop_cos"_ with the ``` year ``` column equal to 2022, (2) asking the machine to return the value in the ``` population ``` column, (3) and save that value as a new variable ``` pop_cos_2022 ```. 
+```{r, eval=FALSE}
+# Filter a particular value  population in a particular year 
+# Colorado Springs' population in 2022
+pop_cos_2022 <- pop_cos[pop_cos$year == "2022", "population"]
+# Colorado Springs' population in 2010
+pop_cos_2010 <- pop_cos[pop_cos$year == "2010", "population"]
+```
+
+After extracting the population values for 2010 and 2022, let's calculate the growth rate using Eq. 3.1. Please report the value of ``` pop_change_cos ```  to the **lab3 report**. 
+```{r, eval=FALSE}
+# calculate population growth rate 
+pop_change_cos <- 100 * (pop_cos_2022 - pop_cos_2010) / pop_cos_2010
+pop_change_cos
+```
+
 
 
 
