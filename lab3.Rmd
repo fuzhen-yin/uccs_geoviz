@@ -414,7 +414,7 @@ str(edu_cos)
 str(edu_buf)
 ```
 
-The Education Attainment data is collected from  [US Census Bureau](https://data.census.gov/) via ACS 5-year survey. The link of the original table is [S1501: Educational Attainment](https://data.census.gov/table/ACSST1Y2022.S1501?q=education&g=160XX00US0816000,3611000). The data we have in the .csv files are a corpus of that table by focusing on population age 25 and elder.  
+> The Education Attainment data is collected from  [US Census Bureau](https://data.census.gov/) via ACS 5-year survey. The link of the original table is [S1501: Educational Attainment](https://data.census.gov/table/ACSST1Y2022.S1501?q=education&g=160XX00US0816000,3611000). The data we have in the .csv files are a corpus of that table by focusing on population age 25 and elder.  
 
 Let's have a look at the table first. 
 
@@ -515,6 +515,7 @@ plot1_education <- ggplot(edu_cos_buf, aes(x=Education_Level, y=Percentage, fill
 plot1_education
 ```
 
+Have a look at the plot and observes how the two cities are different from each other in terms of education attainment.
 
 #### 3.4.4 Export 
 
@@ -527,124 +528,132 @@ dev.off()
 
 After running the code above, please go to  **lab3** folder --> **plot** folder. Do you see a new pdf there? Open it and do a screenshot for **lab3 report**. 
 
+### 3.5 Viz: Racial Diversity
+
+This section examines the racial diversity in Colorado Springs and Buffalo, and uses different visualization techniques (e.g., pie chart and waffle chart) to illustrate the same data.
 
 
+#### 3.5.1 Import Data 
+
+First, let's import the data from local **.csv** files: _"B02001_Race_ColoradoSprings.csv"_ and _"B02001_Race_Buffalo.csv"_. 
+
+> This data is collected by [US Census Bureau](https://data.census.gov/) via ACS 5-year survey. The original table is [B02001:Race](https://data.census.gov/table/ACSDT5Y2022.B02001?q=Race%20and%20Ethnicity&g=160XX00US0816000,3611000). 
 
 ```{r, eval=FALSE}
-
+# Read Data 
+race_cos <- read.csv("data/B02001_Race_ColoradoSprings.csv")
+race_buf <- read.csv("data/B02001_Race_Buffalo.csv")
 ```
 
 ```{r, eval=FALSE}
-
+# Examine data type 
+str(race_cos)
+str(race_buf)
 ```
 
 ```{r, eval=FALSE}
-
+# Have a look at the data frame  
+str(race_cos)
+str(race_buf)
 ```
 
+#### 3.5.2 Data Manipulation
+Similar to [step 3.4.2](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#342_Data_Manipulation), we create a new column called _"Percentage"_ to calculate the proportion of population under each category. But this time, we want to round the column  _"Percentage"_ to two decimal digits (0.00) by using the function ``` round() ```. 
 ```{r, eval=FALSE}
+# Calculate Percentage - COS
+race_cos['Percentage'] <- 100 * race_cos$Count / sum(race_cos$Count)
+# Round it to two decimal digits
+race_cos['Percentage'] <- round(race_cos['Percentage'], 2)
 
+# Let's do the same to the Buffalo race dataset 
+race_buf['Percentage'] <- 100 * race_buf$Count / sum(race_buf$Count)
+race_buf['Percentage'] <- round(race_buf['Percentage'], 2)
 ```
 
+
+#### 3.5.3 Pie Charts
+
+Create a basic pie chart representing racial composition for Colorado Springs and save it to the _"plot"_ folder. 
+
+> In the ``` scale_fill_brewer(palette="Set3") ```, we ask the machine to apply a color palette called ``` Set3 ```. 
+
+You can try other color palette by checking the [R Color Cheatsheet](https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf). 
 ```{r, eval=FALSE}
+# Basic pie chart - Colorado Springs
+plot3_race_cos <- ggplot(race_cos, aes(x="", y=Percentage, fill=Race)) +
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=0) + 
+  theme_void() + 
+  scale_fill_brewer(palette="Set3") +
+  ggtitle("Colorado Springs")
 
+# export 
+pdf("plot/plot3_race_cos.pdf")
+print(plot3_race_cos)
+dev.off()
 ```
 
+Create a basic pie chart for Buffalo. 
 ```{r, eval=FALSE}
-
+# Basic pie chart - Buffalo 
+plot3_race_buf <- ggplot(race_buf, aes(x="", y=Percentage, fill=Race)) +
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=0) + 
+  theme_void() + 
+  scale_fill_brewer(palette="Set3") + 
+  ggtitle("Buffalo")
+  
+pdf("plot/plot3_race_buff.pdf")
+print(plot3_race_buf)
+dev.off()
 ```
 
+
+#### 3.5.4 Waffle Charts
+
+It almost the end. Let's have some fun to conclude this practical by creating a waffle chart for the two cities. First, we combine the two data frame ``` race_cos ``` and ``` race_buf ``` and save it as a new variable ``` race_cos_buf ```. 
 ```{r, eval=FALSE}
-
+## Combine rows
+race_cos_buf <- rbind(race_cos, race_buf)
 ```
 
+Ready for something exciting? Run the code below. 
 ```{r, eval=FALSE}
-
+# waffle chart 
+ggplot(data = race_cos_buf, aes(fill=Race, values=Percentage)) +
+  geom_waffle(color = "white", size = 1.125, n_rows = 6) +
+  facet_wrap(~City, ncol=1) +
+  theme_void()
 ```
 
+Let's try a different color palette ``` Set2 ``` and save the plot as a new variable. 
 ```{r, eval=FALSE}
+# Try a different color palette
+plot4_race_waffle <- ggplot(data = race_cos_buf, aes(fill=Race, values=Percentage)) +
+  geom_waffle(color = "white", size = 1.125, n_rows = 6) +
+  facet_wrap(~City, ncol=1) + 
+  scale_fill_brewer(palette="Set2") +
+  theme_void()
 
+# call the plot 
+plot4_race_waffle
 ```
 
+#### 3.5.5 Export 
 ```{r, eval=FALSE}
-
+# Export as a pdf
+pdf("plot/plot4_race_waffle_cos_buf.pdf")
+print(plot4_race_waffle)
+dev.off()
 ```
 
-```{r, eval=FALSE}
+After running the code above, please go to  **lab3** folder --> **plot** folder. Do you see a new pdf there? Open it and do a screenshot for **lab3 report**. 
 
-```
 
-```{r, eval=FALSE}
 
-```
+### 3.6. Close & Exit
 
-```{r, eval=FALSE}
+Congratulations!! You made it to the end. Let's close the project. 
 
-```
-
-```{r, eval=FALSE}
-
-```
-
-```{r, eval=FALSE}
-
-```
-
-```{r, eval=FALSE}
-
-```
-
-```{r, eval=FALSE}
-
-```
-
-```{r, eval=FALSE}
-
-```
-
-```{r, eval=FALSE}
-
-```
-
-```{r, eval=FALSE}
-
-```
-
-```{r, eval=FALSE}
-
-```
-
-```{r, eval=FALSE}
-
-```
-
-```{r, eval=FALSE}
-
-```
-
-```{r, eval=FALSE}
-
-```
-
-```{r, eval=FALSE}
-
-```
-
-```{r, eval=FALSE}
-
-```
-
-```{r, eval=FALSE}
-
-```
-
-```{r, eval=FALSE}
-
-```
-
-```{r, eval=FALSE}
-
-```
-### 3.X. Close & Exit
-
+Please go "File"--> "Close Project" -- a pop window asking "Do you want to save these changes" --> "Yes".
 

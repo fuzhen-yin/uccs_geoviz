@@ -843,12 +843,14 @@ edu_buf &lt;- read.csv(&quot;data/S1501_Education_Buffalo.csv&quot;)</code></pre
 report</strong>.</p>
 <pre class="r"><code>str(edu_cos)
 str(edu_buf)</code></pre>
+<blockquote>
 <p>The Education Attainment data is collected from <a
 href="https://data.census.gov/">US Census Bureau</a> via ACS 5-year
 survey. The link of the original table is <a
 href="https://data.census.gov/table/ACSST1Y2022.S1501?q=education&amp;g=160XX00US0816000,3611000">S1501:
 Educational Attainment</a>. The data we have in the .csv files are a
 corpus of that table by focusing on population age 25 and elder.</p>
+</blockquote>
 <p>Let’s have a look at the table first.</p>
 <pre class="r"><code>View(edu_cos)
 View(edu_buf)</code></pre>
@@ -930,6 +932,8 @@ plot1_education &lt;- ggplot(edu_cos_buf, aes(x=Education_Level, y=Percentage, f
   ylab(&quot;Percentage (%)&quot;)
 
 plot1_education</code></pre>
+<p>Have a look at the plot and observes how the two cities are different
+from each other in terms of education attainment.</p>
 </div>
 <div id="export" class="section level4">
 <h4>3.4.4 Export</h4>
@@ -942,8 +946,127 @@ folder –&gt; <strong>plot</strong> folder. Do you see a new pdf there?
 Open it and do a screenshot for <strong>lab3 report</strong>.</p>
 </div>
 </div>
-<div id="x.-close-exit" class="section level3">
-<h3>3.X. Close &amp; Exit</h3>
+<div id="viz-racial-diversity" class="section level3">
+<h3>3.5 Viz: Racial Diversity</h3>
+<p>This section examines the racial diversity in Colorado Springs and
+Buffalo, and uses different visualization techniques (e.g., pie chart
+and waffle chart) to illustrate the same data.</p>
+<div id="import-data" class="section level4">
+<h4>3.5.1 Import Data</h4>
+<p>First, let’s import the data from local <strong>.csv</strong> files:
+<em>“B02001_Race_ColoradoSprings.csv”</em> and
+<em>“B02001_Race_Buffalo.csv”</em>.</p>
+<blockquote>
+<p>This data is collected by <a href="https://data.census.gov/">US
+Census Bureau</a> via ACS 5-year survey. The original table is <a
+href="https://data.census.gov/table/ACSDT5Y2022.B02001?q=Race%20and%20Ethnicity&amp;g=160XX00US0816000,3611000">B02001:Race</a>.</p>
+</blockquote>
+<pre class="r"><code># Read Data 
+race_cos &lt;- read.csv(&quot;data/B02001_Race_ColoradoSprings.csv&quot;)
+race_buf &lt;- read.csv(&quot;data/B02001_Race_Buffalo.csv&quot;)</code></pre>
+<pre class="r"><code># Examine data type 
+str(race_cos)
+str(race_buf)</code></pre>
+<pre class="r"><code># Have a look at the data frame  
+str(race_cos)
+str(race_buf)</code></pre>
+</div>
+<div id="data-manipulation-1" class="section level4">
+<h4>3.5.2 Data Manipulation</h4>
+<p>Similar to <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#342_Data_Manipulation">step
+3.4.2</a>, we create a new column called <em>“Percentage”</em> to
+calculate the proportion of population under each category. But this
+time, we want to round the column <em>“Percentage”</em> to two decimal
+digits (0.00) by using the function <code>round()</code>.</p>
+<pre class="r"><code># Calculate Percentage - COS
+race_cos[&#39;Percentage&#39;] &lt;- 100 * race_cos$Count / sum(race_cos$Count)
+# Round it to two decimal digits
+race_cos[&#39;Percentage&#39;] &lt;- round(race_cos[&#39;Percentage&#39;], 2)
+
+# Let&#39;s do the same to the Buffalo race dataset 
+race_buf[&#39;Percentage&#39;] &lt;- 100 * race_buf$Count / sum(race_buf$Count)
+race_buf[&#39;Percentage&#39;] &lt;- round(race_buf[&#39;Percentage&#39;], 2)</code></pre>
+</div>
+<div id="pie-charts" class="section level4">
+<h4>3.5.3 Pie Charts</h4>
+<p>Create a basic pie chart representing racial composition for Colorado
+Springs and save it to the <em>“plot”</em> folder.</p>
+<blockquote>
+<p>In the <code>scale_fill_brewer(palette="Set3")</code>, we ask the
+machine to apply a color palette called <code>Set3</code>.</p>
+</blockquote>
+<p>You can try other color palette by checking the <a
+href="https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf">R
+Color Cheatsheet</a>.</p>
+<pre class="r"><code># Basic pie chart - Colorado Springs
+plot3_race_cos &lt;- ggplot(race_cos, aes(x=&quot;&quot;, y=Percentage, fill=Race)) +
+  geom_bar(stat=&quot;identity&quot;, width=1) +
+  coord_polar(&quot;y&quot;, start=0) + 
+  theme_void() + 
+  scale_fill_brewer(palette=&quot;Set3&quot;) +
+  ggtitle(&quot;Colorado Springs&quot;)
+
+# export 
+pdf(&quot;plot/plot3_race_cos.pdf&quot;)
+print(plot3_race_cos)
+dev.off()</code></pre>
+<p>Create a basic pie chart for Buffalo.</p>
+<pre class="r"><code># Basic pie chart - Buffalo 
+plot3_race_buf &lt;- ggplot(race_buf, aes(x=&quot;&quot;, y=Percentage, fill=Race)) +
+  geom_bar(stat=&quot;identity&quot;, width=1) +
+  coord_polar(&quot;y&quot;, start=0) + 
+  theme_void() + 
+  scale_fill_brewer(palette=&quot;Set3&quot;) + 
+  ggtitle(&quot;Buffalo&quot;)
+  
+pdf(&quot;plot/plot3_race_buff.pdf&quot;)
+print(plot3_race_buf)
+dev.off()</code></pre>
+</div>
+<div id="waffle-charts" class="section level4">
+<h4>3.5.4 Waffle Charts</h4>
+<p>It almost the end. Let’s have some fun to conclude this practical by
+creating a waffle chart for the two cities. First, we combine the two
+data frame <code>race_cos</code> and <code>race_buf</code> and save it
+as a new variable <code>race_cos_buf</code>.</p>
+<pre class="r"><code>## Combine rows
+race_cos_buf &lt;- rbind(race_cos, race_buf)</code></pre>
+<p>Ready for something exciting? Run the code below.</p>
+<pre class="r"><code># waffle chart 
+ggplot(data = race_cos_buf, aes(fill=Race, values=Percentage)) +
+  geom_waffle(color = &quot;white&quot;, size = 1.125, n_rows = 6) +
+  facet_wrap(~City, ncol=1) +
+  theme_void()</code></pre>
+<p>Let’s try a different color palette <code>Set2</code> and save the
+plot as a new variable.</p>
+<pre class="r"><code># Try a different color palette
+plot4_race_waffle &lt;- ggplot(data = race_cos_buf, aes(fill=Race, values=Percentage)) +
+  geom_waffle(color = &quot;white&quot;, size = 1.125, n_rows = 6) +
+  facet_wrap(~City, ncol=1) + 
+  scale_fill_brewer(palette=&quot;Set2&quot;) +
+  theme_void()
+
+# call the plot 
+plot4_race_waffle</code></pre>
+</div>
+<div id="export-1" class="section level4">
+<h4>3.5.5 Export</h4>
+<pre class="r"><code># Export as a pdf
+pdf(&quot;plot/plot4_race_waffle_cos_buf.pdf&quot;)
+print(plot4_race_waffle)
+dev.off()</code></pre>
+<p>After running the code above, please go to <strong>lab3</strong>
+folder –&gt; <strong>plot</strong> folder. Do you see a new pdf there?
+Open it and do a screenshot for <strong>lab3 report</strong>.</p>
+</div>
+</div>
+<div id="close-exit" class="section level3">
+<h3>3.6. Close &amp; Exit</h3>
+<p>Congratulations!! You made it to the end. Let’s close the
+project.</p>
+<p>Please go “File”–&gt; “Close Project” – a pop window asking “Do you
+want to save these changes” –&gt; “Yes”.</p>
 </div>
 
 
