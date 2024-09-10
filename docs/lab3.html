@@ -392,18 +392,18 @@ and visualization using R. After reading it, you should be able to:</p>
 as:
 <ul>
 <li>extract data corpus</li>
-<li>join and merge data frames</li>
+<li>join rows of different data frames into one</li>
 <li>understand sorting and ordering</li>
 </ul></li>
-<li><strong>draw</strong> standard plots including:
+<li><strong>draw</strong> standard plots for <em>exploratory</em> and
+<em>visualization</em> purpose by producing:
 <ul>
 <li>histograms</li>
 <li>bar charts</li>
 <li>line plots</li>
-<li>scatter plots</li>
+<li>waffle charts</li>
 </ul></li>
-<li><strong>export</strong> plots in different formats and know the
-differences between different formats</li>
+<li><strong>export</strong> plots as local files</li>
 </ul>
 </div>
 <div id="good-practice" class="section level3">
@@ -426,8 +426,50 @@ Figure 3.1.</p>
 alt="Figure 3.1: The organization of folders for “lab3”." /> <br>
 <br></p>
 </div>
+<div id="data" class="section level4">
+<h4>3.2.2 Data</h4>
+<p>I have collected some tables for this lab. These tables tell use
+about population’s <u>education attainment</u> and <u>racial
+diversity</u> in two cities: Colorado Springs (CO) and Buffalo (NY).
+These data are collected from <a href="https://data.census.gov/">US
+Census Bureau</a> using the <a
+href="https://www.census.gov/programs-surveys/acs/about.html">American
+Community Survey</a>’s 5-year estimates.</p>
+<p>Please follow the steps below:</p>
+<ul>
+<li><p><strong>Go</strong> to <a
+href="https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab3_data.zip"
+class="uri">https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab3_data.zip</a></p></li>
+<li><p><strong>Download</strong> the file <em>“lab3_data.zip”</em> (see
+Figure 3.2)</p>
+<div class="float">
+<img src="figs/lab3_download_data.png" style="width:70.0%"
+alt="Figure 3.2: Download “lab3_data.zip” ." />
+<div class="figcaption">Figure 3.2: Download <em>“lab3_data.zip”</em>
+.</div>
+</div></li>
+<li><p><strong>Unzip</strong> folder <em>“lab3_data.zip”</em> (see
+Figure 3.3)</p>
+<div class="float">
+<img src="figs/lab3_extract_data.png" style="width:35.0%"
+alt="Figure 3.3: Extract files from “lab3_data.zip” ." />
+<div class="figcaption">Figure 3.3: Extract files from
+<em>“lab3_data.zip”</em> .</div>
+</div></li>
+<li><p><strong>Move</strong> all files to the <em>“data”</em> folder we
+just created in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#32_Good_Practice">Step
+3.2.1</a> (see Figure 3.4)</p>
+<div class="float">
+<img src="figs/lab3_move_tables_to_datafolder.png" style="width:60.0%"
+alt="Figure 3.4: Move files to “data” folder under “lab3”." />
+<div class="figcaption">Figure 3.4: Move files to <em>“data”</em> folder
+under <em>“lab3”</em>.</div>
+</div></li>
+</ul>
+</div>
 <div id="housekeeping-launching-rstudio" class="section level4">
-<h4>3.2.2 Housekeeping &amp; Launching RStudio</h4>
+<h4>3.2.3 Housekeeping &amp; Launching RStudio</h4>
 <p>Again, we would like to start a <strong>new project</strong> from
 scratch with a <strong>clean R Script</strong>. Please do the following
 steps. If you have any questions about these steps, please refer to the
@@ -453,7 +495,7 @@ name.</li>
 </ul>
 </div>
 <div id="before-you-start" class="section level4">
-<h4>3.2.3 Before You Start</h4>
+<h4>3.2.4 Before You Start</h4>
 <div class="purplebox">
 <div class="left">
 <p><u><strong>Heads-Up!</strong></u></p>

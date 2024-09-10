@@ -81,7 +81,28 @@ After created these folders, your folders should look similar to Figure 3.1.
 <br>
 <br>
 
-#### 3.2.2 Housekeeping & Launching RStudio
+
+#### 3.2.2 Data
+I have collected some tables for this lab. These tables tell use about population's [education attainment]{.ul} and [racial diversity]{.ul} in two cities: Colorado Springs (CO) and Buffalo (NY). These data are collected from [US Census Bureau](https://data.census.gov/) using the [American Community Survey](https://www.census.gov/programs-surveys/acs/about.html)'s 5-year estimates. 
+
+
+Please follow the steps below: 
+
+* **Go** to https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab3_data.zip
+* **Download** the file _"lab3_data.zip"_ (see Figure 3.2)
+
+  ![Figure 3.2: Download _"lab3_data.zip"_ .](figs/lab3_download_data.png){width=70%}
+
+* **Unzip** folder _"lab3_data.zip"_ (see Figure 3.3)
+
+  ![Figure 3.3: Extract files from _"lab3_data.zip"_ .](figs/lab3_extract_data.png){width=35%}
+
+* **Move** all files to the _"data"_ folder we just created in [Step 3.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#32_Good_Practice) (see Figure 3.4)
+
+  ![Figure 3.4: Move files to _"data"_ folder under _"lab3"_.](figs/lab3_move_tables_to_datafolder.png){width=60%}
+
+
+#### 3.2.3 Housekeeping & Launching RStudio
 Again, we would like to start a **new project** from scratch with a **clean R Script**. Please do the following steps. If you have any questions about these steps, please refer to the previous chapters for help. 
 
 * Step 1: Make sure all existing R projects are **properly closed**. 
@@ -90,7 +111,7 @@ Again, we would like to start a **new project** from scratch with a **clean R Sc
 * Step 3: Create a **New Script** by go to **File** --> **New File** --> **R Script**. **Save** the script by giving it a proper name.
 
 
-#### 3.2.3 Before You Start
+#### 3.2.4 Before You Start
 
 :::: {.purplebox data-latex=""}
 ::: {.left data-latex=""}
@@ -127,7 +148,7 @@ If you plan to work on this lab later, please remember to **save your script**, 
 
 ::::
 
-
+### 3.3 Population Growth 
 
 
 
