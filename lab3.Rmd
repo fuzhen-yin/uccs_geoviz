@@ -152,11 +152,12 @@ If you plan to work on this lab later, please remember to **save your script**, 
 Finally, we'll start coding! From now, each section is an **independent** project that each produces one or more graphics for different purposes. Each project will expose you to a complete data analysis and visualization **workflow.** 
 
 
-We will use two cities _Colorado Springs (CO)_ (a growing city) and _Buffalo (NY)_ (a declining city) for case studies. The purpose of these graphics is to understand their different _socio-demographic characteristics_.   
+We will use two cities _Colorado Springs (CO)_ (a growing city) and _Buffalo (NY)_ (a declining city) for case studies. The purpose of these graphics is to understand their different _socio-demographic characteristics_. 
+This section is to produce a plot [comparing the population growth between two cities]{.ul}. 
 
 Let's **install** & **call** some libraries first. Last time, we have used ``` ggplot2 ```. This time, we will learn another library ``` dplyr ``` and ``` waffle ```. 
 
-> ``` dplyr ``` is a very commonly used package for **data frame manipulation** . 
+> ``` dplyr ``` is a very commonly used package for **data frame manipulation** ([read more](https://dplyr.tidyverse.org/)). 
 > ``` waffle ``` is a package to produce waffle chart. 
 
 ```{r, eval=FALSE}
@@ -164,13 +165,56 @@ Let's **install** & **call** some libraries first. Last time, we have used ``` g
 install.packages("dplyr")
 install.packages("waffle")
 
-## If you don't have the package "ggplot2" installed, please (1) un-comment the code below by deleting the hash tag; (2) run it
+## If you don't have the package "ggplot2" installed
+## please (1) un-comment the code below by deleting the hash tag; (2) run it
 # install.packages("ggplot2")
 ```
 
+After installing packages, we call the three libraries. _Hint: Everytime you open or restart an R project/script, you would need to call libraries. But you don't need to install them every time_
+
+```{r, eval=FALSE}
+## Library 
+library(ggplot2)  # plot
+library(dplyr)    # data manipulation
+library(waffle)   # waffle chart
+```
+
+#### 3.3.1 Population Data 2010-2022
+
+Data is the fundamentals of visualization. Here, we create a data frame (or table) to store the population data of Colorado Springs (COS) for 12 years, from 2010 to 2022. The **original data** is from [US Census Bureau](https://data.census.gov/) and  [Table S0101: Age and Sex](https://data.census.gov/table/ACSST5Y2022.S0101?g=160XX00US0816000,3611000). Here, we replicate some of the data records from that table. 
+
+> We use the function ``` data.frame() ``` to create a new table and give the table a name _"pop_cos"_. We want the table have three columns which are _year_, _population_ and _city_.  
+
+```{r, eval=FALSE}
+## Colorado Springs, CO (COS)'s Population Change 2010-2022 
+pop_cos <- data.frame(
+  year = c(2010:2022),
+  population = c(403983,410688,417534,425805,433547,442040,448759,450000,457502,464871,471686,475282,479612),
+  city = "Colorado Springs"
+)
+```
 
 
-This section is to compare the population growth between two cities 
+Next, let's briefly check the data types in this table using the ``` str() ``` function. And have a look at the table using ``` View() ```. The ``` View() ``` function is the same as you click the _"pop_cos"_ variable in the **Environment** Tab. 
+
+```{r, eval=FALSE}
+# Check data type 
+str(pop_cos)
+
+# View the data frame "pop_cos". 
+View(pop_cos)
+```
+
+Okay, let's go back to the script and create another data frame for Buffalo (NY) and assign the data frame to the variable _"pop_buf"_. 
+
+```{r}
+## Buffalo, NY (BUF)'s Population Change 2010-2022 
+pop_buf <- data.frame(
+  year = c(2010:2022),
+  population = c(266012,263914,261955,260568,259959,259517,258989,259574,257518,256480,255805,276011,276688),
+  city = "Buffalo"
+)
+```
 
 
 

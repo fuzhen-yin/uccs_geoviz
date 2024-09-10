@@ -554,25 +554,73 @@ complete data analysis and visualization <strong>workflow.</strong></p>
 <p>We will use two cities <em>Colorado Springs (CO)</em> (a growing
 city) and <em>Buffalo (NY)</em> (a declining city) for case studies. The
 purpose of these graphics is to understand their different
-<em>socio-demographic characteristics</em>.</p>
+<em>socio-demographic characteristics</em>. This section is to produce a
+plot <u>comparing the population growth between two cities</u>.</p>
 <p>Let’s <strong>install</strong> &amp; <strong>call</strong> some
 libraries first. Last time, we have used <code>ggplot2</code>. This
 time, we will learn another library <code>dplyr</code> and
 <code>waffle</code>.</p>
 <blockquote>
 <p><code>dplyr</code> is a very commonly used package for <strong>data
-frame manipulation</strong> . <code>waffle</code> is a package to
-produce waffle chart.</p>
+frame manipulation</strong> (<a href="https://dplyr.tidyverse.org/">read
+more</a>). <code>waffle</code> is a package to produce waffle chart.</p>
 </blockquote>
-<pre class="r"><code># ## Install libraries 
-# install.packages(&quot;dplyr&quot;)
-# install.packages(&quot;waffle&quot;)
+<pre class="r"><code>## Install libraries
+install.packages(&quot;dplyr&quot;)
+install.packages(&quot;waffle&quot;)
 
-# # If you don&#39;t have the package &quot;ggplot2&quot;, please un-comment the code below (delete the hash tags) and run it
-# # install.packages(&quot;ggplot2&quot;)</code></pre>
-<p>This section is to compare the population growth between two
-cities</p>
+## If you don&#39;t have the package &quot;ggplot2&quot; installed
+## please (1) un-comment the code below by deleting the hash tag; (2) run it
+# install.packages(&quot;ggplot2&quot;)</code></pre>
+<p>After installing packages, we call the three libraries. <em>Hint:
+Everytime you open or restart an R project/script, you would need to
+call libraries. But you don’t need to install them every time</em></p>
+<pre class="r"><code>## Library 
+library(ggplot2)  # plot
+library(dplyr)    # data manipulation
+library(waffle)   # waffle chart</code></pre>
+<div id="population-data-2010-2022" class="section level4">
+<h4>3.3.1 Population Data 2010-2022</h4>
+<p>Data is the fundamentals of visualization. Here, we create a data
+frame (or table) to store the population data of Colorado Springs (COS)
+for 12 years, from 2010 to 2022. The <strong>original data</strong> is
+from <a href="https://data.census.gov/">US Census Bureau</a> and <a
+href="https://data.census.gov/table/ACSST5Y2022.S0101?g=160XX00US0816000,3611000">Table
+S0101: Age and Sex</a>. Here, we replicate some of the data records from
+that table.</p>
+<blockquote>
+<p>We use the function <code>data.frame()</code> to create a new table
+and give the table a name “pop_cos”. We want the table have three
+columns which are <em>year</em>, <em>population</em> and
+<em>city</em>.</p>
+</blockquote>
+<pre class="r"><code>## Colorado Springs, CO (COS)&#39;s Population Change 2010-2022 
+pop_cos &lt;- data.frame(
+  year = c(2010:2022),
+  population = c(403983,410688,417534,425805,433547,442040,448759,450000,457502,464871,471686,475282,479612),
+  city = &quot;Colorado Springs&quot;
+)</code></pre>
+<p>Next, let’s briefly check the data types in this table using the
+<code>str()</code> function. And have a look at the table using
+<code>View()</code>. The <code>View()</code> function is the same as you
+click the <em>“pop_cos”</em> variable in the
+<strong>Environment</strong> Tab.</p>
+<pre class="r"><code># Check data type 
+str(pop_cos)
+
+# View the data frame &quot;pop_cos&quot;. 
+View(pop_cos)</code></pre>
+<p>Okay, let’s go back to the script and create another data frame for
+Buffalo (NY) and assign the data frame to the variable
+<em>“pop_buf”</em>.</p>
+<pre class="r"><code>## Buffalo, NY (BUF)&#39;s Population Change 2010-2022 
+pop_buf &lt;- data.frame(
+  year = c(2010:2022),
+  population = c(266012,263914,261955,260568,259959,259517,258989,259574,257518,256480,255805,276011,276688),
+  city = &quot;Buffalo&quot;
+)</code></pre>
 <p><br></p>
+</div>
 </div>
 <div id="x.-close-exit" class="section level3">
 <h3>3.X. Close &amp; Exit</h3>
