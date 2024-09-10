@@ -302,7 +302,7 @@ Okay, it seems both cities have positive population growth rates between 2010 an
 
 #### 3.3.3 Line Plots
 
-Let's combine the two data frame ``` pop_cos ``` and ``` pop_buf ``` together and save it as a new variable ``` pop_cos_buf ```. Remember that we have checked their column names in Step 3.3.2. One condition to combine rows together is that they need to have the same column names.  
+Let's combine the two data frame ``` pop_cos ``` and ``` pop_buf ``` together and save it as a new variable ``` pop_cos_buf ```. Remember that we have checked their column names in [Step 3.3.2.](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#332_Data_Query__Analysis) One condition to combine rows together is that they need to have the same column names.  
 
 ```{r, eval=FALSE}
 ## Combine two data frames together by rows. This requires two data frames have the same column names 
@@ -376,9 +376,9 @@ plot1_growth
 
 #### 3.3.4 Export Plots 
 
-It seems the plot ``` plot1_growth ```  is good enough. Let's stop here for now and export it to the _"plot"_ folder we have created in [Step 3.2.1.]{.ul}. We will export it as a [.pdf]{.ul} file because it can store information in vector format and layers and is easier to edit later. 
+It seems the plot ``` plot1_growth ```  is good enough. Let's stop here for now and export it to the _"plot"_ folder we have created in [Step 3.2.1.](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#321_Organizing_Folders__Sub-folders). We will export it as a [.pdf]{.ul} file because it can store information in vector format and is easier to edit later. We will use the function ``` pdf() ```. 
 
-> We will use the function ``` pdf() ```. The path ``` "plot/plot1_population_growth_two_cities.pdf" ``` tells the machine to save the pdf to the _"plot"_ folder and name it as _"plot1_population_growth_two_cities.pdf"_. Feel free to use a different name. 
+> The path ``` "plot/plot1_population_growth_two_cities.pdf" ``` tells the machine to save the pdf to the _"plot"_ folder and name it as _"plot1_population_growth_two_cities.pdf"_. Feel free to use a different name. 
 
 ```{r, eval=FALSE}
 pdf("plot/plot1_population_growth_two_cities.pdf", width = 6, height =3 )
@@ -386,12 +386,265 @@ print(plot1_growth)
 dev.off()
 ```
 
-
-
+After running the code above, please go to  **lab3** folder --> **plot** folder. Do you see a pdf there? Open it and do a screenshot for **lab3 report**. 
 
 
 <br>
 
+
+### 3.4 Viz: Education Attainment 
+I know it's a lot already. If you plan to **take a break**, this is a good time! Please refer to [Section 3.2.4](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#324_Before_You_Start) for instructions on how to properly close the project and re-open it later. 
+
+#### 3.4.1 Get Data
+Okay, if you plan to continue, hang on tight! I will be very brief to save times & efforts. 
+
+This section explores the education attainment (of people 25 years and older) of the two cities, Colorado Springs and Buffalo. Unlike the previous section, this time we read the data from local **.csv** files using the function ``` read.csv() ```. The file path ``` data/S1501_Education_ColoradoSprings.csv ``` tells the machine to go to the ``` data ``` folder and import the **.csv** file _"S1501_Education_ColoradoSprings.csv "_. 
+
+```{r, eval=FALSE}
+## Education Attainment - Colorado Springs
+edu_cos <- read.csv("data/S1501_Education_ColoradoSprings.csv")
+
+## Education Attainment - Buffalo
+edu_buf <- read.csv("data/S1501_Education_Buffalo.csv")
+```
+
+Check data type. Please report the output to **lab3 report**. 
+```{r, eval=FALSE}
+str(edu_cos)
+str(edu_buf)
+```
+
+The Education Attainment data is collected from  [US Census Bureau](https://data.census.gov/) via ACS 5-year survey. The link of the original table is [S1501: Educational Attainment](https://data.census.gov/table/ACSST1Y2022.S1501?q=education&g=160XX00US0816000,3611000). The data we have in the .csv files are a corpus of that table by focusing on population age 25 and elder.  
+
+Let's have a look at the table first. 
+
+```{r, eval=FALSE}
+View(edu_cos)
+View(edu_buf)
+```
+
+
+#### 3.4.2 Data Manipulation
+
+The ``` Count ``` column tells us how many people is at a particular education level. Let's check the total number of people in this data by using the ``` sum() ``` function. 
+
+```{r, eval=FALSE}
+# Check the total population age 25 and over in each city 
+sum(edu_cos$Count)
+sum(edu_buf$Count)
+```
+
+Intead of the column _"count"_, we are more interested in calculating the _"percentage"_ of population in each level. The percentage is calculated as: 
+
+$$ \% \ of \ people \ in \ a \ particular \ level =  100 * \frac {Count \ of \ people \ in \ a \ particular \ level} {Total \ population} $$ 
+<br> 
+
+Let's calculate the percentage in each education level and save it as a new column _"Percentage"_. 
+
+```{r, eval=FALSE}
+# Create a new column to calculate the percentage (%) of population attaining different education levels
+edu_cos["Percentage"] <- 100 * edu_cos$Count / sum(edu_cos$Count)
+edu_buf["Percentage"] <- 100 * edu_buf$Count / sum(edu_buf$Count)
+```
+
+#### 3.4.3 Bar Plot
+
+Let's start to plot the education attainment for Colorado Springs. 
+```{r, eval=FALSE}
+# basic version. Plot two cities separately. 
+ggplot(edu_cos, aes(x=Education_Level, y=Percentage)) + 
+  geom_bar(stat = "identity")
+```
+
+Hmmm, the plot really doesn't look great. The x-axis texts stick together and hard to read. It will be better if we can rotate the x-axis a little bit. Let's rotate it by 45 degree. 
+
+```{r, eval=FALSE}
+# rotate x axis 
+ggplot(edu_cos, aes(x=Education_Level, y=Percentage)) + 
+  geom_bar(stat = "identity") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+```
+
+It is much better. But it seems the x-axis does follow the order as the data frame. Let's check how the education level is ordered in the table ``` edu_cos ```. 
+
+```{r, eval=FALSE}
+edu_cos$Education_Level 
+```
+
+The order of education level makes more sense because it is  from the lowest to the highest. Let's force the machine to order the x-aixs as the data frame, and reproduce the plot. 
+
+```{r, eval=FALSE}
+# reorder x-axis as the data frame shows 
+edu_cos$Education_Level <- factor(edu_cos$Education_Level, levels=unique(edu_cos$Education_Level))
+
+# plot 
+ggplot(edu_cos, aes(x=Education_Level, y=Percentage)) + 
+  geom_bar(stat = "identity") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+```
+
+Let's combine Buffalo and Colorado Springs together and make a bar plot for comparison. 
+```{r, eval=FALSE}
+# combine the rows from the two data frames "edu_cos", "edu_buf" 
+edu_cos_buf <- rbind(edu_cos, edu_buf)
+edu_cos_buf$Education_Level <- factor(edu_cos_buf$Education_Level, levels=unique(edu_cos_buf$Education_Level))
+
+# make a bar plot for comparison 
+ggplot(edu_cos_buf, aes(x=Education_Level, y=Percentage, fill = NAME)) + 
+  geom_bar(stat = "identity", position = "dodge") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+```
+
+Improve the plot a little bit by:
+
+* using different colors: ``` scale_fill_manual() ```
+* rename x and y labels: ``` xlab() ``` and ``` ylab() ```
+* apply a black & white theme: ``` theme_bw() ```
+
+We will save the plot under the variable ``` plot1_education ``` and call it to see the figure. 
+```{r, eval=FALSE}
+# change colors and use a customized theme 
+plot1_education <- ggplot(edu_cos_buf, aes(x=Education_Level, y=Percentage, fill = NAME)) + 
+  geom_bar(stat = "identity", position = "dodge") + 
+  scale_fill_manual(values=c("#F5B19C","#0F4C81")) + 
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
+  xlab("Education Attainment") + 
+  ylab("Percentage (%)")
+
+plot1_education
+```
+
+
+#### 3.4.4 Export 
+
+```{r, eval=FALSE}
+# export 
+pdf("plot/plot2_education_attainment_percentage_two_cities.pdf", width = 8, height =5 )
+print(plot1_education)
+dev.off()
+```
+
+After running the code above, please go to  **lab3** folder --> **plot** folder. Do you see a new pdf there? Open it and do a screenshot for **lab3 report**. 
+
+
+
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
+
+```{r, eval=FALSE}
+
+```
 ### 3.X. Close & Exit
 
 

@@ -716,8 +716,10 @@ find.</p>
 <p>Let’s combine the two data frame <code>pop_cos</code> and
 <code>pop_buf</code> together and save it as a new variable
 <code>pop_cos_buf</code>. Remember that we have checked their column
-names in Step 3.3.2. One condition to combine rows together is that they
-need to have the same column names.</p>
+names in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#332_Data_Query__Analysis">Step
+3.3.2.</a> One condition to combine rows together is that they need to
+have the same column names.</p>
 <pre class="r"><code>## Combine two data frames together by rows. This requires two data frames have the same column names 
 pop_cos_buf &lt;- rbind(pop_cos, pop_buf)
 
@@ -793,20 +795,151 @@ plot1_growth</code></pre>
 <h4>3.3.4 Export Plots</h4>
 <p>It seems the plot <code>plot1_growth</code> is good enough. Let’s
 stop here for now and export it to the <em>“plot”</em> folder we have
-created in <u>Step 3.2.1.</u>. We will export it as a <u>.pdf</u> file
-because it can store information in vector format and layers and is
-easier to edit later.</p>
+created in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#321_Organizing_Folders__Sub-folders">Step
+3.2.1.</a>. We will export it as a <u>.pdf</u> file because it can store
+information in vector format and is easier to edit later. We will use
+the function <code>pdf()</code>.</p>
 <blockquote>
-<p>We will use the function <code>pdf()</code>. The path
-<code>"plot/plot1_population_growth_two_cities.pdf"</code> tells the
-machine to save the pdf to the <em>“plot”</em> folder and name it as
-<em>“plot1_population_growth_two_cities.pdf”</em>. Feel free to use a
-different name.</p>
+<p>The path <code>"plot/plot1_population_growth_two_cities.pdf"</code>
+tells the machine to save the pdf to the <em>“plot”</em> folder and name
+it as <em>“plot1_population_growth_two_cities.pdf”</em>. Feel free to
+use a different name.</p>
 </blockquote>
 <pre class="r"><code>pdf(&quot;plot/plot1_population_growth_two_cities.pdf&quot;, width = 6, height =3 )
 print(plot1_growth)
 dev.off()</code></pre>
+<p>After running the code above, please go to <strong>lab3</strong>
+folder –&gt; <strong>plot</strong> folder. Do you see a pdf there? Open
+it and do a screenshot for <strong>lab3 report</strong>.</p>
 <p><br></p>
+</div>
+</div>
+<div id="viz-education-attainment" class="section level3">
+<h3>3.4 Viz: Education Attainment</h3>
+<p>I know it’s a lot already. If you plan to <strong>take a
+break</strong>, this is a good time! Please refer to <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#324_Before_You_Start">Section
+3.2.4</a> for instructions on how to properly close the project and
+re-open it later.</p>
+<div id="get-data" class="section level4">
+<h4>3.4.1 Get Data</h4>
+<p>Okay, if you plan to continue, hang on tight! I will be very brief to
+save times &amp; efforts.</p>
+<p>This section explores the education attainment (of people 25 years
+and older) of the two cities, Colorado Springs and Buffalo. Unlike the
+previous section, this time we read the data from local
+<strong>.csv</strong> files using the function <code>read.csv()</code>.
+The file path <code>data/S1501_Education_ColoradoSprings.csv</code>
+tells the machine to go to the <code>data</code> folder and import the
+<strong>.csv</strong> file
+<em>“S1501_Education_ColoradoSprings.csv”</em>.</p>
+<pre class="r"><code>## Education Attainment - Colorado Springs
+edu_cos &lt;- read.csv(&quot;data/S1501_Education_ColoradoSprings.csv&quot;)
+
+## Education Attainment - Buffalo
+edu_buf &lt;- read.csv(&quot;data/S1501_Education_Buffalo.csv&quot;)</code></pre>
+<p>Check data type. Please report the output to <strong>lab3
+report</strong>.</p>
+<pre class="r"><code>str(edu_cos)
+str(edu_buf)</code></pre>
+<p>The Education Attainment data is collected from <a
+href="https://data.census.gov/">US Census Bureau</a> via ACS 5-year
+survey. The link of the original table is <a
+href="https://data.census.gov/table/ACSST1Y2022.S1501?q=education&amp;g=160XX00US0816000,3611000">S1501:
+Educational Attainment</a>. The data we have in the .csv files are a
+corpus of that table by focusing on population age 25 and elder.</p>
+<p>Let’s have a look at the table first.</p>
+<pre class="r"><code>View(edu_cos)
+View(edu_buf)</code></pre>
+</div>
+<div id="data-manipulation" class="section level4">
+<h4>3.4.2 Data Manipulation</h4>
+<p>The <code>Count</code> column tells us how many people is at a
+particular education level. Let’s check the total number of people in
+this data by using the <code>sum()</code> function.</p>
+<pre class="r"><code># Check the total population age 25 and over in each city 
+sum(edu_cos$Count)
+sum(edu_buf$Count)</code></pre>
+<p>Intead of the column <em>“count”</em>, we are more interested in
+calculating the <em>“percentage”</em> of population in each level. The
+percentage is calculated as:</p>
+<p><span class="math display">\[ \% \ of \ people \ in \ a \ particular
+\ level =  100 * \frac {Count \ of \ people \ in \ a \ particular \
+level} {Total \ population} \]</span> <br></p>
+<p>Let’s calculate the percentage in each education level and save it as
+a new column <em>“Percentage”</em>.</p>
+<pre class="r"><code># Create a new column to calculate the percentage (%) of population attaining different education levels
+edu_cos[&quot;Percentage&quot;] &lt;- 100 * edu_cos$Count / sum(edu_cos$Count)
+edu_buf[&quot;Percentage&quot;] &lt;- 100 * edu_buf$Count / sum(edu_buf$Count)</code></pre>
+</div>
+<div id="bar-plot" class="section level4">
+<h4>3.4.3 Bar Plot</h4>
+<p>Let’s start to plot the education attainment for Colorado
+Springs.</p>
+<pre class="r"><code># basic version. Plot two cities separately. 
+ggplot(edu_cos, aes(x=Education_Level, y=Percentage)) + 
+  geom_bar(stat = &quot;identity&quot;)</code></pre>
+<p>Hmmm, the plot really doesn’t look great. The x-axis texts stick
+together and hard to read. It will be better if we can rotate the x-axis
+a little bit. Let’s rotate it by 45 degree.</p>
+<pre class="r"><code># rotate x axis 
+ggplot(edu_cos, aes(x=Education_Level, y=Percentage)) + 
+  geom_bar(stat = &quot;identity&quot;) + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))</code></pre>
+<p>It is much better. But it seems the x-axis does follow the order as
+the data frame. Let’s check how the education level is ordered in the
+table <code>edu_cos</code>.</p>
+<pre class="r"><code>edu_cos$Education_Level </code></pre>
+<p>The order of education level makes more sense because it is from the
+lowest to the highest. Let’s force the machine to order the x-aixs as
+the data frame, and reproduce the plot.</p>
+<pre class="r"><code># reorder x-axis as the data frame shows 
+edu_cos$Education_Level &lt;- factor(edu_cos$Education_Level, levels=unique(edu_cos$Education_Level))
+
+# plot 
+ggplot(edu_cos, aes(x=Education_Level, y=Percentage)) + 
+  geom_bar(stat = &quot;identity&quot;) + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))</code></pre>
+<p>Let’s combine Buffalo and Colorado Springs together and make a bar
+plot for comparison.</p>
+<pre class="r"><code># combine the rows from the two data frames &quot;edu_cos&quot;, &quot;edu_buf&quot; 
+edu_cos_buf &lt;- rbind(edu_cos, edu_buf)
+edu_cos_buf$Education_Level &lt;- factor(edu_cos_buf$Education_Level, levels=unique(edu_cos_buf$Education_Level))
+
+# make a bar plot for comparison 
+ggplot(edu_cos_buf, aes(x=Education_Level, y=Percentage, fill = NAME)) + 
+  geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))</code></pre>
+<p>Improve the plot a little bit by:</p>
+<ul>
+<li>using different colors: <code>scale_fill_manual()</code></li>
+<li>rename x and y labels: <code>xlab()</code> and
+<code>ylab()</code></li>
+<li>apply a black &amp; white theme: <code>theme_bw()</code></li>
+</ul>
+<p>We will save the plot under the variable <code>plot1_education</code>
+and call it to see the figure.</p>
+<pre class="r"><code># change colors and use a customized theme 
+plot1_education &lt;- ggplot(edu_cos_buf, aes(x=Education_Level, y=Percentage, fill = NAME)) + 
+  geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) + 
+  scale_fill_manual(values=c(&quot;#F5B19C&quot;,&quot;#0F4C81&quot;)) + 
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
+  xlab(&quot;Education Attainment&quot;) + 
+  ylab(&quot;Percentage (%)&quot;)
+
+plot1_education</code></pre>
+</div>
+<div id="export" class="section level4">
+<h4>3.4.4 Export</h4>
+<pre class="r"><code># export 
+pdf(&quot;plot/plot2_education_attainment_percentage_two_cities.pdf&quot;, width = 8, height =5 )
+print(plot1_education)
+dev.off()</code></pre>
+<p>After running the code above, please go to <strong>lab3</strong>
+folder –&gt; <strong>plot</strong> folder. Do you see a new pdf there?
+Open it and do a screenshot for <strong>lab3 report</strong>.</p>
 </div>
 </div>
 <div id="x.-close-exit" class="section level3">
