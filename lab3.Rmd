@@ -55,14 +55,15 @@ This chapter aims to introduce the complete workflow of data analysis and visual
 * **import** data from local files 
 * **clean** and **transforming** data, such as: 
   + extract data corpus 
-  + join and merge data frames 
+  + join rows of different data frames into one
   + understand sorting and ordering 
-* **draw** standard plots including:
+* **draw** standard plots for _exploratory_ and _visualization_ purpose by producing:
   + histograms
   + bar charts 
   + line plots
-  + scatter plots 
-* **export** plots in different formats and know the differences between different formats 
+  + waffle charts
+  
+* **export** plots as local files 
 
 ### 3.2 Good Practice 
 
