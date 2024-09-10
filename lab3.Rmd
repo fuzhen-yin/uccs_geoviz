@@ -148,8 +148,29 @@ If you plan to work on this lab later, please remember to **save your script**, 
 
 ::::
 
-### 3.3 Population Growth 
+### 3.3 Viz: Population Growth 
+Finally, we'll start coding! From now, each section is an **independent** project that each produces one or more graphics for different purposes. Each project will expose you to a complete data analysis and visualization **workflow.** 
 
+
+We will use two cities _Colorado Springs (CO)_ (a growing city) and _Buffalo (NY)_ (a declining city) for case studies. The purpose of these graphics is to understand their different _socio-demographic characteristics_.   
+
+Let's **install** & **call** some libraries first. Last time, we have used ``` ggplot2 ```. This time, we will learn another library ``` dplyr ``` and ``` waffle ```. 
+
+> ``` dplyr ``` is a very commonly used package for **data frame manipulation** . 
+> ``` waffle ``` is a package to produce waffle chart. 
+
+```{r, eval=FALSE}
+## Install libraries
+install.packages("dplyr")
+install.packages("waffle")
+
+## If you don't have the package "ggplot2" installed, please (1) un-comment the code below by deleting the hash tag; (2) run it
+# install.packages("ggplot2")
+```
+
+
+
+This section is to compare the population growth between two cities 
 
 
 
