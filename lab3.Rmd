@@ -302,11 +302,81 @@ Okay, it seems both cities have positive population growth rates between 2010 an
 
 #### 3.3.3 Line Plots
 
-Let's combine the two data frame ``` pop_cos ``` and ``` pop_buf ``` to make things easier. Remember that we have checked their column names in Step 3.3.2. One condition to combine rows together is that they need to have the same column names.  
+Let's combine the two data frame ``` pop_cos ``` and ``` pop_buf ``` together and save it as a new variable ``` pop_cos_buf ```. Remember that we have checked their column names in Step 3.3.2. One condition to combine rows together is that they need to have the same column names.  
 
-```{r}
+```{r, eval=FALSE}
+## Combine two data frames together by rows. This requires two data frames have the same column names 
+pop_cos_buf <- rbind(pop_cos, pop_buf)
 
+## Have a look at the table 
+View(pop_cos_buf)
 ```
+
+Then, we produce a simple line chart of population growth for two cities by using the ``` ggplot() ``` function. The code below asks the machine to do the following tasks. 
+
+* ``` data = ``` specifies to use ``` pop_cos_buf ``` as the base data; 
+* ``` aes() ``` describe how variables in the data are mapped to visual properties; 
+* ``` geom_line() ``` makes a line plot. 
+
+
+```{r, eval=FALSE}
+# a line chart of population growths: basic version 
+ggplot(data = pop_cos_buf, 
+       aes(x=year, y=population, group=city, color=city)) + 
+  geom_line()
+```
+
+Well, it produces a plot showing the population trend in two cities. It's good and fast to explore the data. But, I am not satisfied with how it looks. For example: 
+
+* I don't like the grey background. 
+* The x-axis labels are with decimals which are not good for years. 
+* The lines seem not thick enough.  
+
+Let's improve the plot by giving more instructions in terms of how we want the plot illustrates the data. Please run the code blow and observe how this plot is different from the previous one. 
+
+```{r, eval=FALSE}
+# update plot 
+ggplot(data = pop_cos_buf, aes(x=year, y=population, group=city, color=city)) + 
+  geom_line() + 
+  scale_x_continuous(breaks =c(2010,2012,2014,2016,2018,2020,2022)) + 
+  ggtitle("Population Changes in Two Cities") + 
+  xlab("Year") + 
+  ylab("Population")
+```
+
+In **lab3 report**, please report what are the purpose of these codes: 
+
+* ``` scale_x_continuous(breaks =c(2010,2012,2014,2016,2018,2020,2022)) ```
+* ``` ggtitle("Population Changes in Two Cities") ```
+* ``` xlab("Year") ```
+* ``` ylab("Population") ```
+
+
+Let's continue to improve the plot by:
+
+* adding data points to the plot using ``` geom_point() ``` 
+* changing line colors using ``` scale_color_manual( values = c()) ``` 
+* apply a minimal theme ``` theme_minimal() ```. The package ``` ggplot ``` has many pre-defined themes (see [here](https://ggplot2.tidyverse.org/reference/ggtheme.html)).  
+
+This time, instead of visualizing the plot directly, we save it into the variable ``` plot1_growth ``` and plot it later by calling this variable. 
+
+```{r, eval=FALSE}
+# improve the plot
+plot1_growth <- ggplot(data = pop_cos_buf, aes(x=year, y=population, group=city, color=city)) + 
+  geom_line(size = 0.5) + 
+  geom_point(size = 0.7) + 
+  scale_x_continuous(breaks =c(2010,2012,2014,2016,2018,2020,2022)) + 
+  scale_color_manual(values = c("purple","orange")) + 
+  ggtitle("Population Changes in Two Cities") + 
+  xlab("Year") + 
+  ylab("Population") +
+  theme_minimal()
+
+# view the plot 
+plot1_growth
+```
+
+
 
 
 <br>
