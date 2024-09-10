@@ -579,8 +579,8 @@ call libraries. But you don’t need to install them every time</em></p>
 library(ggplot2)  # plot
 library(dplyr)    # data manipulation
 library(waffle)   # waffle chart</code></pre>
-<div id="population-data-2010-2022" class="section level4">
-<h4>3.3.1 Population Data 2010-2022</h4>
+<div id="create-population-data-2010-2022" class="section level4">
+<h4>3.3.1 Create Population Data 2010-2022</h4>
 <p>Data is the fundamentals of visualization. Here, we create a data
 frame (or table) to store the population data of Colorado Springs (COS)
 for 12 years, from 2010 to 2022. The <strong>original data</strong> is
@@ -748,7 +748,14 @@ years.</li>
 </ul>
 <p>Let’s improve the plot by giving more instructions in terms of how we
 want the plot illustrates the data. Please run the code blow and observe
-how this plot is different from the previous one.</p>
+how this plot is different from the previous one. In <strong>lab3
+report</strong>, please report what are the purpose of these codes:</p>
+<ul>
+<li><code>scale_x_continuous(breaks =c(2010,2012,2014,2016,2018,2020,2022))</code></li>
+<li><code>ggtitle("Population Changes in Two Cities")</code></li>
+<li><code>xlab("Year")</code></li>
+<li><code>ylab("Population")</code></li>
+</ul>
 <pre class="r"><code># update plot 
 ggplot(data = pop_cos_buf, aes(x=year, y=population, group=city, color=city)) + 
   geom_line() + 
@@ -756,27 +763,21 @@ ggplot(data = pop_cos_buf, aes(x=year, y=population, group=city, color=city)) +
   ggtitle(&quot;Population Changes in Two Cities&quot;) + 
   xlab(&quot;Year&quot;) + 
   ylab(&quot;Population&quot;)</code></pre>
-<p>In <strong>lab3 report</strong>, please report what are the purpose
-of these codes:</p>
-<ul>
-<li><code>scale_x_continuous(breaks =c(2010,2012,2014,2016,2018,2020,2022))</code></li>
-<li><code>ggtitle("Population Changes in Two Cities")</code></li>
-<li><code>xlab("Year")</code></li>
-<li><code>ylab("Population")</code></li>
-</ul>
 <p>Let’s continue to improve the plot by:</p>
 <ul>
 <li>adding data points to the plot using <code>geom_point()</code></li>
-<li>changing line colors</li>
-<li>apply a minimal theme <code>theme_minimal()</code>. The package
+<li>changing line colors using
+<code>scale_color_manual( values = c())</code></li>
+<li>apply the minimalist theme <code>theme_minimal()</code>. The package
 <code>ggplot</code> has many pre-defined themes (see <a
 href="https://ggplot2.tidyverse.org/reference/ggtheme.html">here</a>).</li>
 </ul>
 <p>This time, instead of visualizing the plot directly, we save it into
 the variable <code>plot1_growth</code> and plot it later by calling this
 variable.</p>
-<pre class="r"><code>plot1_growth &lt;- ggplot(data = pop_cos_buf, aes(x=year, y=population, group=city, color=city)) + 
-  geom_line(size = 0.5) + 
+<pre class="r"><code># improve the plot
+plot1_growth &lt;- ggplot(data = pop_cos_buf, aes(x=year, y=population, group=city, color=city)) + 
+  geom_line(linewidth  = 0.5) + 
   geom_point(size = 0.7) + 
   scale_x_continuous(breaks =c(2010,2012,2014,2016,2018,2020,2022)) + 
   scale_color_manual(values = c(&quot;purple&quot;,&quot;orange&quot;)) + 
@@ -787,6 +788,24 @@ variable.</p>
 
 # view the plot 
 plot1_growth</code></pre>
+</div>
+<div id="export-plots" class="section level4">
+<h4>3.3.4 Export Plots</h4>
+<p>It seems the plot <code>plot1_growth</code> is good enough. Let’s
+stop here for now and export it to the <em>“plot”</em> folder we have
+created in <u>Step 3.2.1.</u>. We will export it as a <u>.pdf</u> file
+because it can store information in vector format and layers and is
+easier to edit later.</p>
+<blockquote>
+<p>We will use the function <code>pdf()</code>. The path
+<code>"plot/plot1_population_growth_two_cities.pdf"</code> tells the
+machine to save the pdf to the <em>“plot”</em> folder and name it as
+<em>“plot1_population_growth_two_cities.pdf”</em>. Feel free to use a
+different name.</p>
+</blockquote>
+<pre class="r"><code>pdf(&quot;plot/plot1_population_growth_two_cities.pdf&quot;, width = 6, height =3 )
+print(plot1_growth)
+dev.off()</code></pre>
 <p><br></p>
 </div>
 </div>
@@ -843,7 +862,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1,h2,h3",
+      selectors: "h1,h2,h3,h4,h5",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
