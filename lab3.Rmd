@@ -279,12 +279,34 @@ pop_cos_2010 <- pop_cos[pop_cos$year == "2010", "population"]
 
 After extracting the population values for 2010 and 2022, let's calculate the growth rate using Eq. 3.1. Please report the value of ``` pop_change_cos ```  to the **lab3 report**. 
 ```{r, eval=FALSE}
-# calculate population growth rate 
+# population growth rate - COS
 pop_change_cos <- 100 * (pop_cos_2022 - pop_cos_2010) / pop_cos_2010
 pop_change_cos
 ```
 
+Next, we calculate the population growth rate for Buffalo. Please report the value of ``` pop_change_buf ```  to the **lab3 report**. 
+```{r, eval=FALSE}
+# Buffalo' population in 2022
+pop_buf_2022 <- pop_buf[pop_buf$year == "2022", "population"]
+# COS' population in 2010
+pop_buf_2010 <- pop_buf[pop_buf$year == "2010", "population"]
 
+# calculate population growth rate 
+pop_change_buf <- 100 * (pop_buf_2022 - pop_buf_2010) / pop_buf_2010
+pop_change_buf
+```
+
+Okay, it seems both cities have positive population growth rates between 2010 and 2022. But Colorado Springs has such a rapid growth in the past decade. Compared to Colorado Springs, Buffalo was experiencing an incremental population growth. 
+
+**BUT**! Does this give us a **full picture** of population changes of two cities? I am not sure. Let's visualize their population year by year and see what we can find. 
+
+#### 3.3.3 Line Plots
+
+Let's combine the two data frame ``` pop_cos ``` and ``` pop_buf ``` to make things easier. Remember that we have checked their column names in Step 3.3.2. One condition to combine rows together is that they need to have the same column names.  
+
+```{r}
+
+```
 
 
 <br>
