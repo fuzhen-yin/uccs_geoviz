@@ -58,9 +58,9 @@ This chapter aims to introduce the complete workflow of data analysis and visual
   + join rows of different data frames into one
   + understand sorting and ordering 
 * **draw** standard plots for _exploratory_ and _visualization_ purpose by producing:
-  + histograms
   + bar charts 
   + line plots
+  + pie charts
   + waffle charts
   
 * **export** plots as local files 
@@ -115,10 +115,10 @@ Again, we would like to start a **new project** from scratch with a **clean R Sc
 
 :::: {.purplebox data-latex=""}
 ::: {.left data-latex=""}
-[**Heads-Up!**]{.ul}
+[**Heads-Up! **]{.ul}
 :::
 
-This is a pretty **long tutorial** but it will guide you through a complete workflow of data analysis and visualization. As you can imagine, this will be a steep learning curve. Please take _regular breaks_ (see instructions below). 
+This is a pretty **long tutorial (~4 hours of work)** but it will guide you through a complete workflow of data analysis and visualization. As you can imagine, this will be a steep learning curve. Please take _regular breaks_ (see instructions below). 
 
 This tutorial covers most of the techniques for **Assignment 2**. Please try to:
 
