@@ -553,8 +553,8 @@ str(race_buf)
 
 ```{r, eval=FALSE}
 # Have a look at the data frame  
-str(race_cos)
-str(race_buf)
+View(race_cos)
+View(race_buf)
 ```
 
 #### 3.5.2 Data Manipulation
