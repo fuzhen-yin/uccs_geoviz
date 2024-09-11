@@ -118,7 +118,7 @@ Again, we would like to start a **new project** from scratch with a **clean R Sc
 [**Heads-Up! **]{.ul}
 :::
 
-This is a pretty **long tutorial (~4 hours of work)** but it will guide you through a complete workflow of data analysis and visualization. As you can imagine, this will be a steep learning curve. Please take _regular breaks_ (see instructions below). 
+This is a pretty **long tutorial** but it will guide you through a complete workflow of data analysis and visualization. As you can imagine, this will be a steep learning curve. Please take _regular breaks_ (see instructions below). 
 
 This tutorial covers most of the techniques for **Assignment 2**. Please try to:
 
