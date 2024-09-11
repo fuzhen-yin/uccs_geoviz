@@ -408,7 +408,7 @@ edu_cos <- read.csv("data/S1501_Education_ColoradoSprings.csv")
 edu_buf <- read.csv("data/S1501_Education_Buffalo.csv")
 ```
 
-Check data type. Please report the output to **lab3 report**. 
+Check data type. 
 ```{r, eval=FALSE}
 str(edu_cos)
 str(edu_buf)
