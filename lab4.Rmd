@@ -45,3 +45,30 @@ blockquote {
   text-align: left;
 }
 ```
+
+
+### 4.1 Lab Goals 
+
+This chapter aims to introduce basic map making concepts and techniques. It applies the analysis workflow that we have learnt in Chapter 3 to spatial visualization. After completing this tutorial, you should be able to:
+
+* **Understand** the basic mapping concepts in R;
+* **Interpret** and **Manipulate** tabular and spatial data collected from U.S. Census;
+  + data [cleaning]{.ul} 
+  + data [calculation]{.ul}
+  + [filtering]{.ul} records
+  + [joining]{.ul} data by columns 
+* **Create** and **Export** near publishable static maps;
+  + producing [choropleth]{.ul} map
+  + adding [legend]{.ul}, [scale bar]{.ul} and [north arrow]{.ul}
+  + [combining]{.ul} multiple maps together
+
+
+
+
+
+
+
+
+
+
+
