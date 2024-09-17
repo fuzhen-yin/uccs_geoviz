@@ -647,8 +647,8 @@ look at the data <code>sf_co_county</code>.</p>
 <pre class="r nocopy"><code>sf_ep_county &lt;- sf_co_county %&gt;% filter(GEOID == &quot;TYPE_ANSWER&quot;)
 sf_ep_county &lt;- sf_co_county %&gt;% filter(NAMELSAD == &quot;TYPE_ANSWER&quot;)</code></pre>
 </div>
-<div id="mapping" class="section level4">
-<h4>4.3.3 Mapping</h4>
+<div id="map-making" class="section level4">
+<h4>4.3.3 Map making</h4>
 <p>Okay, after data extraction, we have two new datasets representing
 counties in Colorado and also the county of El Paso. Let’s do some
 mapping using the <code>tmap</code> package.</p>
@@ -675,50 +675,107 @@ Paso county (<strong>MAP3</strong>).</p>
 <pre class="r nocopy"><code># MAP3
 tm_shape(sf_co_county) + tm_polygons() +
   tm_shape(sf_ep_county) + tm_polygons(col = &quot;orange&quot;, border.col = &quot;blue&quot;)</code></pre>
-<p>Improve <strong>MAP3</strong> by using the following functions.</p>
+<p>Improve <strong>MAP3</strong> by using the following functions and
+save the plot as a new variable <code>map_ep_county</code>.</p>
 <ul>
-<li><code>tm_text()</code>: adding labels showing county names based on
-the <code>sf_co_county</code> data.</li>
-<li><code>tm_compass()</code>: add a north arrow.</li>
+<li><code>tm_text()</code> adds labels showing county names based on the
+<code>sf_co_county</code> data.</li>
+<li><code>tm_compass()</code>: adds a north arrow.</li>
+<li><code>tm_scale_bar()</code>: adds a scale bar and put it in the
+bottom-right.</li>
 </ul>
 <pre class="r nocopy"><code># improve MAP3
 map_ep_county &lt;- tm_shape(sf_co_county) + tm_polygons(alpha = 0) +
   tm_shape(sf_ep_county) + tm_polygons(col = &quot;orange&quot;, border.col = &quot;black&quot;, lwd = 2) + 
   tm_shape(sf_co_county) + tm_text(text = &quot;NAME&quot;, size = 0.3) + 
-  tm_compass(north = 0, size = 1) + tm_scale_bar(position = c(&quot;right&quot;, &quot;bottom&quot;), width = 0.15) + 
-  tm_layout(legend.outside = T)</code></pre>
+  tm_compass(north = 0, size = 1) + tm_scale_bar(position = c(&quot;right&quot;, &quot;bottom&quot;), width = 0.15) </code></pre>
+<p>Export the improved <strong>MAP3</strong> to the “<em>plot</em>”
+folder we have created in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#421_Organizing_Folders__Sub-folders">Step
+4.2.1</a>.</p>
 <pre class="r nocopy"><code># export 
 pdf(&quot;plot/map3_elpaso_county.pdf&quot;)
 map_ep_county
 dev.off()</code></pre>
+<p><strong>[Q4]</strong> Please go to your <em>“plot”</em> folder, open
+the pdf <em>“map3_elpaso_county.pdf”</em>, and paste the screenshot to
+your <strong><em>lab4 report</em></strong>.</p>
 </div>
 </div>
 <div id="viz-el-paso-census-tracts-map" class="section level3">
 <h3>4.4 Viz: El Paso Census Tracts Map</h3>
-<pre class="r nocopy"><code>## Census tracts in Colorado in el paso county 
-View(sf_co_tract)
-## Census tracts are on average 4,000 residents (min=2,500, and max=8,000) in size</code></pre>
-<pre class="r nocopy"><code>## check column names in sf_co_tract
+<p>This section will zoom into the census tracts in the state of
+Colorado.</p>
+<blockquote>
+<p>According to U.S. Census Bureau, <strong>census tracts</strong> are
+small, relatively. permanent statistical subdivisions of a county that
+are used to collect and present census data. On average, each census
+tract typically has 4,000 residents (min=2,500, and max=8,000).</p>
+</blockquote>
+<div id="data-pre-processing-1" class="section level4">
+<h4>4.4.1 Data Pre-processing</h4>
+<p>We have imported the census tract boundaries in Colorado in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#431_Libraries__Data">Step
+4.3.1</a> and saved it into the variable <code>sf_co_tract</code>. Let’s
+have a look at the data.</p>
+<p><strong>[Q5]</strong> Please report how many census tracts in
+Colorado according to <code>sf_co_tract</code>. <strong>[Q6]</strong>
+What column to use to extract census tracts that are located in El Paso
+county?</p>
+<pre class="r nocopy"><code>## Open 
+View(sf_co_tract)</code></pre>
+<p>Next, we check the class and data types of
+<code>sf_co_tract</code>.</p>
+<pre class="r nocopy"><code>## Check class
+class(sf_co_tract)
+
+## data type of each column
 str(sf_co_tract)</code></pre>
-<pre class="r nocopy"><code># how many columns in data &quot;sf_co_tract&quot;
-# what columns could be used to filter out tracts in el paso county? 
-sf_ep_tract &lt;- sf_co_tract %&gt;% filter(NAMELSADCO == &quot;El Paso County&quot;)</code></pre>
-<pre class="r nocopy"><code># How many tracts in el paso county
+<p>In terms of data type, it seems of most columns are characters (or
+string). But it also has two columns <code>ALAND</code> (land area) and
+<code>AWATER</code> (water area) as numeric.</p>
+<p><strong>[Q7]</strong> Please report the data type of column
+<code>geometry</code> to <strong><em>lab4 report</em></strong>.</p>
+<p>Let’s extract all <strong>census tracts</strong> that are located in
+El Paso County using the function <code>filter()</code>. (I know, the
+chunk of code below reveals the answer of Q6 :)</p>
+<pre class="r nocopy"><code># El Paso census tracts 
+sf_ep_tract &lt;- sf_co_tract %&gt;% filter(NAMELSADCO == &quot;El Paso County&quot;)
+
+# open data
 View(sf_ep_tract)</code></pre>
-<pre class="r nocopy"><code>## MAP4 - tracts in El Paso county
+</div>
+<div id="map-making-1" class="section level4">
+<h4>4.4.2 Map making</h4>
+<p>Make a map showing census tracts in El Paso County
+(<strong>MAP4</strong>).</p>
+<pre class="r nocopy"><code>## MAP4
 tm_shape(sf_ep_tract) + tm_polygons() </code></pre>
+<p>Highlight the border of El Paso County in <strong>MAP4</strong>
+(through overlapping the census tracts map with El Paso county map).</p>
+<blockquote>
+<p><code>alpha=</code> represents the transparency of used colors.</p>
+</blockquote>
 <pre class="r nocopy"><code>## highlight county boundary in MAP4 
 tm_shape(sf_ep_tract) + tm_polygons() +
   tm_shape(sf_ep_county) + tm_polygons(alpha = 0, lwd = 3)</code></pre>
-<pre class="r nocopy"><code>## prepare to export 
+<p>Continue to improve <strong>MAP4</strong> by adding a north arrow, a
+scale bar, and removing frame using <code>tm_layout()</code>.</p>
+<pre class="r nocopy"><code>## improve MAP4 
 map_ep_tract &lt;- tm_shape(sf_ep_tract) + tm_polygons(col=&quot;white&quot;) +
   tm_shape(sf_ep_county) + tm_polygons(alpha = 0, lwd = 3) + 
-  tm_compass(north = 0, size = 1.5) + tm_scale_bar(position = c(&quot;right&quot;, &quot;bottom&quot;), width = 0.15) + 
-  tm_layout(frame = F)</code></pre>
-<pre class="r nocopy"><code># export 
+  tm_compass(north = 0, size = 1.5) + 
+  tm_scale_bar(position = c(&quot;right&quot;, &quot;bottom&quot;), width = 0.15) + 
+  tm_layout(frame = F)
+
+## Export
 pdf(&quot;plot/map4_elpaso_tracts.pdf&quot;)
 map_ep_tract
 dev.off()</code></pre>
+<p><strong>[Q8]</strong> Please go to your <em>“plot”</em> folder, open
+the pdf <em>“map4_elpaso_tracts.pdf”</em>, and paste the screenshot to
+your <strong><em>lab4 report</em></strong>.</p>
+</div>
 </div>
 <div id="viz-mapping-families-in-poverty" class="section level3">
 <h3>4.5 Viz: Mapping Families in Poverty</h3>

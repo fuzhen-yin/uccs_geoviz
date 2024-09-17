@@ -242,7 +242,7 @@ sf_ep_county <- sf_co_county %>% filter(GEOID == "TYPE_ANSWER")
 sf_ep_county <- sf_co_county %>% filter(NAMELSAD == "TYPE_ANSWER")
 ```
 
-#### 4.3.3 Mapping 
+#### 4.3.3 Map making 
 
 Okay, after data extraction, we have two new datasets representing counties in Colorado and also the county of El Paso. Let's do some mapping using the ``` tmap ``` package. 
 
@@ -292,82 +292,94 @@ map_ep_county <- tm_shape(sf_co_county) + tm_polygons(alpha = 0) +
   tm_compass(north = 0, size = 1) + tm_scale_bar(position = c("right", "bottom"), width = 0.15) 
 ```
 
-Export the improved **MAP3** to the "_plot_" folder we have created in Section 
+Export the improved **MAP3** to the "_plot_" folder we have created in [Step 4.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#421_Organizing_Folders__Sub-folders).  
 ```{r, eval=FALSE, class.source = "nocopy"}
 # export 
 pdf("plot/map3_elpaso_county.pdf")
 map_ep_county
 dev.off()
-
 ```
+
+**[Q4]** Please go to your _"plot"_ folder, open the pdf _"map3_elpaso_county.pdf"_, and paste the screenshot to your ***lab4 report***. 
+
 
 ### 4.4 Viz: El Paso Census Tracts Map
 
+This section will zoom into the census tracts in the state of Colorado. 
+
+> According to U.S. Census Bureau, **census tracts** are small, relatively. permanent statistical subdivisions of a county that are used to collect and present census data. On average, each census tract typically has 4,000 residents (min=2,500, and max=8,000). 
+
+#### 4.4.1 Data Pre-processing 
+
+We have imported the census tract boundaries in Colorado in [Step 4.3.1](https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#431_Libraries__Data) and saved it into the variable ``` sf_co_tract ```. Let's have a look at the data.  
+
+**[Q5]** Please report how many census tracts in Colorado according to ``` sf_co_tract ```. 
+**[Q6]** What column to use to extract census tracts that are located in El Paso county? 
+
 ```{r, eval=FALSE, class.source = "nocopy"}
-## Census tracts in Colorado in el paso county 
+## Open 
 View(sf_co_tract)
-## Census tracts are on average 4,000 residents (min=2,500, and max=8,000) in size
-
 ```
 
-
+Next, we check the class and data types of ``` sf_co_tract ```. 
 ```{r, eval=FALSE, class.source = "nocopy"}
-## check column names in sf_co_tract
+## Check class
+class(sf_co_tract)
+
+## data type of each column
 str(sf_co_tract)
-
 ```
+In terms of data type, it seems of most columns are characters (or string). But it also has two columns ``` ALAND ``` (land area)   and ``` AWATER ``` (water area) as numeric. 
 
+**[Q7]** Please report the data type of column ``` geometry ``` to ***lab4 report***. 
 
+Let's extract all **census tracts** that are located in El Paso County using the function ``` filter() ```. (I know, the chunk of code below reveals the answer of Q6 :)
 ```{r, eval=FALSE, class.source = "nocopy"}
-# how many columns in data "sf_co_tract"
-# what columns could be used to filter out tracts in el paso county? 
+# El Paso census tracts 
 sf_ep_tract <- sf_co_tract %>% filter(NAMELSADCO == "El Paso County")
 
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-# How many tracts in el paso county
+# open data
 View(sf_ep_tract)
-
 ```
 
+#### 4.4.2 Map making
 
+Make a map showing census tracts in El Paso County (**MAP4**). 
 ```{r, eval=FALSE, class.source = "nocopy"}
-## MAP4 - tracts in El Paso county
+## MAP4
 tm_shape(sf_ep_tract) + tm_polygons() 
 ```
 
+Highlight the border of El Paso County in **MAP4** (through overlapping the census tracts map with El Paso county map). 
+
+> ``` alpha=  ``` represents the transparency of used colors.  
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 ## highlight county boundary in MAP4 
 tm_shape(sf_ep_tract) + tm_polygons() +
   tm_shape(sf_ep_county) + tm_polygons(alpha = 0, lwd = 3)
-
 ```
 
-
-
+Continue to improve **MAP4** by adding a north arrow, a scale bar, and removing frame using ``` tm_layout() ```. 
 ```{r, eval=FALSE, class.source = "nocopy"}
-## prepare to export 
+## improve MAP4 
 map_ep_tract <- tm_shape(sf_ep_tract) + tm_polygons(col="white") +
   tm_shape(sf_ep_county) + tm_polygons(alpha = 0, lwd = 3) + 
-  tm_compass(north = 0, size = 1.5) + tm_scale_bar(position = c("right", "bottom"), width = 0.15) + 
+  tm_compass(north = 0, size = 1.5) + 
+  tm_scale_bar(position = c("right", "bottom"), width = 0.15) + 
   tm_layout(frame = F)
 
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-# export 
+## Export
 pdf("plot/map4_elpaso_tracts.pdf")
 map_ep_tract
 dev.off()
-
 ```
+
+**[Q8]** Please go to your _"plot"_ folder, open the pdf _"map4_elpaso_tracts.pdf"_, and paste the screenshot to your ***lab4 report***. 
 
 
 ### 4.5 Viz: Mapping Families in Poverty
+Finally, we will start the most exciting part of this tutorial by creating a data map illustrating the level of poverty 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 ## Census table - family below poverty line 
