@@ -370,6 +370,14 @@ blockquote {
   border-radius: 4px;
 }
 
+.bluebox {
+  padding: 1em;
+  background: #e0fbfc;
+  color: #293241;
+  border: 2px dotted #8ecae6;
+  border-radius: 4px;
+}
+
 .purple_border {
   padding: 1em;
   background: white;
@@ -445,7 +453,9 @@ level</strong> through map making. Please follow the steps below to
 <u>download</u> data, <u>unzip</u> it and <u>move</u> the data to the
 required folder.</p>
 <ul>
-<li><strong>Go</strong> to TO_UPDATE</li>
+<li><strong>Go</strong> to <a
+href="https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab4_data.zip"
+class="uri">https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab4_data.zip</a></li>
 <li><strong>Download</strong> the file <em>“lab4_data.zip”</em></li>
 <li><strong>Unzip</strong> folder <em>“lab4_data.zip”</em></li>
 <li><strong>Move</strong> all files from the “<em>lab4_data</em>” folder
@@ -460,14 +470,18 @@ href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#322_Data">Chapter
 </div>
 <div id="before-start" class="section level4">
 <h4>4.2.3 Before Start</h4>
-<div class="purplebox">
+<div class="bluebox">
 <div class="left">
 <p><u><strong>Heads-Up! </strong></u></p>
 </div>
 <p>From this lab, all scripts will be <strong>non-copyable</strong>.
 Please try to:</p>
 <ul>
-<li>Re-write the script by yourself.</li>
+<li>Re-write the script by yourself.
+<ul>
+<li>R is case-sensitive</li>
+<li>organize &amp; structure your script</li>
+</ul></li>
 <li>Read through the text carefully and try to understand what bits of
 code are doing as you go.</li>
 <li>It’s okay that you don’t fully understand some codes. Don’t worry as
@@ -506,6 +520,15 @@ library(dplyr)
 library(tmap)
 library(sf)
 library(data.table)</code></pre>
+<p>We will read the data from the “<em>data</em>” folder. Please make
+sure you can see <strong>four</strong> folders in your
+<strong>data</strong> folder as shown in Figure 4.1.</p>
+<div class="float">
+<img src="figs/lab4_data_folder.png" style="width:70.0%"
+alt="Figure 4.1: Files in the “data” folder to import." />
+<div class="figcaption">Figure 4.1: Files in the “data” folder to
+import.</div>
+</div>
 </div>
 <div id="section" class="section level3">
 <h3>4.4</h3>

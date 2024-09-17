@@ -31,6 +31,14 @@ blockquote {
   border-radius: 4px;
 }
 
+.bluebox {
+  padding: 1em;
+  background: #e0fbfc;
+  color: #293241;
+  border: 2px dotted #8ecae6;
+  border-radius: 4px;
+}
+
 .purple_border {
   padding: 1em;
   background: white;
@@ -80,7 +88,7 @@ In this lab, we continue to explore **US Census Bureau** as a potential data sou
 
 This practical will use **El Paso** county (where UCCS is located) as a case study to explore its **poverty level** through map making. Please follow the steps below to [download]{.ul} data, [unzip]{.ul} it and [move]{.ul} the data to the required folder. 
 
-* **Go** to TO_UPDATE
+* **Go** to https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab4_data.zip
 * **Download** the file _"lab4_data.zip"_
 * **Unzip** folder _"lab4_data.zip"_
 * **Move** all files from the "_lab4_data_" folder to the _"data"_ folder under "_lab4_" see [Step 4.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#421_Organizing_Folders__Sub-folders) 
@@ -91,7 +99,7 @@ If there you have any questions about the above-mentioned steps, please refer to
 
 #### 4.2.3 Before Start 
 
-:::: {.purplebox data-latex=""}
+:::: {.bluebox data-latex=""}
 ::: {.left data-latex=""}
 [**Heads-Up! **]{.ul}
 :::
@@ -139,7 +147,9 @@ library(sf)
 library(data.table)
 ```
 
-We will read the data from the "_data_" folder. Please make sure you 
+We will read the data from the "_data_" folder. Please make sure you can see **four** folders in your **data** folder as shown in Figure 4.1. 
+
+![Figure 4.1: Files in the "data" folder to import.](figs/lab4_data_folder.png){width=70%}
 
 
 ### 4.4 
