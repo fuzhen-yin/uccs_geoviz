@@ -77,16 +77,150 @@ In this lab, we continue to explore **US Census Bureau** as a potential data sou
 
 > [Census Tables](https://data.census.gov/) summarizing the socio-economic and demographic characteristics of particular areas.  
 
-This practical will use **El Paso** county (where UCCS is located) as the study area to explore its **poverty level** through map making. Please follow the steps below to [download] data, [unzip] it and [move] the data to the required folder. 
+This practical will use **El Paso** county (where UCCS is located) as a case study to explore its **poverty level** through map making. Please follow the steps below to [download]{.ul} data, [unzip]{.ul} it and [move]{.ul} the data to the required folder. 
 
-* 
-
-
-
-
-
+* **Go** to TO_UPDATE
+* **Download** the file _"lab4_data.zip"_
+* **Unzip** folder _"lab4_data.zip"_
+* **Move** all files from the "_lab4_data_" folder to the _"data"_ folder under "_lab4_" see [Step 4.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#421_Organizing_Folders__Sub-folders) 
 
 
+If there you have any questions about the above-mentioned steps, please refer to [Chapter 3.2.3](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#322_Data) for detailed instructions. 
+
+
+
+
+
+### 4.3 Viz: Colorado Counties Map 
+
+This section starts with creating a simple map showing all counties in the state of Colorado. 
+
+Before that, let's load some packages and 
+
+
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+### 4.4 
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
+
+
+```{r, eval=FALSE}
+#
+
+```
 
 
 
