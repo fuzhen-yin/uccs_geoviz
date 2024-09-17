@@ -539,7 +539,7 @@ please uncomment the bottom two lines and run.</p>
 install.packages(&quot;sf&quot;)
 install.packages(&quot;data.table&quot;)
 
-#### you should have these two installed
+#### If you don&#39;t have &quot;tmap&quot; and &quot;dplyr&quot; installed, please uncomment these two lines and run. 
 # install.packages(&quot;tmap&quot;)
 # install.packages(&quot;dplyr&quot;)</code></pre>
 <p>Next, let’s load some packages.</p>
@@ -571,12 +571,12 @@ import.</div>
 </div>
 <p><br></p>
 <p>We will import four data files and save them under different variable
-names. We have used the function <code>read.csv()</code> to import
-<code>.csv</code> files. This time, we will read shapefile (.shp) using
-<code>st_read()</code>.</p>
-<p><strong>Hint</strong>: you don’t need to type the file paths below.
-An easier way is to go to your “<em>data</em>” folder and copy folder
-&amp; file names, and organize them using forward slashes
+names. In previous labs, we have used the function
+<code>read.csv()</code> to import <code>.csv</code> files. This time, we
+will use <code>st_read()</code> to read shapefile (.shp).</p>
+<p><strong>Hint</strong>: The easy way to write the
+<code>"FILE_PATH"</code> is to go to your “<em>data</em>” folder and
+copy folder &amp; file names, and organize them using forward slashes
 <code>/</code>.</p>
 <pre class="r nocopy"><code>## US counties (simple features)
 sf_us_county &lt;- st_read(&quot;data/cb_2023_us_county_500k/cb_2023_us_county_500k.shp&quot;)
@@ -589,8 +589,9 @@ df_ep_poverty &lt;- read.csv(&quot;data/ACSST5Y2022.S1702_poverty_family_El Paso
 
 ## El Paso family in poverty - metadata (data frame)
 df_ep_poverty_meta &lt;- read.csv(&quot;data/ACSST5Y2022.S1702_poverty_family_El Paso/ACSST5Y2022.S1702-Column-Metadata.csv&quot;)</code></pre>
-<p>Please open these data and take some time to understand what are the
-columns.</p>
+<p>Please open these data in RStudio (by clicking objects in the
+<em>Environment</em> panel) and take some time to understand what are
+the columns.</p>
 </div>
 <div id="data-pre-processing" class="section level4">
 <h4>4.3.2 Data Pre-processing</h4>
@@ -598,8 +599,9 @@ columns.</p>
 the information for all counties in the U.S. It also has a column
 <em>geometry</em> storing the spatial boundaries of counties as
 polygons.</p>
-<p>Let’s check the class of the <code>sf_us_county</code> object and
-have a look at it.</p>
+<p>Let’s check the class of the <code>sf_us_county</code> data by using
+the function <code>class()</code> and have a look at it using
+<code>View()</code>.</p>
 <pre class="r nocopy"><code># check class
 class(sf_us_county)
 
@@ -623,38 +625,62 @@ first argument to the function on its right. The shortcut of
 <code>M</code>] (Windows) or [<code>Cmd</code> + <code>Shift</code> +
 <code>M</code>] (Mac).</p>
 </blockquote>
-<p>Have a look at the data <code>sf_co_county</code>. Please report to
+<p>Have a look at the data <code>sf_co_county</code>. Please write to
 your <strong><em>lab4 report</em></strong>:</p>
 <p><strong>[Q1]</strong> How many counties in Colorado based on the data
 <code>sf_co_county</code> <strong>[Q2]</strong> In
 <code>sf_co_county</code>, please locate the record of El Paso county,
 what is its <code>GEOID</code>?</p>
 <pre class="r nocopy"><code>View(sf_co_county)</code></pre>
-<p>Next,we will extract El Paso county from <code>sf_co_county</code>
-based on column <code>NAME</code> in <code>sf_co_county</code>.</p>
+<p>Next,we will extract the record of <u>El Paso county</u> from
+<code>sf_co_county</code> based on its value in the column
+<code>NAME</code>.</p>
 <pre class="r nocopy"><code># El Paso County
 sf_ep_county &lt;- sf_co_county %&gt;% filter(NAME == &quot;El Paso&quot;)</code></pre>
-<p>In addition to use the <code>NAME</code> column to extract El Paso
-county from <code>sf_co_county</code>. We can also use other columns
+<p>In addition to use the <code>NAME</code> column to extract <u>El Paso
+county</u> from <code>sf_co_county</code>. We can also use other columns
 such as <code>GEOID</code> and <code>NAMELSAD</code>.
-<strong>[Q3]</strong> Please fill the commands below by yourself and
-type the answer to <strong><em>lab4 report</em></strong>.</p>
+<strong>[Q3]</strong> Please fill and run the commands below, and type
+your answers to <strong><em>lab4 report</em></strong>.</p>
 <p><strong>Hint</strong>: Have a look at the code above and also have a
 look at the data <code>sf_co_county</code>.</p>
 <pre class="r nocopy"><code>sf_ep_county &lt;- sf_co_county %&gt;% filter(GEOID == &quot;TYPE_ANSWER&quot;)
 sf_ep_county &lt;- sf_co_county %&gt;% filter(NAMELSAD == &quot;TYPE_ANSWER&quot;)</code></pre>
-<p>Have a look at the <code>sf_co_county</code> and write the answers of
-following questions to <strong><em>lab4 report</em></strong>.</p>
-<pre class="r nocopy"><code># Set mapping mode to static
-tmap_mode(&quot;plot&quot;)
-
-# MAP1 - counties in Colorado
+</div>
+<div id="mapping" class="section level4">
+<h4>4.3.3 Mapping</h4>
+<p>Okay, after data extraction, we have two new datasets representing
+counties in Colorado and also the county of El Paso. Let’s do some
+mapping using the <code>tmap</code> package.</p>
+<p>First, we set the <code>tmap_mode()</code> to <code>plot</code> for
+static maps.</p>
+<pre class="r nocopy"><code># static map
+tmap_mode(&quot;plot&quot;)</code></pre>
+<p>Then, produce a simple map of Colorado Counties
+(<strong>MAP1</strong>).</p>
+<ul>
+<li><code>tm_shape()</code> specifies what a spatial data object (in our
+case, the simple feature class).</li>
+<li><code>tm_polygons()</code> draws polygons.</li>
+</ul>
+<pre class="r nocopy"><code># MAP1 
 tm_shape(sf_co_county) + tm_polygons()</code></pre>
-<pre class="r nocopy"><code># MAP2 - El Paso county
+<p>Produce another map of El Paso county only (<strong>MAP2</strong>).
+This time, we specify the fill color and also the border color. Feel
+free to try other colors.</p>
+<pre class="r nocopy"><code># MAP2
 tm_shape(sf_ep_county) + tm_polygons(col = &quot;orange&quot;, border.col = &quot;blue&quot;)</code></pre>
-<pre class="r nocopy"><code># MAP3 - combine the maps 1&amp;2 together
+<p>Overlap MAP1 and MAP2 to produce another map that highlights the El
+Paso county (<strong>MAP3</strong>).</p>
+<pre class="r nocopy"><code># MAP3
 tm_shape(sf_co_county) + tm_polygons() +
   tm_shape(sf_ep_county) + tm_polygons(col = &quot;orange&quot;, border.col = &quot;blue&quot;)</code></pre>
+<p>Improve <strong>MAP3</strong> by using the following functions.</p>
+<ul>
+<li><code>tm_text()</code>: adding labels showing county names based on
+the <code>sf_co_county</code> data.</li>
+<li><code>tm_compass()</code>: add a north arrow.</li>
+</ul>
 <pre class="r nocopy"><code># improve MAP3
 map_ep_county &lt;- tm_shape(sf_co_county) + tm_polygons(alpha = 0) +
   tm_shape(sf_ep_county) + tm_polygons(col = &quot;orange&quot;, border.col = &quot;black&quot;, lwd = 2) + 
@@ -720,10 +746,7 @@ df_poverty_cols &lt;- data.frame(
   old_col_name = lt_poverty_col, 
   new_col_name = c(&quot;GEO_ID&quot;, &quot;NAME&quot;, &quot;ttl_famly&quot;, &quot;famly_owner&quot;, &quot;famly_renter&quot;, &quot;famly_50pct_poverty&quot;, &quot;famly_125pct_poverty&quot;)
 )</code></pre>
-</div>
-<div id="q-provide-a-screenshot-of-lt_poverty_col"
-class="section level1">
-<h1>Q: Provide a screenshot of “lt_poverty_col”</h1>
+<p>Q: Provide a screenshot of “lt_poverty_col”</p>
 <pre class="r nocopy"><code># extract useful columns
 df_ep_poverty_cln &lt;- df_ep_poverty[lt_poverty_col]</code></pre>
 <pre class="r nocopy"><code># update table using new column names in df_poverty_cols

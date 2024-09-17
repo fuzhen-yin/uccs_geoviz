@@ -147,7 +147,7 @@ You should have the libraries ``` tmap ``` and ``` dplyr ``` installed from prev
 install.packages("sf")
 install.packages("data.table")
 
-#### you should have these two installed
+#### If you don't have "tmap" and "dplyr" installed, please uncomment these two lines and run. 
 # install.packages("tmap")
 # install.packages("dplyr")
 ```
@@ -174,9 +174,9 @@ We will read the data from the "_data_" folder. Please make sure you can see **f
 
 <br> 
 
-We will import four data files and save them under different variable names. We have used the function ``` read.csv() ``` to import ``` .csv ``` files. This time, we will read shapefile (.shp) using ``` st_read() ```.  
+We will import four data files and save them under different variable names. In previous labs, we have used the function ``` read.csv() ``` to import ``` .csv ``` files. This time, we will use ``` st_read() ``` to read shapefile (.shp).  
 
-**Hint**: you don't need to type the file paths below. An easier way is to go to your "_data_" folder and copy folder & file names, and organize them using forward slashes ``` / ```. 
+**Hint**: The easy way to write the ``` "FILE_PATH" ``` is to go to your "_data_" folder and copy folder & file names, and organize them using forward slashes ``` / ```. 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 ## US counties (simple features)
@@ -192,13 +192,13 @@ df_ep_poverty <- read.csv("data/ACSST5Y2022.S1702_poverty_family_El Paso/ACSST5Y
 df_ep_poverty_meta <- read.csv("data/ACSST5Y2022.S1702_poverty_family_El Paso/ACSST5Y2022.S1702-Column-Metadata.csv")
 ```
 
-Please open these data and take some time to understand what are the columns.   
+Please open these data in RStudio (by clicking objects in the _Environment_ panel) and take some time to understand what are the columns.   
 
 #### 4.3.2 Data  Pre-processing
 
 We will start with the ``` sf_us_county ```. This data includes the information for all counties in the U.S. It also has a column _geometry_ storing the spatial boundaries of counties as polygons. 
 
-Let's check the class of the ``` sf_us_county ``` object and have a look at it.  
+Let's check the class of the ``` sf_us_county ``` data by using the function ``` class() ``` and have a look at it using ``` View() ```.  
 ```{r, eval=FALSE, class.source = "nocopy"}
 # check class
 class(sf_us_county)
@@ -216,7 +216,7 @@ sf_co_county <- sf_us_county %>% filter(STATE_NAME == "Colorado")
 
 > The ``` %>% ``` symbol is used to build **pipes** that chains multiple operations together. It takes the output of the expression on its left and passes it as the first argument to the function on its right. The shortcut of ``` %>% ``` is [``` ctrl ``` + ``` shift ``` + ``` M ```] (Windows) or [``` Cmd ``` + ``` Shift ``` + ``` M ```] (Mac). 
 
-Have a look at the data ``` sf_co_county ```. Please report to your ***lab4 report***:
+Have a look at the data ``` sf_co_county ```. Please write to your ***lab4 report***:
 
 **[Q1]** How many counties in Colorado based on the data ``` sf_co_county ``` 
 **[Q2]** In ``` sf_co_county ```, please locate the record of El Paso county, what is its ``` GEOID ```?  
@@ -225,7 +225,7 @@ Have a look at the data ``` sf_co_county ```. Please report to your ***lab4 repo
 View(sf_co_county)
 ```
 
-Next,we will extract  El Paso county from ``` sf_co_county ``` based on column ``` NAME ``` in ``` sf_co_county ```. 
+Next,we will extract the record of [El Paso county]{.ul} from ``` sf_co_county ``` based on its value in the column ``` NAME ```. 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # El Paso County
@@ -233,7 +233,7 @@ sf_ep_county <- sf_co_county %>% filter(NAME == "El Paso")
 ```
 
 
-In addition to use the ``` NAME ``` column to extract El Paso county from  ``` sf_co_county ```. We can also use other columns such as ``` GEOID ``` and ``` NAMELSAD ```. **[Q3]** Please fill the commands below by yourself and type the answer to ***lab4 report***. 
+In addition to use the ``` NAME ``` column to extract [El Paso county]{.ul} from  ``` sf_co_county ```. We can also use other columns such as ``` GEOID ``` and ``` NAMELSAD ```. **[Q3]** Please fill and run the commands below, and type your answers to ***lab4 report***. 
 
 **Hint**: Have a look at the code above and also have a look at the data ``` sf_co_county ```. 
 
@@ -242,50 +242,57 @@ sf_ep_county <- sf_co_county %>% filter(GEOID == "TYPE_ANSWER")
 sf_ep_county <- sf_co_county %>% filter(NAMELSAD == "TYPE_ANSWER")
 ```
 
+#### 4.3.3 Mapping 
 
+Okay, after data extraction, we have two new datasets representing counties in Colorado and also the county of El Paso. Let's do some mapping using the ``` tmap ``` package. 
 
-
-Have a look at the ``` sf_co_county ``` and write the answers of following questions to ***lab4 report***. 
-
-
-
-
+First, we set the ``` tmap_mode() ``` to ``` plot ``` for static maps. 
 ```{r, eval=FALSE, class.source = "nocopy"}
-# Set mapping mode to static
+# static map
 tmap_mode("plot")
-
-# MAP1 - counties in Colorado
-tm_shape(sf_co_county) + tm_polygons()
-
 ```
 
+Then, produce a simple map of Colorado Counties (**MAP1**).
+
+* ``` tm_shape() ``` specifies what a spatial data object (in our case, the simple feature class).
+* ``` tm_polygons() ``` draws polygons. 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
-# MAP2 - El Paso county
+# MAP1 
+tm_shape(sf_co_county) + tm_polygons()
+```
+
+Produce another map of El Paso county only (**MAP2**). This time, we specify the fill color and also the border color. Feel free to try other colors.  
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# MAP2
 tm_shape(sf_ep_county) + tm_polygons(col = "orange", border.col = "blue")
 
 ```
 
-
+Overlap MAP1 and MAP2 to produce another map that highlights the El Paso county (**MAP3**). 
 ```{r, eval=FALSE, class.source = "nocopy"}
-# MAP3 - combine the maps 1&2 together
+# MAP3
 tm_shape(sf_co_county) + tm_polygons() +
   tm_shape(sf_ep_county) + tm_polygons(col = "orange", border.col = "blue")
 
 ```
 
+Improve **MAP3** by using the following functions and save the plot as a new variable ``` map_ep_county ```.
+
+* ``` tm_text() ``` adds labels showing county names based on the ``` sf_co_county ``` data. 
+* ``` tm_compass() ```: adds a north arrow. 
+* ``` tm_scale_bar() ```: adds a scale bar and put it in the bottom-right. 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # improve MAP3
 map_ep_county <- tm_shape(sf_co_county) + tm_polygons(alpha = 0) +
   tm_shape(sf_ep_county) + tm_polygons(col = "orange", border.col = "black", lwd = 2) + 
   tm_shape(sf_co_county) + tm_text(text = "NAME", size = 0.3) + 
-  tm_compass(north = 0, size = 1) + tm_scale_bar(position = c("right", "bottom"), width = 0.15) + 
-  tm_layout(legend.outside = T)
-
+  tm_compass(north = 0, size = 1) + tm_scale_bar(position = c("right", "bottom"), width = 0.15) 
 ```
 
-
+Export the improved **MAP3** to the "_plot_" folder we have created in Section 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # export 
 pdf("plot/map3_elpaso_county.pdf")
@@ -397,7 +404,7 @@ df_poverty_cols <- data.frame(
 
 ```
 
-# Q: Provide a screenshot of "lt_poverty_col"
+Q: Provide a screenshot of "lt_poverty_col"
 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
