@@ -8,6 +8,7 @@ output:
     toc_depth: 5
     toc_float: 
       collapsed: true
+css: nocopy_cs.css
 ---
 
 ```{r setup, include=FALSE}
@@ -88,136 +89,172 @@ This practical will use **El Paso** county (where UCCS is located) as a case stu
 If there you have any questions about the above-mentioned steps, please refer to [Chapter 3.2.3](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#322_Data) for detailed instructions. 
 
 
+#### 4.2.3 Before Start 
 
+:::: {.purplebox data-latex=""}
+::: {.left data-latex=""}
+[**Heads-Up! **]{.ul}
+:::
+
+From this lab, all scripts will be **non-copyable**. Please try to:
+
+* Re-write the script by yourself. 
+  + R is case-sensitive
+  + organize & structure your script 
+* Read through the text carefully and try to understand what bits of code are doing as you go. 
+* It's okay that you don't fully understand some codes. Don't worry as the key is to revisit later and try to work out what is going on. Learning is a iterative process. 
+* Start to think about how you can adapt a particular line of code or functions to your own project. 
+
+::::
 
 
 ### 4.3 Viz: Colorado Counties Map 
 
-This section starts with creating a simple map showing all counties in the state of Colorado. 
+This section starts with creating a simple map of counties in the state of Colorado. 
 
-Before that, let's load some packages and 
+We are going to use the following packages:
+* [dplyr](https://dplyr.tidyverse.org/): data manipulation
+* [tmap](https://r-tmap.github.io/tmap/index.html): mapping
+* [sf](https://r-spatial.github.io/sf/): represent simple features as records in a data.frame or tibble with a geometry list-column. 
+* [data.table](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html): data manipulation such as renaming.
 
+You should have the libraries ``` tmap ``` and ``` dplyr ``` installed from previous labs. But in case you don't, please uncomment the bottom two lines and run.  
 
+```{r, eval=FALSE, class.source = "nocopy"}
+#### install library
+install.packages("sf")
+install.packages("data.table")
 
-
-```{r, eval=FALSE}
-#
-
+#### you should have these two installed
+# install.packages("tmap")
+# install.packages("dplyr")
 ```
+
+Next, let's load some packages.
+```{r, eval=FALSE, class.source = "nocopy"}
+# load library
+library(dplyr)
+library(tmap)
+library(sf)
+library(data.table)
+```
+
+We will read the data from the "_data_" folder. Please make sure you 
+
 
 ### 4.4 
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = "nocopy"}
 #
 
 ```
