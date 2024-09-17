@@ -506,7 +506,7 @@ Please try to:</p>
 <li>Re-write the script by yourself.
 <ul>
 <li>R is case-sensitive</li>
-<li>organize &amp; structure your script</li>
+<li>organize &amp; structure &amp; annotate your script.</li>
 </ul></li>
 <li>Read through the text carefully and try to understand what bits of
 code are doing as you go.</li>
@@ -521,6 +521,8 @@ functions to your own project.</li>
 </div>
 <div id="viz-colorado-counties-map" class="section level3">
 <h3>4.3 Viz: Colorado Counties Map</h3>
+<div id="libraries-data" class="section level4">
+<h4>4.3.1 Libraries &amp; Data</h4>
 <p>This section starts with creating a simple map of counties in the
 state of Colorado.</p>
 <p>We are going to use the following packages: * <a
@@ -548,9 +550,11 @@ library(sf)
 library(data.table)</code></pre>
 <p>Check the current working directory. You should see a path ending
 with something similar to <code>COURSEFOLDER/lab4</code>. If not, please
-close the RProject, go back to <a
+close the RStudio, go back to <a
 href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#421_Organizing_Folders__Sub-folders">Section
-4.2.1</a> to organize</p>
+4.2.1</a> to organize your folder, and <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#423_Launching_R_Studio">Section
+4.2.3</a> to re-launch RStudio.</p>
 <pre class="r nocopy"><code># working directory
 getwd()</code></pre>
 <p>We will read the data from the “<em>data</em>” folder. Please make
@@ -566,28 +570,257 @@ alt="Figure 4.1: Files in the “data” folder to import." />
 import.</div>
 </div>
 <p><br></p>
+<p>We will import four data files and save them under different variable
+names. We have used the function <code>read.csv()</code> to import
+<code>.csv</code> files. This time, we will read shapefile (.shp) using
+<code>st_read()</code>.</p>
+<p><strong>Hint</strong>: you don’t need to type the file paths below.
+An easier way is to go to your “<em>data</em>” folder and copy folder
+&amp; file names, and organize them using forward slashes
+<code>/</code>.</p>
+<pre class="r nocopy"><code>## US counties (simple features)
+sf_us_county &lt;- st_read(&quot;data/cb_2023_us_county_500k/cb_2023_us_county_500k.shp&quot;)
+
+## Colorado census tracts (simple features)
+sf_co_tract &lt;- st_read(&quot;data/cb_2023_08_CO_tract_500k/cb_2023_08_tract_500k.shp&quot;)
+
+## El Paso family in poverty - data (data frame)
+df_ep_poverty &lt;- read.csv(&quot;data/ACSST5Y2022.S1702_poverty_family_El Paso/ACSST5Y2022.S1702-Data.csv&quot;)
+
+## El Paso family in poverty - metadata (data frame)
+df_ep_poverty_meta &lt;- read.csv(&quot;data/ACSST5Y2022.S1702_poverty_family_El Paso/ACSST5Y2022.S1702-Column-Metadata.csv&quot;)</code></pre>
+<p>Please open these data and take some time to understand what are the
+columns.</p>
 </div>
-<div id="section" class="section level3">
-<h3>4.4</h3>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
+<div id="data-pre-processing" class="section level4">
+<h4>4.3.2 Data Pre-processing</h4>
+<p>We will start with the <code>sf_us_county</code>. This data includes
+the information for all counties in the U.S. It also has a column
+<em>geometry</em> storing the spatial boundaries of counties as
+polygons.</p>
+<p>Let’s check the class of the <code>sf_us_county</code> object and
+have a look at it.</p>
+<pre class="r nocopy"><code># check class
+class(sf_us_county)
+
+# open
+View(sf_us_county)</code></pre>
+<p>After examining the data, it seems <code>sf_us_county</code> includes
+all counties in the U.S. But we are only interested in those in the
+state of Colorado. Let’s use the function <code>filter()</code> to
+<strong>extract</strong> only Colorado counties from
+<code>sf_us_county</code> based on their values in the
+<code>STATE_NAME</code> column, and save it as a new object
+<code>sf_co_county</code>.</p>
+<pre class="r nocopy"><code># extract CO counties
+sf_co_county &lt;- sf_us_county %&gt;% filter(STATE_NAME == &quot;Colorado&quot;)</code></pre>
+<blockquote>
+<p>The <code>%&gt;%</code> symbol is used to build
+<strong>pipes</strong> that chains multiple operations together. It
+takes the output of the expression on its left and passes it as the
+first argument to the function on its right. The shortcut of
+<code>%&gt;%</code> is [<code>ctrl</code> + <code>shift</code> +
+<code>M</code>] (Windows) or [<code>Cmd</code> + <code>Shift</code> +
+<code>M</code>] (Mac).</p>
+</blockquote>
+<p>Have a look at the data <code>sf_co_county</code>. Please report to
+your <strong><em>lab4 report</em></strong>:</p>
+<p><strong>[Q1]</strong> How many counties in Colorado based on the data
+<code>sf_co_county</code> <strong>[Q2]</strong> In
+<code>sf_co_county</code>, please locate the record of El Paso county,
+what is its <code>GEOID</code>?</p>
+<pre class="r nocopy"><code>View(sf_co_county)</code></pre>
+<p>Next,we will extract El Paso county from <code>sf_co_county</code>
+based on column <code>NAME</code> in <code>sf_co_county</code>.</p>
+<pre class="r nocopy"><code># El Paso County
+sf_ep_county &lt;- sf_co_county %&gt;% filter(NAME == &quot;El Paso&quot;)</code></pre>
+<p>In addition to use the <code>NAME</code> column to extract El Paso
+county from <code>sf_co_county</code>. We can also use other columns
+such as <code>GEOID</code> and <code>NAMELSAD</code>.
+<strong>[Q3]</strong> Please fill the commands below by yourself and
+type the answer to <strong><em>lab4 report</em></strong>.</p>
+<p><strong>Hint</strong>: Have a look at the code above and also have a
+look at the data <code>sf_co_county</code>.</p>
+<pre class="r nocopy"><code>sf_ep_county &lt;- sf_co_county %&gt;% filter(GEOID == &quot;TYPE_ANSWER&quot;)
+sf_ep_county &lt;- sf_co_county %&gt;% filter(NAMELSAD == &quot;TYPE_ANSWER&quot;)</code></pre>
+<p>Have a look at the <code>sf_co_county</code> and write the answers of
+following questions to <strong><em>lab4 report</em></strong>.</p>
+<pre class="r nocopy"><code># Set mapping mode to static
+tmap_mode(&quot;plot&quot;)
+
+# MAP1 - counties in Colorado
+tm_shape(sf_co_county) + tm_polygons()</code></pre>
+<pre class="r nocopy"><code># MAP2 - El Paso county
+tm_shape(sf_ep_county) + tm_polygons(col = &quot;orange&quot;, border.col = &quot;blue&quot;)</code></pre>
+<pre class="r nocopy"><code># MAP3 - combine the maps 1&amp;2 together
+tm_shape(sf_co_county) + tm_polygons() +
+  tm_shape(sf_ep_county) + tm_polygons(col = &quot;orange&quot;, border.col = &quot;blue&quot;)</code></pre>
+<pre class="r nocopy"><code># improve MAP3
+map_ep_county &lt;- tm_shape(sf_co_county) + tm_polygons(alpha = 0) +
+  tm_shape(sf_ep_county) + tm_polygons(col = &quot;orange&quot;, border.col = &quot;black&quot;, lwd = 2) + 
+  tm_shape(sf_co_county) + tm_text(text = &quot;NAME&quot;, size = 0.3) + 
+  tm_compass(north = 0, size = 1) + tm_scale_bar(position = c(&quot;right&quot;, &quot;bottom&quot;), width = 0.15) + 
+  tm_layout(legend.outside = T)</code></pre>
+<pre class="r nocopy"><code># export 
+pdf(&quot;plot/map3_elpaso_county.pdf&quot;)
+map_ep_county
+dev.off()</code></pre>
+</div>
+</div>
+<div id="viz-el-paso-census-tracts-map" class="section level3">
+<h3>4.4 Viz: El Paso Census Tracts Map</h3>
+<pre class="r nocopy"><code>## Census tracts in Colorado in el paso county 
+View(sf_co_tract)
+## Census tracts are on average 4,000 residents (min=2,500, and max=8,000) in size</code></pre>
+<pre class="r nocopy"><code>## check column names in sf_co_tract
+str(sf_co_tract)</code></pre>
+<pre class="r nocopy"><code># how many columns in data &quot;sf_co_tract&quot;
+# what columns could be used to filter out tracts in el paso county? 
+sf_ep_tract &lt;- sf_co_tract %&gt;% filter(NAMELSADCO == &quot;El Paso County&quot;)</code></pre>
+<pre class="r nocopy"><code># How many tracts in el paso county
+View(sf_ep_tract)</code></pre>
+<pre class="r nocopy"><code>## MAP4 - tracts in El Paso county
+tm_shape(sf_ep_tract) + tm_polygons() </code></pre>
+<pre class="r nocopy"><code>## highlight county boundary in MAP4 
+tm_shape(sf_ep_tract) + tm_polygons() +
+  tm_shape(sf_ep_county) + tm_polygons(alpha = 0, lwd = 3)</code></pre>
+<pre class="r nocopy"><code>## prepare to export 
+map_ep_tract &lt;- tm_shape(sf_ep_tract) + tm_polygons(col=&quot;white&quot;) +
+  tm_shape(sf_ep_county) + tm_polygons(alpha = 0, lwd = 3) + 
+  tm_compass(north = 0, size = 1.5) + tm_scale_bar(position = c(&quot;right&quot;, &quot;bottom&quot;), width = 0.15) + 
+  tm_layout(frame = F)</code></pre>
+<pre class="r nocopy"><code># export 
+pdf(&quot;plot/map4_elpaso_tracts.pdf&quot;)
+map_ep_tract
+dev.off()</code></pre>
+</div>
+<div id="viz-mapping-families-in-poverty" class="section level3">
+<h3>4.5 Viz: Mapping Families in Poverty</h3>
+<pre class="r nocopy"><code>## Census table - family below poverty line 
+View(df_ep_poverty)
+View(df_ep_poverty_meta)</code></pre>
+<pre class="r nocopy"><code># Q: Write the command below to check the data type and column names in &quot;df_ep_poverty_meta&quot; </code></pre>
+<p>The data frame “df_ep_poverty_meta” explains the “Label” or meaning
+of each “Column.Name”. For example, “S1702_C01_001E” tells about the
+estimate number of families in each census tract</p>
+<p>“S1702_C01_041E” measure the number of families occupying a housing
+unit that they own. “S1702_C01_042E” measure the number of families
+occupying a housing unit that they rent</p>
+<p>let’s look at families’ the income-to-poverty ratio The
+income-to-poverty ratio measures an individual or family’s income to the
+poverty threshold. A ratio less than 100% suggests that a family’s
+income is less than the poverty level.</p>
+<p>“S1702_C01_043E” tells about the estimate number of families that has
+income only reaching 50% of the poverty level. These are the families
+that most suffer from poverty. “S1702_C01_044E” what does this column
+measures?</p>
+<pre class="r nocopy"><code># list of columns we are interested in:
+lt_poverty_col &lt;- c(&quot;GEO_ID&quot;, &quot;NAME&quot;, &quot;S1702_C01_001E&quot;, &quot;S1702_C01_041E&quot;, &quot;S1702_C01_042E&quot;, &quot;S1702_C01_043E&quot;, &quot;S1702_C01_044E&quot;)
+df_poverty_cols &lt;- data.frame(
+  old_col_name = lt_poverty_col, 
+  new_col_name = c(&quot;GEO_ID&quot;, &quot;NAME&quot;, &quot;ttl_famly&quot;, &quot;famly_owner&quot;, &quot;famly_renter&quot;, &quot;famly_50pct_poverty&quot;, &quot;famly_125pct_poverty&quot;)
+)</code></pre>
+</div>
+<div id="q-provide-a-screenshot-of-lt_poverty_col"
+class="section level1">
+<h1>Q: Provide a screenshot of “lt_poverty_col”</h1>
+<pre class="r nocopy"><code># extract useful columns
+df_ep_poverty_cln &lt;- df_ep_poverty[lt_poverty_col]</code></pre>
+<pre class="r nocopy"><code># update table using new column names in df_poverty_cols
+setnames(df_ep_poverty_cln, old=df_poverty_cols$old_col_name, new=df_poverty_cols$new_col_name)</code></pre>
+<pre class="r nocopy"><code># view data 
+View(df_ep_poverty_cln)
+# delete the first row in &quot;df_ep_poverty_cln&quot; 
+df_ep_poverty_cln &lt;- df_ep_poverty_cln[-1, ]
+# reset row index 
+rownames(df_ep_poverty_cln) &lt;- NULL</code></pre>
+<pre class="r nocopy"><code># check the data 
+str(df_ep_poverty_cln)</code></pre>
+<pre class="r nocopy"><code># what is the data type for columns &quot;ttl_famly&quot;, &quot;famly_owner&quot;, &quot;famly_renter&quot;, &quot;famly_50pct_poverty&quot;, &quot;famly_125pct_poverty&quot;
+# make them numeric 
+df_ep_poverty_cln$ttl_famly &lt;- as.numeric(df_ep_poverty_cln$ttl_famly)
+# make multiple columns as numeric 
+df_ep_poverty_cln[,3:7] &lt;- sapply(df_ep_poverty_cln[,3:7], as.numeric) %&gt;% as.data.frame()
+# check the data type again 
+str(df_ep_poverty_cln)</code></pre>
+<pre class="r nocopy"><code># calculate percentage 
+df_ep_poverty_cln[&quot;pct_fam_renter&quot;] &lt;- 100 * df_ep_poverty_cln$famly_renter / df_ep_poverty_cln$ttl_famly
+df_ep_poverty_cln[&quot;pct_fam_pov_50pct&quot;] &lt;- 100 * df_ep_poverty_cln$famly_50pct_poverty / df_ep_poverty_cln$ttl_famly
+df_ep_poverty_cln[&quot;pct_fam_pov_125pct&quot;] &lt;- 100 * df_ep_poverty_cln$famly_125pct_poverty / df_ep_poverty_cln$ttl_famly</code></pre>
+<p>have a look at the data frame and check the values for “Census Tract
+38.02”. What are their percentage of renter-occupied family, percentage
+of family below 50% poverty line, and percentage of family below 125%
+poverty line.</p>
+<pre class="r nocopy"><code># replace NA with 0s 
+df_ep_poverty_cln[is.na(df_ep_poverty_cln)] &lt;- 0</code></pre>
+<pre class="r nocopy"><code># open data 
+View(df_ep_poverty_cln)</code></pre>
+<pre class="r nocopy"><code># Exploratory analysis 
+hist(df_ep_poverty_cln$ttl_famly)</code></pre>
+<pre class="r nocopy"><code># run the three lines below together
+hist(df_ep_poverty_cln$pct_fam_renter, col=&#39;orange&#39;)
+hist(df_ep_poverty_cln$pct_fam_pov_125pct, col=&#39;blue&#39;, add= T)
+hist(df_ep_poverty_cln$pct_fam_pov_50pct, col=&#39;green&#39;, add= T)</code></pre>
+<pre class="r nocopy"><code># Join the attributes of poverty data with the simple feature 
+# two data: &quot;df_ep_poverty_cln&quot; and &quot;sf_ep_tract&quot;
+# index 
+str(sf_ep_tract)
+str(df_ep_poverty_cln)</code></pre>
+<pre class="r nocopy"><code># left join
+sf_ep_tract_pov &lt;- left_join(sf_ep_tract, df_ep_poverty_cln, by=c(&quot;GEOIDFQ&quot;=&quot;GEO_ID&quot;))</code></pre>
+<pre class="r nocopy"><code># mapping 
+tmap_mode(&quot;plot&quot;)</code></pre>
+<pre class="r nocopy"><code># quick mapping 
+
+lt_map_col &lt;- c(&quot;ttl_famly&quot;, &quot;pct_fam_renter&quot;, &quot;pct_fam_pov_50pct&quot;, &quot;pct_fam_pov_125pct&quot;)
+for (column in lt_map_col){
+  print(column)
+  print(tm_shape(sf_ep_tract_pov) + tm_polygons(col = as.character(column)))
+}</code></pre>
+<pre class="r nocopy"><code># MAP5 - # of families in each census tract 
+map_ep_tract_family &lt;- tm_shape(sf_ep_tract_pov) + tm_polygons(col = &quot;ttl_famly&quot;, title = &quot;# of family&quot;, palette = &quot;YlGnBu&quot;) + 
+  tm_layout(legend.outside = T)</code></pre>
+<pre class="r nocopy"><code># export 
+pdf(&quot;plot/map5_elpaso_tracts_family_counts.pdf&quot;)
+map_ep_tract_family
+dev.off()</code></pre>
+<pre class="r nocopy"><code># MAP6 - % of renter-occupied families in each census tract 
+map_ep_tract_renter &lt;- tm_shape(sf_ep_tract_pov) + 
+  tm_polygons(col = &quot;pct_fam_renter&quot;, title = &quot;renter-occupied family (%)&quot;, palette = &quot;Purples&quot;) + 
+  tm_layout(legend.outside = T)
+
+# export 
+pdf(&quot;plot/map6_elpaso_tracts_renter_occupied_family_pct.pdf&quot;)
+map_ep_tract_renter
+dev.off()</code></pre>
+<pre class="r nocopy"><code># MAP7 - % of families below 50% of poverty in each census tract 
+map_ep_tract_50pct_pov &lt;- tm_shape(sf_ep_tract_pov) + 
+  tm_polygons(col = &quot;pct_fam_pov_50pct&quot;, title = &quot;below 50% poverty (%)&quot;, palette = &quot;Greens&quot;) + 
+  tm_layout(legend.outside = T)
+
+# export 
+pdf(&quot;plot/map7_elpaso_tracts_family_below_50pct_poverty.pdf&quot;)
+map_ep_tract_50pct_pov
+dev.off()</code></pre>
+<pre class="r nocopy"><code># MAP8 - % of families below 125% of poverty in each census tract 
+map_ep_tract_125pct_pov &lt;- tm_shape(sf_ep_tract_pov) + 
+  tm_polygons(col = &quot;pct_fam_pov_125pct&quot;, title = &quot;below 125% poverty (%)&quot;, palette = &quot;Blues&quot;) + 
+  tm_layout(legend.outside = T)
+
+# export 
+pdf(&quot;plot/map8_elpaso_tracts_family_below_125pct_poverty.pdf&quot;)
+map_ep_tract_125pct_pov
+dev.off()</code></pre>
+<pre class="r nocopy"><code># organize all maps together 
+t=tmap_arrange(map_ep_tract_family, 
+               map_ep_tract_renter, 
+               map_ep_tract_50pct_pov, 
+               map_ep_tract_125pct_pov, ncol=2)
+
+
+pdf(&quot;plot/map9_elpaso_tracts_analysis.pdf&quot;, width = 12, height = 8)
+t
+dev.off()</code></pre>
 </div>
 
 

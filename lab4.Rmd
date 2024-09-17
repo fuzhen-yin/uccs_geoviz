@@ -130,6 +130,8 @@ From this lab, all scripts will be **non-copyable**. Please try to:
 
 ### 4.3 Viz: Colorado Counties Map 
 
+#### 4.3.1 Libraries & Data  
+
 This section starts with creating a simple map of counties in the state of Colorado. 
 
 We are going to use the following packages:
@@ -159,7 +161,8 @@ library(sf)
 library(data.table)
 ```
 
-Check the current working directory. You should see a path ending with something similar to ``` COURSEFOLDER/lab4 ```. If not, please close the RProject, go back to [Section 4.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#421_Organizing_Folders__Sub-folders) to organize 
+Check the current working directory. You should see a path ending with something similar to ``` COURSEFOLDER/lab4 ```. If not, please close the RStudio, go back to [Section 4.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#421_Organizing_Folders__Sub-folders) to organize your folder, and [Section 4.2.3](https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#423_Launching_R_Studio) to re-launch RStudio.  
+
 ```{r, eval=FALSE, class.source = "nocopy"}
 # working directory
 getwd()
@@ -171,126 +174,423 @@ We will read the data from the "_data_" folder. Please make sure you can see **f
 
 <br> 
 
+We will import four data files and save them under different variable names. We have used the function ``` read.csv() ``` to import ``` .csv ``` files. This time, we will read shapefile (.shp) using ``` st_read() ```.  
 
-
-### 4.4 
-
+**Hint**: you don't need to type the file paths below. An easier way is to go to your "_data_" folder and copy folder & file names, and organize them using forward slashes ``` / ```. 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
-#
+## US counties (simple features)
+sf_us_county <- st_read("data/cb_2023_us_county_500k/cb_2023_us_county_500k.shp")
 
+## Colorado census tracts (simple features)
+sf_co_tract <- st_read("data/cb_2023_08_CO_tract_500k/cb_2023_08_tract_500k.shp")
+
+## El Paso family in poverty - data (data frame)
+df_ep_poverty <- read.csv("data/ACSST5Y2022.S1702_poverty_family_El Paso/ACSST5Y2022.S1702-Data.csv")
+
+## El Paso family in poverty - metadata (data frame)
+df_ep_poverty_meta <- read.csv("data/ACSST5Y2022.S1702_poverty_family_El Paso/ACSST5Y2022.S1702-Column-Metadata.csv")
+```
+
+Please open these data and take some time to understand what are the columns.   
+
+#### 4.3.2 Data  Pre-processing
+
+We will start with the ``` sf_us_county ```. This data includes the information for all counties in the U.S. It also has a column _geometry_ storing the spatial boundaries of counties as polygons. 
+
+Let's check the class of the ``` sf_us_county ``` object and have a look at it.  
+```{r, eval=FALSE, class.source = "nocopy"}
+# check class
+class(sf_us_county)
+
+# open
+View(sf_us_county)
+```
+
+After examining the data, it seems  ``` sf_us_county ``` includes all counties in the U.S. But we are only interested in those in the state of Colorado. Let's use the function ``` filter() ``` to **extract** only Colorado counties from ``` sf_us_county ``` based on their values in the ``` STATE_NAME ``` column, and save it as a new object ``` sf_co_county ```. 
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# extract CO counties
+sf_co_county <- sf_us_county %>% filter(STATE_NAME == "Colorado")
+```
+
+> The ``` %>% ``` symbol is used to build **pipes** that chains multiple operations together. It takes the output of the expression on its left and passes it as the first argument to the function on its right. The shortcut of ``` %>% ``` is [``` ctrl ``` + ``` shift ``` + ``` M ```] (Windows) or [``` Cmd ``` + ``` Shift ``` + ``` M ```] (Mac). 
+
+Have a look at the data ``` sf_co_county ```. Please report to your ***lab4 report***:
+
+**[Q1]** How many counties in Colorado based on the data ``` sf_co_county ``` 
+**[Q2]** In ``` sf_co_county ```, please locate the record of El Paso county, what is its ``` GEOID ```?  
+
+```{r, eval=FALSE, class.source = "nocopy"}
+View(sf_co_county)
+```
+
+Next,we will extract  El Paso county from ``` sf_co_county ``` based on column ``` NAME ``` in ``` sf_co_county ```. 
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# El Paso County
+sf_ep_county <- sf_co_county %>% filter(NAME == "El Paso")
 ```
 
 
-```{r, eval=FALSE, class.source = "nocopy"}
-#
+In addition to use the ``` NAME ``` column to extract El Paso county from  ``` sf_co_county ```. We can also use other columns such as ``` GEOID ``` and ``` NAMELSAD ```. **[Q3]** Please fill the commands below by yourself and type the answer to ***lab4 report***. 
 
-```
-
+**Hint**: Have a look at the code above and also have a look at the data ``` sf_co_county ```. 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
+sf_ep_county <- sf_co_county %>% filter(GEOID == "TYPE_ANSWER")
+sf_ep_county <- sf_co_county %>% filter(NAMELSAD == "TYPE_ANSWER")
 ```
 
 
 
 
+Have a look at the ``` sf_co_county ``` and write the answers of following questions to ***lab4 report***. 
+
+
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# Set mapping mode to static
+tmap_mode("plot")
+
+# MAP1 - counties in Colorado
+tm_shape(sf_co_county) + tm_polygons()
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# MAP2 - El Paso county
+tm_shape(sf_ep_county) + tm_polygons(col = "orange", border.col = "blue")
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# MAP3 - combine the maps 1&2 together
+tm_shape(sf_co_county) + tm_polygons() +
+  tm_shape(sf_ep_county) + tm_polygons(col = "orange", border.col = "blue")
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# improve MAP3
+map_ep_county <- tm_shape(sf_co_county) + tm_polygons(alpha = 0) +
+  tm_shape(sf_ep_county) + tm_polygons(col = "orange", border.col = "black", lwd = 2) + 
+  tm_shape(sf_co_county) + tm_text(text = "NAME", size = 0.3) + 
+  tm_compass(north = 0, size = 1) + tm_scale_bar(position = c("right", "bottom"), width = 0.15) + 
+  tm_layout(legend.outside = T)
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# export 
+pdf("plot/map3_elpaso_county.pdf")
+map_ep_county
+dev.off()
+
+```
+
+### 4.4 Viz: El Paso Census Tracts Map
+
+```{r, eval=FALSE, class.source = "nocopy"}
+## Census tracts in Colorado in el paso county 
+View(sf_co_tract)
+## Census tracts are on average 4,000 residents (min=2,500, and max=8,000) in size
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+## check column names in sf_co_tract
+str(sf_co_tract)
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# how many columns in data "sf_co_tract"
+# what columns could be used to filter out tracts in el paso county? 
+sf_ep_tract <- sf_co_tract %>% filter(NAMELSADCO == "El Paso County")
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# How many tracts in el paso county
+View(sf_ep_tract)
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+## MAP4 - tracts in El Paso county
+tm_shape(sf_ep_tract) + tm_polygons() 
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+## highlight county boundary in MAP4 
+tm_shape(sf_ep_tract) + tm_polygons() +
+  tm_shape(sf_ep_county) + tm_polygons(alpha = 0, lwd = 3)
+
+```
+
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+## prepare to export 
+map_ep_tract <- tm_shape(sf_ep_tract) + tm_polygons(col="white") +
+  tm_shape(sf_ep_county) + tm_polygons(alpha = 0, lwd = 3) + 
+  tm_compass(north = 0, size = 1.5) + tm_scale_bar(position = c("right", "bottom"), width = 0.15) + 
+  tm_layout(frame = F)
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# export 
+pdf("plot/map4_elpaso_tracts.pdf")
+map_ep_tract
+dev.off()
+
+```
+
+
+### 4.5 Viz: Mapping Families in Poverty
+
+```{r, eval=FALSE, class.source = "nocopy"}
+## Census table - family below poverty line 
+View(df_ep_poverty)
+View(df_ep_poverty_meta)
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# Q: Write the command below to check the data type and column names in "df_ep_poverty_meta" 
+```
+
+The data frame "df_ep_poverty_meta" explains the "Label" or meaning of each "Column.Name".
+For example, "S1702_C01_001E" tells about the estimate number of families in each census tract
+
+"S1702_C01_041E" measure the number of families occupying a housing unit that they own.
+"S1702_C01_042E" measure the number of families occupying a housing unit that they rent
+
+let's look at families' the income-to-poverty ratio
+The income-to-poverty ratio measures an individual or family's income to the poverty threshold.
+A ratio less than 100% suggests that a family's income is less than the poverty level.
+
+"S1702_C01_043E" tells about the estimate number of families that has income only reaching 50% of the poverty level. These are the families that most suffer from poverty.
+"S1702_C01_044E" what does this column measures?
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# list of columns we are interested in:
+lt_poverty_col <- c("GEO_ID", "NAME", "S1702_C01_001E", "S1702_C01_041E", "S1702_C01_042E", "S1702_C01_043E", "S1702_C01_044E")
+df_poverty_cols <- data.frame(
+  old_col_name = lt_poverty_col, 
+  new_col_name = c("GEO_ID", "NAME", "ttl_famly", "famly_owner", "famly_renter", "famly_50pct_poverty", "famly_125pct_poverty")
+)
+
+```
+
+# Q: Provide a screenshot of "lt_poverty_col"
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# extract useful columns
+df_ep_poverty_cln <- df_ep_poverty[lt_poverty_col]
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# update table using new column names in df_poverty_cols
+setnames(df_ep_poverty_cln, old=df_poverty_cols$old_col_name, new=df_poverty_cols$new_col_name)
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# view data 
+View(df_ep_poverty_cln)
+# delete the first row in "df_ep_poverty_cln" 
+df_ep_poverty_cln <- df_ep_poverty_cln[-1, ]
+# reset row index 
+rownames(df_ep_poverty_cln) <- NULL
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# check the data 
+str(df_ep_poverty_cln)
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# what is the data type for columns "ttl_famly", "famly_owner", "famly_renter", "famly_50pct_poverty", "famly_125pct_poverty"
+# make them numeric 
+df_ep_poverty_cln$ttl_famly <- as.numeric(df_ep_poverty_cln$ttl_famly)
+# make multiple columns as numeric 
+df_ep_poverty_cln[,3:7] <- sapply(df_ep_poverty_cln[,3:7], as.numeric) %>% as.data.frame()
+# check the data type again 
+str(df_ep_poverty_cln)
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# calculate percentage 
+df_ep_poverty_cln["pct_fam_renter"] <- 100 * df_ep_poverty_cln$famly_renter / df_ep_poverty_cln$ttl_famly
+df_ep_poverty_cln["pct_fam_pov_50pct"] <- 100 * df_ep_poverty_cln$famly_50pct_poverty / df_ep_poverty_cln$ttl_famly
+df_ep_poverty_cln["pct_fam_pov_125pct"] <- 100 * df_ep_poverty_cln$famly_125pct_poverty / df_ep_poverty_cln$ttl_famly
+
+```
+
+have a look at the data frame and check the values for "Census Tract 38.02". What are their percentage of renter-occupied family, percentage of family below 50% poverty line, and percentage of family below 125% poverty line. 
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# replace NA with 0s 
+df_ep_poverty_cln[is.na(df_ep_poverty_cln)] <- 0
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# open data 
+View(df_ep_poverty_cln)
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# Exploratory analysis 
+hist(df_ep_poverty_cln$ttl_famly)
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# run the three lines below together
+hist(df_ep_poverty_cln$pct_fam_renter, col='orange')
+hist(df_ep_poverty_cln$pct_fam_pov_125pct, col='blue', add= T)
+hist(df_ep_poverty_cln$pct_fam_pov_50pct, col='green', add= T)
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# Join the attributes of poverty data with the simple feature 
+# two data: "df_ep_poverty_cln" and "sf_ep_tract"
+# index 
+str(sf_ep_tract)
+str(df_ep_poverty_cln)
+
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# left join
+sf_ep_tract_pov <- left_join(sf_ep_tract, df_ep_poverty_cln, by=c("GEOIDFQ"="GEO_ID"))
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# mapping 
+tmap_mode("plot")
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# quick mapping 
+
+lt_map_col <- c("ttl_famly", "pct_fam_renter", "pct_fam_pov_50pct", "pct_fam_pov_125pct")
+for (column in lt_map_col){
+  print(column)
+  print(tm_shape(sf_ep_tract_pov) + tm_polygons(col = as.character(column)))
+}
+```
+
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# MAP5 - # of families in each census tract 
+map_ep_tract_family <- tm_shape(sf_ep_tract_pov) + tm_polygons(col = "ttl_famly", title = "# of family", palette = "YlGnBu") + 
+  tm_layout(legend.outside = T)
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# export 
+pdf("plot/map5_elpaso_tracts_family_counts.pdf")
+map_ep_tract_family
+dev.off()
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# MAP6 - % of renter-occupied families in each census tract 
+map_ep_tract_renter <- tm_shape(sf_ep_tract_pov) + 
+  tm_polygons(col = "pct_fam_renter", title = "renter-occupied family (%)", palette = "Purples") + 
+  tm_layout(legend.outside = T)
+
+# export 
+pdf("plot/map6_elpaso_tracts_renter_occupied_family_pct.pdf")
+map_ep_tract_renter
+dev.off()
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# MAP7 - % of families below 50% of poverty in each census tract 
+map_ep_tract_50pct_pov <- tm_shape(sf_ep_tract_pov) + 
+  tm_polygons(col = "pct_fam_pov_50pct", title = "below 50% poverty (%)", palette = "Greens") + 
+  tm_layout(legend.outside = T)
+
+# export 
+pdf("plot/map7_elpaso_tracts_family_below_50pct_poverty.pdf")
+map_ep_tract_50pct_pov
+dev.off()
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# MAP8 - % of families below 125% of poverty in each census tract 
+map_ep_tract_125pct_pov <- tm_shape(sf_ep_tract_pov) + 
+  tm_polygons(col = "pct_fam_pov_125pct", title = "below 125% poverty (%)", palette = "Blues") + 
+  tm_layout(legend.outside = T)
+
+# export 
+pdf("plot/map8_elpaso_tracts_family_below_125pct_poverty.pdf")
+map_ep_tract_125pct_pov
+dev.off()
+
+```
+
+
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# organize all maps together 
+t=tmap_arrange(map_ep_tract_family, 
+               map_ep_tract_renter, 
+               map_ep_tract_50pct_pov, 
+               map_ep_tract_125pct_pov, ncol=2)
+
+
+pdf("plot/map9_elpaso_tracts_analysis.pdf", width = 12, height = 8)
+t
+dev.off()
+
+```
 
