@@ -49,7 +49,7 @@ blockquote {
 
 ### 4.1 Lab Goals 
 
-This chapter aims to introduce basic map making concepts and techniques. It applies the analysis workflow that we have learnt in Chapter 3 to spatial visualization. After completing this tutorial, you should be able to:
+This chapter aims to introduce basic map making concepts and techniques. It applies the analysis workflow that we have learnt in [Chapter 3](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html) to spatial visualization. After completing this tutorial, you should be able to:
 
 * **Understand** the basic mapping concepts in R;
 * **Interpret** and **Manipulate** tabular and spatial data collected from U.S. Census;
@@ -61,6 +61,26 @@ This chapter aims to introduce basic map making concepts and techniques. It appl
   + producing [choropleth]{.ul} map
   + adding [legend]{.ul}, [scale bar]{.ul} and [north arrow]{.ul}
   + [combining]{.ul} multiple maps together
+
+
+### 4.2 Good Practice
+
+#### 4.2.1 Organizing Folders & Sub-folders
+Similar to what we have done in previous labs, under the course folder, please create a folder called "**lab4**". Next, in the **lab4** folder, please create two [sub-folders]{.ul} that one is called "**data**" and another one is "**plot**". 
+We'll use the "data" folder to store data collected from the internet. The "plot" will be used to export plots generated from R. 
+
+
+#### 4.2.2 Data
+In this lab, we continue to explore **US Census Bureau** as a potential data source for administrative boundaries, and demographic, economic and population data. Specifically, we can collect:
+
+> [Cartographic Boundaries](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html) by geography (e.g., cities, counties, census tracts, block groups) or by scale. And 
+
+> [Census Tables](https://data.census.gov/) summarizing the socio-economic and demographic characteristics of particular areas.  
+
+This practical will use **El Paso** county (where UCCS is located) as the study area to explore its **poverty level** through map making. Please follow the steps below to [download] data, [unzip] it and [move] the data to the required folder. 
+
+* 
+
 
 
 

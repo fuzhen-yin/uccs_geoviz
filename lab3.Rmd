@@ -72,7 +72,7 @@ Okay, I guess you already know what I am going to repeat. However, there are som
 
 #### 3.2.1 Organizing Folders & Sub-folders
 
-Similar to what we have done in previous labs, under the course folder, please create a folder called "**lab 3**". Next, in the **lab3** folder, please create two [sub-folders]{.ul} that one is called "**data**" and another one is "**plot**". 
+Similar to what we have done in previous labs, under the course folder, please create a folder called "**lab3**". Next, in the **lab3** folder, please create two [sub-folders]{.ul} that one is called "**data**" and another one is "**plot**". 
 We'll use the "**data**" folder to store data collected from the internet. The "**plot**" will be used to export plots generated from R. 
 
 After created these folders, your folders should look similar to Figure 3.1. 
