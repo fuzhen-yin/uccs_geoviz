@@ -440,9 +440,9 @@ The ``` df_ep_poverty_meta ``` also explains what are the columns of  **income-t
 
 <br> 
 
-#### 4.5.2 Data Pre-processing
+#### 4.5.2 Data Cleaning & Pre-processing
 
-Going back to our data, let's check how many columns and rows are in the data ``` df_ep_poverty ```.
+Going back to our data, let's check how many columns and rows are in  ``` df_ep_poverty ```.
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # number of rows
@@ -452,141 +452,138 @@ nrow(df_ep_poverty)
 ncol(df_ep_poverty)
 ```
 
-While the ``` df_ep_poverty ``` has 603 columns. But we only need some of them that have been explained in Step . Let's create a list storing the column names that we are interested in and are related to poverty. 
+While the ``` df_ep_poverty ``` has 603 columns. But we only need some of them. Let's create a list storing the column names that we are interested in including (the list below is copyable): 
+
+``` "GEO_ID", "NAME", "S1702_C01_001E", "S1702_C01_041E", "S1702_C01_042E", "S1702_C01_043E", "S1702_C01_044E" ```.
 
 ```{r, eval=FALSE, class.source = "nocopy"}
-# list of column name
+# list of column names
 lt_poverty_col <- c("GEO_ID", "NAME", "S1702_C01_001E", "S1702_C01_041E", "S1702_C01_042E", "S1702_C01_043E", "S1702_C01_044E")
-
-
 ```
 
-
+Then, we create a dataframe that explains the above mentioned column names.
 
 ```{r, eval=FALSE, class.source = "nocopy"}
-# list of columns we are interested in:
-lt_poverty_col <- c("GEO_ID", "NAME", "S1702_C01_001E", "S1702_C01_041E", "S1702_C01_042E", "S1702_C01_043E", "S1702_C01_044E")
 df_poverty_cols <- data.frame(
   old_col_name = lt_poverty_col, 
   new_col_name = c("GEO_ID", "NAME", "ttl_famly", "famly_owner", "famly_renter", "famly_50pct_poverty", "famly_125pct_poverty")
 )
 
+View(df_poverty_cols)
 ```
 
-Q: Provide a screenshot of "lt_poverty_col"
+**[Q10]** Open ``` df_poverty_cols ``` and paste a screenshot of it to ***lab4 report***
 
-
+Based on the column names in the list ``` lt_poverty_col ```, we data corpus from ``` df_ep_poverty ``` and save it as a new & clean data frame ```  df_ep_poverty_cln ```. 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # extract useful columns
 df_ep_poverty_cln <- df_ep_poverty[lt_poverty_col]
-
 ```
 
-
+Replace column names in ```  df_ep_poverty_cln ``` based on table ``` df_poverty_cols ```. 
 ```{r, eval=FALSE, class.source = "nocopy"}
-# update table using new column names in df_poverty_cols
+# update column names 
 setnames(df_ep_poverty_cln, old=df_poverty_cols$old_col_name, new=df_poverty_cols$new_col_name)
 
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
 # view data 
 View(df_ep_poverty_cln)
-# delete the first row in "df_ep_poverty_cln" 
-df_ep_poverty_cln <- df_ep_poverty_cln[-1, ]
-# reset row index 
-rownames(df_ep_poverty_cln) <- NULL
-
 ```
 
+Delete the first row ```  df_ep_poverty_cln ``` and reset the row index. Do you know why? 
+```{r, eval=FALSE, class.source = "nocopy"}
+# delete the first row 
+df_ep_poverty_cln <- df_ep_poverty_cln[-1, ]
 
+# reset row index 
+rownames(df_ep_poverty_cln) <- NULL
+```
+
+Check data types in ```  df_ep_poverty_cln ```. 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # check the data 
 str(df_ep_poverty_cln)
-
 ```
 
+While the columns ``` "ttl_famly", "famly_owner", "famly_renter", "famly_50pct_poverty", "famly_125pct_poverty" ``` contain numerical values, they are identified as characters. Let's make them numeric. 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
-# what is the data type for columns "ttl_famly", "famly_owner", "famly_renter", "famly_50pct_poverty", "famly_125pct_poverty"
-# make them numeric 
+# convert one column from string to numeric 
 df_ep_poverty_cln$ttl_famly <- as.numeric(df_ep_poverty_cln$ttl_famly)
-# make multiple columns as numeric 
+
+
+# convert multiple columns from string to numeric
 df_ep_poverty_cln[,3:7] <- sapply(df_ep_poverty_cln[,3:7], as.numeric) %>% as.data.frame()
+
 # check the data type again 
 str(df_ep_poverty_cln)
 ```
 
+Calculate percentage by using the column ```famly_renter``` (renter occupied family) as an example. 
+
+$$ \% \ of \ renter \ occupied \ family = 100 * \frac {count \ of \ renter \ occupied \ family} {total \ count \ of \ family} $$
+
 
 ```{r, eval=FALSE, class.source = "nocopy"}
-# calculate percentage 
 df_ep_poverty_cln["pct_fam_renter"] <- 100 * df_ep_poverty_cln$famly_renter / df_ep_poverty_cln$ttl_famly
 df_ep_poverty_cln["pct_fam_pov_50pct"] <- 100 * df_ep_poverty_cln$famly_50pct_poverty / df_ep_poverty_cln$ttl_famly
 df_ep_poverty_cln["pct_fam_pov_125pct"] <- 100 * df_ep_poverty_cln$famly_125pct_poverty / df_ep_poverty_cln$ttl_famly
-
 ```
 
-have a look at the data frame and check the values for "Census Tract 38.02". What are their percentage of renter-occupied family, percentage of family below 50% poverty line, and percentage of family below 125% poverty line. 
-
+Have a look at the ``` df_ep_poverty_cln ``` and check values for [Census Tract 38.02]{.ul}. It seems this row as some not valid  values (e.g., ``` NA ```). Replace ``` NA ``` with ``` 0 ```. 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
-# replace NA with 0s 
+# replace NA
 df_ep_poverty_cln[is.na(df_ep_poverty_cln)] <- 0
 ```
 
-
+Quick look at the data.
 ```{r, eval=FALSE, class.source = "nocopy"}
 # open data 
 View(df_ep_poverty_cln)
 
 ```
 
+#### 4.5.3 Exploratory Analysis 
 
+Let's check the [distribution]{.ul} of  ``` ttl_famly ``` of all census tracts in El Paso by producing a histogram   ``` hist() ```. 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # Exploratory analysis 
 hist(df_ep_poverty_cln$ttl_famly)
-
 ```
 
+Check the distribution of three variables together including:
+
+* ``` pct_fam_renter ``` percentage of renter-occupied family; 
+* ``` pct_fam_pov_50pct ``` percentage of family below 50% of poverty level;  
+* ``` pct_fam_pov_125pct ``` percentage of family below 125% of poverty level;
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # run the three lines below together
 hist(df_ep_poverty_cln$pct_fam_renter, col='orange')
 hist(df_ep_poverty_cln$pct_fam_pov_125pct, col='blue', add= T)
 hist(df_ep_poverty_cln$pct_fam_pov_50pct, col='green', add= T)
-
 ```
 
+#### 4.5.4 Joining 
 
-```{r, eval=FALSE, class.source = "nocopy"}
-# Join the attributes of poverty data with the simple feature 
-# two data: "df_ep_poverty_cln" and "sf_ep_tract"
-# index 
-str(sf_ep_tract)
-str(df_ep_poverty_cln)
-
-
-```
-
+Let's join the table ``` df_ep_poverty_cln ``` with the spatial boundaries stored in the simple data ``` sf_ep_tract ``` based on  GEOIDs (i.e., a unique identifier for each census tract).
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # left join
 sf_ep_tract_pov <- left_join(sf_ep_tract, df_ep_poverty_cln, by=c("GEOIDFQ"="GEO_ID"))
-
 ```
 
+#### 4.5.5 Mapping 
 
+Set the plot mode to static
 ```{r, eval=FALSE, class.source = "nocopy"}
-# mapping 
+# static
 tmap_mode("plot")
-
 ```
 
-
+Quick mapping to explore four variables including ``` "ttl_famly", "pct_fam_renter", "pct_fam_pov_50pct", "pct_fam_pov_125pct" ```. 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # quick mapping 
-
 lt_map_col <- c("ttl_famly", "pct_fam_renter", "pct_fam_pov_50pct", "pct_fam_pov_125pct")
 for (column in lt_map_col){
   print(column)
@@ -594,21 +591,25 @@ for (column in lt_map_col){
 }
 ```
 
+Please use the arrows in the _Plot_ panels to see all maps (as shown in Figure 4.3).
 
+![Figure 4.3: Use arrows to view old plots](figs/lab4_plot_history.png){width=50%}
+
+Okay, after quickly mapping the four variables, let's produce maps one by one and:
+
+* give them proper legend labels
+* use different color palettes
+* export as a pdf 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # MAP5 - # of families in each census tract 
 map_ep_tract_family <- tm_shape(sf_ep_tract_pov) + tm_polygons(col = "ttl_famly", title = "# of family", palette = "YlGnBu") + 
   tm_layout(legend.outside = T)
-```
 
-
-```{r, eval=FALSE, class.source = "nocopy"}
 # export 
 pdf("plot/map5_elpaso_tracts_family_counts.pdf")
 map_ep_tract_family
 dev.off()
-
 ```
 
 
@@ -654,7 +655,7 @@ dev.off()
 ```
 
 
-
+At the end, we combine all maps together into a single plot. 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # organize all maps together 
@@ -670,3 +671,14 @@ dev.off()
 
 ```
 
+**[Q10]** Please go to your _"plot"_ folder, open the pdf _"map9_elpaso_tracts_analysis.pdf"_, and paste the screenshot to your ***lab4 report***. 
+
+
+
+### 4.6. Close & Exit
+
+Congratulations!! You have completed the entire tutorial by typing the script by yourself!! Excellent work. 
+
+Please go "File"--> "Close Project" -- a pop window asking "Do you want to save these changes" --> "Yes".
+
+Don't forget to submit the **lab4 report**  and your **script**  to Canvas.  
