@@ -39,6 +39,14 @@ blockquote {
   border-radius: 4px;
 }
 
+.blueborder {
+  padding: 1em;
+  background: white;
+  color: #8ecae61;
+  border: 2px dotted #8ecae6;
+  border-radius: 4px;
+}
+
 .purple_border {
   padding: 1em;
   background: white;
@@ -379,32 +387,81 @@ dev.off()
 
 
 ### 4.5 Viz: Mapping Families in Poverty
-Finally, we will start the most exciting part of this tutorial by creating a data map illustrating the level of poverty 
+
+
+Finally, we are approaching the most **"exciting"** part of this tutorial which is to combine tabular and spatial data and produce a **choropleth map** exploring the poverty issues in El Paso county. 
+
+#### 4.5.1 Poverty Data
+
+Remember the two poverty data frames ``` df_ep_poverty ``` and ``` df_ep_poverty_meta ``` that we have loaded in [Step 4.2.2](https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#431_Libraries__Data)?
+
+* Both data frames are collected from [US Census Bureau](https://data.census.gov/) using the [Table S1702: Poverty Status in the Past 12 Months of Families](https://data.census.gov/table/ACSST5Y2022.S1702?q=poverty&g=050XX00US08041$1400000). 
+
+* Unlike the census data we haves seen in [Lab 3](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#33_Viz:_Population_Growth) that have been cleaned and pre-processed, the two data frame here are the **raw data** that are directly collected from the Census.  
+Let's have a look at them.  
 
 ```{r, eval=FALSE, class.source = "nocopy"}
-## Census table - family below poverty line 
+## open
 View(df_ep_poverty)
 View(df_ep_poverty_meta)
-
 ```
 
+> The ``` df_ep_poverty ``` table shows the [poverty data]{.ul} itself. 
+> The ``` df_ep_poverty_meta ``` is the [metadata](https://en.wikipedia.org/wiki/Metadata) that tells [information]{.ul} about the poverty data. Particularly, it explains the meaning of column names in ``` df_ep_poverty ```. 
+
+
+:::: {.blueborder data-latex=""}
+
+For example, ``` df_ep_poverty_meta ``` suggests that
+
+* ``` S1702_C01_001E ``` is the estimate **total** number of families in each census tract
+* ``` S1702_C01_041E ``` measures the number of families occupying a housing unit as **owners**.
+* ``` S1702_C01_042E ``` measures the number of families occupying a housing unit as **renter**.
+
+::::
+
+<br>
+
+The ``` df_ep_poverty_meta ``` also explains what are the columns of  **income-to-poverty ratio**. 
+
+> The **income-to-poverty ratio** measures an individual or family's income to the poverty threshold. A ratio less than 100% suggests that a family's income is less than the poverty level.
+
+:::: {.blueborder data-latex=""}
+
+* ``` S1702_C01_043E ``` tells about the estimate number of families that has income **less than 50% of the poverty threshold**. These are the families that suffer the most. 
+
+::::
+
+**[Q9]** What is the meaning of column name  ```S1702_C01_044E ```. Write your answer to ***lab4 report***
+**Hint**: Please (1) open the data ``` df_ep_poverty_meta ``, (2) search [S1702_C01_044E]{.ul} on the top right (as shown in Figure 4.2), and (3) try to figure out the "Label" associated with "S1702_C01_044E". 
+
+![Figure 4.2: Search values in data frames](figs/lab4_search_poverty_meta.png){width=70%}
+
+
+<br> 
+
+#### 4.5.2 Data Pre-processing
+
+Going back to our data, let's check how many columns and rows are in the data ``` df_ep_poverty ```.
 
 ```{r, eval=FALSE, class.source = "nocopy"}
-# Q: Write the command below to check the data type and column names in "df_ep_poverty_meta" 
+# number of rows
+nrow(df_ep_poverty)
+
+# number of columns
+ncol(df_ep_poverty)
 ```
 
-The data frame "df_ep_poverty_meta" explains the "Label" or meaning of each "Column.Name".
-For example, "S1702_C01_001E" tells about the estimate number of families in each census tract
+While the ``` df_ep_poverty ``` has 603 columns. But we only need some of them that have been explained in Step . Let's create a list storing the column names that we are interested in and are related to poverty. 
 
-"S1702_C01_041E" measure the number of families occupying a housing unit that they own.
-"S1702_C01_042E" measure the number of families occupying a housing unit that they rent
+```{r, eval=FALSE, class.source = "nocopy"}
+# list of column name
+lt_poverty_col <- c("GEO_ID", "NAME", "S1702_C01_001E", "S1702_C01_041E", "S1702_C01_042E", "S1702_C01_043E", "S1702_C01_044E")
 
-let's look at families' the income-to-poverty ratio
-The income-to-poverty ratio measures an individual or family's income to the poverty threshold.
-A ratio less than 100% suggests that a family's income is less than the poverty level.
 
-"S1702_C01_043E" tells about the estimate number of families that has income only reaching 50% of the poverty level. These are the families that most suffer from poverty.
-"S1702_C01_044E" what does this column measures?
+```
+
+
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # list of columns we are interested in:

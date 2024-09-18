@@ -378,6 +378,14 @@ blockquote {
   border-radius: 4px;
 }
 
+.blueborder {
+  padding: 1em;
+  background: white;
+  color: #8ecae61;
+  border: 2px dotted #8ecae6;
+  border-radius: 4px;
+}
+
 .purple_border {
   padding: 1em;
   background: white;
@@ -779,24 +787,91 @@ your <strong><em>lab4 report</em></strong>.</p>
 </div>
 <div id="viz-mapping-families-in-poverty" class="section level3">
 <h3>4.5 Viz: Mapping Families in Poverty</h3>
-<pre class="r nocopy"><code>## Census table - family below poverty line 
+<p>Finally, we are approaching the most <strong>“exciting”</strong> part
+of this tutorial which is to combine tabular and spatial data and
+produce a <strong>choropleth map</strong> exploring the poverty issues
+in El Paso county.</p>
+<div id="poverty-data" class="section level4">
+<h4>4.5.1 Poverty Data</h4>
+<p>Remember the two poverty data frames <code>df_ep_poverty</code> and
+<code>df_ep_poverty_meta</code> that we have loaded in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#431_Libraries__Data">Step
+4.2.2</a>?</p>
+<ul>
+<li><p>Both data frames are collected from <a
+href="https://data.census.gov/">US Census Bureau</a> using the <a
+href="https://data.census.gov/table/ACSST5Y2022.S1702?q=poverty&amp;g=050XX00US08041$1400000">Table
+S1702: Poverty Status in the Past 12 Months of Families</a>.</p></li>
+<li><p>Unlike the census data we haves seen in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#33_Viz:_Population_Growth">Lab
+3</a> that have been cleaned and pre-processed, the two data frame here
+are the <strong>raw data</strong> that are directly collected from the
+Census.<br />
+Let’s have a look at them.</p></li>
+</ul>
+<pre class="r nocopy"><code>## open
 View(df_ep_poverty)
 View(df_ep_poverty_meta)</code></pre>
-<pre class="r nocopy"><code># Q: Write the command below to check the data type and column names in &quot;df_ep_poverty_meta&quot; </code></pre>
-<p>The data frame “df_ep_poverty_meta” explains the “Label” or meaning
-of each “Column.Name”. For example, “S1702_C01_001E” tells about the
-estimate number of families in each census tract</p>
-<p>“S1702_C01_041E” measure the number of families occupying a housing
-unit that they own. “S1702_C01_042E” measure the number of families
-occupying a housing unit that they rent</p>
-<p>let’s look at families’ the income-to-poverty ratio The
-income-to-poverty ratio measures an individual or family’s income to the
-poverty threshold. A ratio less than 100% suggests that a family’s
-income is less than the poverty level.</p>
-<p>“S1702_C01_043E” tells about the estimate number of families that has
-income only reaching 50% of the poverty level. These are the families
-that most suffer from poverty. “S1702_C01_044E” what does this column
-measures?</p>
+<blockquote>
+<p>The <code>df_ep_poverty</code> table shows the <u>poverty data</u>
+itself. The <code>df_ep_poverty_meta</code> is the <a
+href="https://en.wikipedia.org/wiki/Metadata">metadata</a> that tells
+<u>information</u> about the poverty data. Particularly, it explains the
+meaning of column names in <code>df_ep_poverty</code>.</p>
+</blockquote>
+<div class="blueborder">
+<p>For example, <code>df_ep_poverty_meta</code> suggests that</p>
+<ul>
+<li><code>S1702_C01_001E</code> is the estimate <strong>total</strong>
+number of families in each census tract</li>
+<li><code>S1702_C01_041E</code> measures the number of families
+occupying a housing unit as <strong>owners</strong>.</li>
+<li><code>S1702_C01_042E</code> measures the number of families
+occupying a housing unit as <strong>renter</strong>.</li>
+</ul>
+</div>
+<p><br></p>
+<p>The <code>df_ep_poverty_meta</code> also explains what are the
+columns of <strong>income-to-poverty ratio</strong>.</p>
+<blockquote>
+<p>The <strong>income-to-poverty ratio</strong> measures an individual
+or family’s income to the poverty threshold. A ratio less than 100%
+suggests that a family’s income is less than the poverty level.</p>
+</blockquote>
+<div class="blueborder">
+<ul>
+<li><code>S1702_C01_043E</code> tells about the estimate number of
+families that has income <strong>less than 50% of the poverty
+threshold</strong>. These are the families that suffer the most.</li>
+</ul>
+</div>
+<p><strong>[Q9]</strong> What is the meaning of column name
+<code>S1702_C01_044E</code>. Write your answer to <strong><em>lab4
+report</em></strong> <strong>Hint</strong>: Please (1) open the data
+`<code>df_ep_poverty_meta</code>, (2) search <u>S1702_C01_044E</u> on
+the top right (as shown in Figure 4.2), and (3) try to figure out the
+“Label” associated with “S1702_C01_044E”.</p>
+<div class="float">
+<img src="figs/lab4_search_poverty_meta.png" style="width:70.0%"
+alt="Figure 4.2: Search values in data frames" />
+<div class="figcaption">Figure 4.2: Search values in data frames</div>
+</div>
+</div>
+<div id="data-pre-processing-2" class="section level4">
+<h4>4.5.2 Data Pre-processing</h4>
+<p>Let’s go back to our data. Let’s check how many columns and rows are
+in the data <code>df_ep_poverty</code>.</p>
+<pre class="r nocopy"><code># number of rows
+nrow(df_ep_poverty)
+
+# number of columns
+ncol(df_ep_poverty)</code></pre>
+<p>While the <code>df_ep_poverty</code> has 603 columns. But we only
+need some of them that have been explained in Step . Let’s create a list
+storing the column names that we are interested in and are related to
+poverty.</p>
+<pre class="r nocopy"><code># list of column name
+lt_poverty_col &lt;- c(&quot;GEO_ID&quot;, &quot;NAME&quot;, &quot;S1702_C01_001E&quot;, &quot;S1702_C01_041E&quot;, &quot;S1702_C01_042E&quot;, &quot;S1702_C01_043E&quot;, &quot;S1702_C01_044E&quot;)</code></pre>
 <pre class="r nocopy"><code># list of columns we are interested in:
 lt_poverty_col &lt;- c(&quot;GEO_ID&quot;, &quot;NAME&quot;, &quot;S1702_C01_001E&quot;, &quot;S1702_C01_041E&quot;, &quot;S1702_C01_042E&quot;, &quot;S1702_C01_043E&quot;, &quot;S1702_C01_044E&quot;)
 df_poverty_cols &lt;- data.frame(
@@ -901,6 +976,7 @@ t=tmap_arrange(map_ep_tract_family,
 pdf(&quot;plot/map9_elpaso_tracts_analysis.pdf&quot;, width = 12, height = 8)
 t
 dev.off()</code></pre>
+</div>
 </div>
 
 
