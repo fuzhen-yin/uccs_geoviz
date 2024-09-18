@@ -227,6 +227,8 @@ sf_co_county <- sf_us_county %>% filter(STATE_NAME == "Colorado")
 Have a look at the data ``` sf_co_county ```. Please write to your ***lab4 report***:
 
 **[Q1]** How many counties in Colorado based on the data ``` sf_co_county ``` 
+
+
 **[Q2]** In ``` sf_co_county ```, please locate the record of El Paso county, what is its ``` GEOID ```?  
 
 ```{r, eval=FALSE, class.source = "nocopy"}
@@ -322,6 +324,8 @@ This section will zoom into the census tracts in the state of Colorado.
 We have imported the census tract boundaries in Colorado in [Step 4.3.1](https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#431_Libraries__Data) and saved it into the variable ``` sf_co_tract ```. Let's have a look at the data.  
 
 **[Q5]** Please report how many census tracts in Colorado according to ``` sf_co_tract ```. 
+
+
 **[Q6]** What column to use to extract census tracts that are located in El Paso county? 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
@@ -671,7 +675,7 @@ dev.off()
 
 ```
 
-**[Q10]** Please go to your _"plot"_ folder, open the pdf _"map9_elpaso_tracts_analysis.pdf"_, and paste the screenshot to your ***lab4 report***. 
+**[Q11]** Please go to your _"plot"_ folder, open the pdf _"map9_elpaso_tracts_analysis.pdf"_, and paste the screenshot to your ***lab4 report***. 
 
 
 
