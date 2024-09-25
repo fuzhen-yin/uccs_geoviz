@@ -590,14 +590,95 @@ of:</p>
 co_place$geometry
 ab_nghbr$geometry
 sf_ab_listing$geometry</code></pre>
+<p>The <strong>World Geodetic System 1984 (WGS 84)</strong> is a global
+reference system used for determining positions on the Earth’s surface.
+<strong>North American Datum of 1983 (NAD 83)</strong> is the horizontal
+and geometric control datum for the United States, Canada, Mexico, and
+Central America.</p>
+<p>Let’s use <strong>NAD 83</strong> as the main CRS for this lab and
+convert WGS 84 to NAD 83.</p>
+<pre class="r nocopy"><code># convert &quot;ab_nghbr&quot; and &quot;sf_ab_listing&quot; from WGS84 to NAD83
+ab_nghbr &lt;- st_transform(ab_nghbr, st_crs(co_place))
+sf_ab_listing &lt;- st_transform(sf_ab_listing, st_crs(co_place))</code></pre>
+</div>
+<div id="viz-mapping-neighborhoods" class="section level3">
+<h3>5.5 Viz: Mapping Neighborhoods</h3>
+<div id="neighborhoods-in-denver" class="section level4">
+<h4>5.5.1 Neighborhoods in Denver</h4>
+<p>We have loaded the spatial data about neighborhoods in Denver in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab5.html#531_Libraries__Data">Step
+5.3.1</a>. .</p>
+<p>Have a look at the neighborhood data <code>ab_nghbr</code>.</p>
+<pre class="r nocopy"><code>View(ab_nghbr)</code></pre>
+<p>Let’s do a quick map of it. <em><strong>Hint</strong>: the following
+command will produce an error message (no worries, errors are a natural
+and inevitable part of coding)</em>.</p>
+<p><strong>[Q11]</strong>: What error message pops up in the Console?
+Please try to interpret it using your own words.</p>
+<pre class="r nocopy"><code># quick map 
+tm_shape(ab_nghbr) + tm_polygons(alpha = 0, lwd = 1)</code></pre>
+<p>It seems that the data <code>ab_nghbr</code> contains some invalid
+polygons. Let’s make them valid using the function
+<code>st_make_valid()</code>.</p>
+<pre class="r nocopy"><code># make valid
+ab_nghbr &lt;- st_make_valid(ab_nghbr)</code></pre>
+</div>
+<div id="mapping-1" class="section level4">
+<h4>5.5.2 Mapping</h4>
+<p>MAP2: neighborhoods in Denver</p>
+<pre class="r nocopy"><code># set plot mode to static 
+tmap_mode(&quot;plot&quot;)
+
+# map 2
+map2_den_nghbr &lt;- tm_shape(ab_nghbr) + tm_polygons(alpha = 0, lwd = 1) +
+  tm_compass() + tm_scale_bar(width = 0.15) + 
+  tm_text(text = &quot;neighbourhood&quot;, size = 0.3)
+
+# export 
+pdf(&quot;plot/map2_denver_neighborhood.pdf&quot;)
+print(map2_den_nghbr)
+dev.off()</code></pre>
+<p>MAP3: Overlap three maps together (listing, neighborhoods, Denver
+city boundary)</p>
+<p><strong>[Q11]</strong>: Provide a screenshot of
+“map3_denver_airbnb_listing_point.pdf”.</p>
+<pre class="r nocopy"><code># extract Denver city boundary from &quot;co_place&quot; 
+den_city &lt;- co_place %&gt;% filter(NAME == &quot;Denver&quot;)
+
+# map 3
+map_den_listing &lt;- tm_shape(den_city) + tm_polygons(alpha = 0, lwd = 2) +
+  tm_shape(ab_nghbr) + tm_polygons(alpha = 0, lwd = 1) + 
+  tm_shape(sf_ab_listing) + tm_dots(size = &quot;price&quot;, 
+                                    col = &quot;room_type&quot;, 
+                                    alpha=0.5) +
+  tm_compass() + tm_scale_bar(width = 0.15) + 
+  tm_layout(legend.position = c(&quot;left&quot;, &quot;top&quot;), frame = F)
+
+# export 
+pdf(&quot;plot/map3_denver_airbnb_listing_point.pdf&quot;, width = 12, height = 8)
+print(map_den_listing)
+dev.off()</code></pre>
+</div>
+</div>
+<div id="viz-airbnb-listings-in-neighborhoods" class="section level3">
+<h3>5.6 Viz: Airbnb Listings in Neighborhoods</h3>
+<p>While the data <code>sf_ab_listing</code> tells us where the listings
+are located, and the data <code>ab_nghbr</code> shows the boundaries of
+neighborhoods. But they are not enough. Let’s say we want to know more
+about the <strong>spatial distribution</strong> of those listings in
+terms of:</p>
+<blockquote>
+<p>how many listings are located in each neighborhoods and also their
+mean prices?</p>
+</blockquote>
+<p>This section performs analysis and produces visualizations of
+<strong>Airbnb listings at the <u>neighborhood level</u></strong>.</p>
+<div id="spatial-joining" class="section level4">
+<h4>5.6.1 Spatial Joining</h4>
 <pre class="r nocopy"><code>#</code></pre>
 <pre class="r nocopy"><code>#</code></pre>
 <pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
+</div>
 </div>
 
 

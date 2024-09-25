@@ -226,30 +226,79 @@ sf_ab_listing <- st_transform(sf_ab_listing, st_crs(co_place))
 ### 5.5 Viz: Mapping Neighborhoods
 #### 5.5.1 Neighborhoods in Denver 
 
-We have loaded the spatial data about neighborhoods in Denver in Step 
-```{r, eval=FALSE, class.source = "nocopy"}
-# 
+We have loaded the spatial data about neighborhoods in Denver in [Step 5.3.1](https://fuzhen-yin.github.io/uccs_geoviz/lab5.html#531_Libraries__Data). . 
 
+Have a look at the neighborhood data ``` ab_nghbr ```. 
+```{r, eval=FALSE, class.source = "nocopy"}
+View(ab_nghbr)
 ```
 
 
-```{r, eval=FALSE, class.source = "nocopy"}
-#
+Let's do a quick map of it. 
+***Hint**: the following command will produce an error message (no worries, errors are a natural and inevitable part of coding)*. 
 
+**[Q11]**: What error message pops up in the Console? Please try to interpret it using your own words.  
+```{r, eval=FALSE, class.source = "nocopy"}
+# quick map 
+tm_shape(ab_nghbr) + tm_polygons(alpha = 0, lwd = 1)
 ```
 
-
-
+It seems that the data ``` ab_nghbr ``` contains some invalid polygons. Let's make them valid using the function ``` st_make_valid() ```.  
 ```{r, eval=FALSE, class.source = "nocopy"}
-#
-
+# make valid
+ab_nghbr <- st_make_valid(ab_nghbr)
 ```
 
+#### 5.5.2 Mapping 
 
+MAP2: neighborhoods in Denver
 ```{r, eval=FALSE, class.source = "nocopy"}
-#
+# set plot mode to static 
+tmap_mode("plot")
 
+# map 2
+map2_den_nghbr <- tm_shape(ab_nghbr) + tm_polygons(alpha = 0, lwd = 1) +
+  tm_compass() + tm_scale_bar(width = 0.15) + 
+  tm_text(text = "neighbourhood", size = 0.3)
+
+# export 
+pdf("plot/map2_denver_neighborhood.pdf")
+print(map2_den_nghbr)
+dev.off()
 ```
+
+MAP3: Overlap three maps together (listing, neighborhoods, Denver city boundary)
+
+**[Q11]**: Provide a screenshot of "map3_denver_airbnb_listing_point.pdf". 
+```{r, eval=FALSE, class.source = "nocopy"}
+# extract Denver city boundary from "co_place" 
+den_city <- co_place %>% filter(NAME == "Denver")
+
+# map 3
+map_den_listing <- tm_shape(den_city) + tm_polygons(alpha = 0, lwd = 2) +
+  tm_shape(ab_nghbr) + tm_polygons(alpha = 0, lwd = 1) + 
+  tm_shape(sf_ab_listing) + tm_dots(size = "price", 
+                                    col = "room_type", 
+                                    alpha=0.5) +
+  tm_compass() + tm_scale_bar(width = 0.15) + 
+  tm_layout(legend.position = c("left", "top"), frame = F)
+
+# export 
+pdf("plot/map3_denver_airbnb_listing_point.pdf", width = 12, height = 8)
+print(map_den_listing)
+dev.off()
+```
+
+### 5.6 Viz: Airbnb Listings in Neighborhoods
+
+While the data ``` sf_ab_listing ``` tells us where the listings are located, and the data ``` ab_nghbr ``` shows the boundaries of neighborhoods. But they are not enough. Let's say we want to know more about the **spatial distribution** of those listings in terms of: 
+
+> how many listings are located in each neighborhoods and also their mean prices?
+
+This section performs analysis and produces visualizations of **Airbnb listings at the [neighborhood level]{.ul}**. 
+
+
+#### 5.6.1 Spatial Joining 
 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
