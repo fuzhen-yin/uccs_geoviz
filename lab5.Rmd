@@ -94,6 +94,7 @@ library(tmap)       # mapping
 library(ggplot2)    # plot
 library(dplyr)      # data manipulation
 library(geojsonsf)  # geojson
+library(reshape2)   # one-hot encoding 
 ```
 
 

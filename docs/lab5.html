@@ -488,7 +488,8 @@ library(sf)         # simple features
 library(tmap)       # mapping
 library(ggplot2)    # plot
 library(dplyr)      # data manipulation
-library(geojsonsf)  # geojson</code></pre>
+library(geojsonsf)  # geojson
+library(reshape2)   # one-hot encoding </code></pre>
 <p>Read data</p>
 <pre class="r nocopy"><code># US Cartographic Boundaries: Cities &amp; towns in Colorado 
 co_place &lt;- st_read(&quot;data/cb_2023_08_CO_place_500k/cb_2023_08_place_500k.shp&quot;)
