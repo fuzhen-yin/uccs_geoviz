@@ -514,8 +514,8 @@ View(ab_listing)</code></pre>
 str(ab_listing)</code></pre>
 <p>For all listings in Denver, count different <u>room types</u>. The
 function <code>table()</code> builds a contingency table.</p>
-<p><strong>[Q6]</strong>: Report the number of listings of different
-room types. <br> <strong>[Q7]</strong>: Provide a screenshot of
+<p><strong>[Q5]</strong>: Report the number of listings of different
+room types. <br> <strong>[Q6]</strong>: Provide a screenshot of
 “plot1_airbnb_den_listing_room_type.pdf”.</p>
 <pre class="r nocopy"><code># count room types
 table(ab_listing$room_type)
@@ -537,7 +537,7 @@ class(ab_listing)</code></pre>
 and <code>latitude</code> contain spatial information of listings. Let’s
 use these two columns to convert “ab_listing” to spatial data (simple
 features) and save it as a new variable <code>sf_ab_listing</code>.</p>
-<p><strong>[Q8]</strong>: Compared to the data frame “ab_listing”, which
+<p><strong>[Q7]</strong>: Compared to the data frame “ab_listing”, which
 new column has been added to “sf_ab_listing”?</p>
 <pre class="r nocopy"><code># table to simple features
 sf_ab_listing &lt;- st_as_sf(ab_listing, 
@@ -560,7 +560,7 @@ tmap_mode(&quot;view&quot;)
 # MAP1: basic map of Airbnb listing in denver   
 tmap_mode(&quot;view&quot;)
 tm_shape(sf_ab_listing) + tm_dots()</code></pre>
-<p><strong>[Q9]</strong>: Run the chunk of code below and try to explain
+<p><strong>[Q8]</strong>: Run the chunk of code below and try to explain
 the purposes of the following commands:</p>
 <ul>
 <li><code>tm_dots()</code></li>
@@ -579,7 +579,7 @@ tm_shape(sf_ab_listing) + tm_dots(size = &quot;price&quot;, col = &quot;room_typ
 and <code>sf_ab_listing</code> from <a
 href="https://insideairbnb.com/get-the-data/">Airbnb data</a>. Let’s
 check their Coordinate Reference System (CRS) and geometry types.</p>
-<p><strong>[Q10]</strong>: Please report the CRS and geometry types
+<p><strong>[Q9]</strong>: Please report the CRS and geometry types
 of:</p>
 <ul>
 <li><code>co_place</code></li>
@@ -613,7 +613,7 @@ href="https://fuzhen-yin.github.io/uccs_geoviz/lab5.html#531_Libraries__Data">St
 <p>Let’s do a quick map of it. <em><strong>Hint</strong>: the following
 command will produce an error message (no worries, errors are a natural
 and inevitable part of coding)</em>.</p>
-<p><strong>[Q11]</strong>: What error message pops up in the Console?
+<p><strong>[Q10]</strong>: What error message pops up in the Console?
 Please try to interpret it using your own words.</p>
 <pre class="r nocopy"><code># quick map 
 tm_shape(ab_nghbr) + tm_polygons(alpha = 0, lwd = 1)</code></pre>
@@ -768,7 +768,7 @@ report.</p>
 <div id="mapping-2" class="section level4">
 <h4>5.6.6 Mapping</h4>
 <p>MAP4: Quick map for all variables in <code>ab_nghbr_var</code>.</p>
-<p><strong>[Q14]</strong>: paste the screenshot of
+<p><strong>[Q15]</strong>: paste the screenshot of
 “map4_quick_plot_neighborhoods_airbnb.pdf”.</p>
 <pre class="r nocopy"><code># quick map &amp; export 
 pdf(&quot;plot/map4_quick_plot_neighborhoods_airbnb.pdf&quot;)
@@ -779,48 +779,102 @@ process of breaking data into different groups. <a
 href=""><code>tmap</code></a> provides different ways to classify data
 such as:</p>
 <ul>
-<li><code>pretty</code> rounds breaks into whole numbers where possible
-and spaces them evenly.</li>
-<li><code>jenks</code> that minimize the within-group variance and
-maximize the between-group variance.</li>
-<li><code>equal</code> divides the range of values into n equal-sized
-intervals</li>
-<li><code>quantile</code> creates several classes with exactly the same
-number of objects (e.g., spatial features), but having intervals of
-various lengths.<br />
+<li><code>pretty</code> (default) rounds breaks into <strong>whole
+numbers</strong> where possible and spaces them
+<strong>evenly.</strong></li>
+<li><code>jenks</code> that <strong>minimize the within-group
+variance</strong> and <strong>maximize the between-group
+variance</strong>.</li>
+<li><code>equal</code> divides the range of values into <strong>n
+equal-sized intervals</strong>.</li>
+<li><code>quantile</code> creates several classes with exactly the
+<strong>same number of objects</strong> (e.g., spatial features), but
+having <strong>intervals of various lengths</strong>.<br />
 </li>
-<li><code>sd</code> calculates a standard deviation of a given variable,
-and next use this value as the break width</li>
+<li><code>sd</code> calculates <strong>a standard deviation</strong> of
+a given variable, and next use this value as the break width.</li>
 </ul>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
+<p>Let’s explore different classification methods and their impacts on
+mappings by visualizing two variables <code>mean_price</code> and
+<code>n_ttl</code> (number of listings in each neighborhood).</p>
+<p>Create a function for mapping (it’s okay that you don’t understand
+the code below).</p>
+<pre class="r nocopy"><code># write a function 
+f_map_nghbr_price &lt;- function(data, column, mapping_style, n_breaks, c_palette){
+  p &lt;- tm_shape(data) + 
+  tm_polygons(col = as.character(column), style = as.character(mapping_style), n=n_breaks, palette = as.character(c_palette)) +
+  tm_layout(title = as.character(mapping_style))
+  
+  return(p)
+}</code></pre>
+<p>MAP5: Mean listing price in neighborhoods</p>
+<pre class="r nocopy"><code># histogram - quick 
+hist(ab_nghbr_var$mean_price)
+
+# number of breaks &amp; color palette 
+n_brk = 7
+color_pal = &quot;Blues&quot;</code></pre>
+<p><strong>[Q16]</strong>: paste the screenshot of
+“map5_denver_neighborhood_meanprice_classifications.pdf” and discuss
+which data classification method do you like the most (please pay
+attention both to the map and the legends).</p>
+<pre class="r nocopy"><code># mapping using different styles
+
+map5_pretty &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;mean_price&quot;, &quot;pretty&quot;, n_brk, color_pal)
+map5_jenks &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;mean_price&quot;, &quot;jenks&quot;, n_brk, color_pal)
+map5_equal &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;mean_price&quot;, &quot;equal&quot;, n_brk, color_pal)
+map5_quantile &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;mean_price&quot;, &quot;quantile&quot;, n_brk, color_pal)
+map5_sd &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;mean_price&quot;, &quot;sd&quot;, n_brk, color_pal)
+
+
+## combine all maps together 
+map5_meanprice &lt;- tmap_arrange(map5_pretty,map5_jenks, 
+                               map5_equal, map5_quantile, 
+                               map5_sd, 
+                               ncol = 2)
+
+## export 
+pdf(&quot;plot/map5_denver_neighborhood_meanprice_classifications.pdf&quot;, width = 10, height = 10)
+print(map5_meanprice)
+dev.off()</code></pre>
+<p>MAP6: Total rooms listing price in neighborhoods.</p>
+<pre class="r nocopy"><code># histogram 
+hist(ab_nghbr_var$n_ttl)
+
+# number of breaks 
+n_brk = 7
+color_pal = &quot;Greens&quot;
+
+map6_pretty &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;n_ttl&quot;, &quot;pretty&quot;, n_brk, color_pal)
+map6_jenks &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;n_ttl&quot;, &quot;jenks&quot;, n_brk, color_pal)
+map6_equal &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;n_ttl&quot;, &quot;equal&quot;, n_brk, color_pal)
+map6_quantile &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;n_ttl&quot;, &quot;quantile&quot;, n_brk, color_pal)
+map6_sd &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;n_ttl&quot;, &quot;sd&quot;, n_brk, color_pal)
+
+## combine all maps together 
+map6_ttl &lt;- tmap_arrange(map6_pretty, map6_jenks, 
+                         map6_equal, map6_quantile, 
+                         map6_sd, 
+                         ncol = 2) 
+
+## export 
+pdf(&quot;plot/map6_denver_neighborhood_count_total_listings_classifications.pdf&quot;, width = 10, height = 10)
+print(map6_ttl)
+dev.off()</code></pre>
+<p><strong>[Q17]</strong>: paste the screenshot of
+“map6_denver_neighborhood_count_total_listings_classifications.pdf” and
+discuss which data classification method do you like the most (please
+pay attention both to the map and the legends).</p>
 </div>
+</div>
+<div id="close-exit" class="section level3">
+<h3>5.7 Close &amp; Exit</h3>
+<p>Congratulations!! You have completed the entire tutorial by typing
+the script by yourself!! Excellent work.</p>
+<p>Please go “File”–&gt; “Close Project” – a pop window asking “Do you
+want to save these changes” –&gt; “Yes”.</p>
+<p>Don’t forget to submit the <strong>lab5 report</strong> and your
+<strong>script</strong> to Canvas.</p>
 </div>
 
 

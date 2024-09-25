@@ -131,8 +131,8 @@ str(ab_listing)
 
 For all listings in Denver, count different [room types]{.ul}. The function ``` table() ``` builds a contingency table.   
 
-**[Q6]**: Report the number of listings of different room types. <br>
-**[Q7]**: Provide a screenshot of "plot1_airbnb_den_listing_room_type.pdf". 
+**[Q5]**: Report the number of listings of different room types. <br>
+**[Q6]**: Provide a screenshot of "plot1_airbnb_den_listing_room_type.pdf". 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # count room types
 table(ab_listing$room_type)
@@ -160,7 +160,7 @@ class(ab_listing)
 "ab_listing" is a data frame. The two columns ``` longitude ``` and ``` latitude ``` contain spatial information of listings. Let's use these two columns to convert "ab_listing" to spatial data (simple features) and save it as a new variable ``` sf_ab_listing ```.
 
 
-**[Q8]**: Compared to the data frame "ab_listing", which new column has been added to "sf_ab_listing"?
+**[Q7]**: Compared to the data frame "ab_listing", which new column has been added to "sf_ab_listing"?
 ```{r, eval=FALSE, class.source = "nocopy"}
 # table to simple features
 sf_ab_listing <- st_as_sf(ab_listing, 
@@ -186,7 +186,7 @@ tmap_mode("view")
 tm_shape(sf_ab_listing) + tm_dots()
 ```
 
-**[Q9]**: Run the chunk of code below and try to explain the purposes of the following commands: 
+**[Q8]**: Run the chunk of code below and try to explain the purposes of the following commands: 
 
 * ``` tm_dots() ``` 
 * ``` size = "price" ``` 
@@ -202,7 +202,7 @@ tm_shape(sf_ab_listing) + tm_dots(size = "price", col = "room_type", alpha=0.7)
 
 Now we have three simple feature objects including ``` co_place ``` collected from US Census, ``` ab_nghbr ``` and ``` sf_ab_listing ``` from [Airbnb data](https://insideairbnb.com/get-the-data/). Let's check their Coordinate Reference System (CRS) and geometry types. 
 
-**[Q10]**: Please report the CRS and geometry types of:
+**[Q9]**: Please report the CRS and geometry types of:
 
 * ``` co_place ``` 
 * ``` ab_nghbr ``` 
@@ -237,7 +237,7 @@ View(ab_nghbr)
 Let's do a quick map of it. 
 ***Hint**: the following command will produce an error message (no worries, errors are a natural and inevitable part of coding)*. 
 
-**[Q11]**: What error message pops up in the Console? Please try to interpret it using your own words.  
+**[Q10]**: What error message pops up in the Console? Please try to interpret it using your own words.  
 ```{r, eval=FALSE, class.source = "nocopy"}
 # quick map 
 tm_shape(ab_nghbr) + tm_polygons(alpha = 0, lwd = 1)
