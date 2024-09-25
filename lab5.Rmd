@@ -300,22 +300,35 @@ This section performs analysis and produces visualizations of **Airbnb listings 
 
 #### 5.6.1 Spatial Joining 
 
-
+Examine the ``` sf_ab_listing ``` data. 
 ```{r, eval=FALSE, class.source = "nocopy"}
-#
-
+# count columns in "sf_ab_listing"
+ncol(sf_ab_listing)
 ```
 
-
+Spatial joining two data  ``` sf_ab_listing ``` and ``` ab_nghbr ``` using the function ``` st_join() ``` as long as the geometries intersect. Save the joined data as a new variable ``` sf_ab_listing_nghbr ```. 
 ```{r, eval=FALSE, class.source = "nocopy"}
-#
-
+# spatial join to the left of the object 
+sf_ab_listing_nghbr <- st_join(sf_ab_listing, ab_nghbr, 
+                               left = T, join = st_intersects)
 ```
 
-
+After spatial joining, the new data ``` sf_ab_listing_nghbr ``` has a new column compared to ``` sf_ab_listing ```. Please compare those two data and answer **[Q12]**: What is the new column has been added to ``` sf_ab_listing_nghbr ```? 
 ```{r, eval=FALSE, class.source = "nocopy"}
-#
+# count columns in the new variable "sf_ab_listing_nghbr" 
+ncol(sf_ab_listing_nghbr)
 
+# open data 
+View(sf_ab_listing_nghbr)
 ```
+
+#### 5.6.2 Analysis at Neighborhood Level
+
+
+
+
+
+
+
 
 

@@ -675,9 +675,27 @@ mean prices?</p>
 <strong>Airbnb listings at the <u>neighborhood level</u></strong>.</p>
 <div id="spatial-joining" class="section level4">
 <h4>5.6.1 Spatial Joining</h4>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
+<p>Examine the <code>sf_ab_listing</code> data.</p>
+<pre class="r nocopy"><code># count columns in &quot;sf_ab_listing&quot;
+ncol(sf_ab_listing)</code></pre>
+<p>Spatial joining two data <code>sf_ab_listing</code> and
+<code>ab_nghbr</code> using the function <code>st_join()</code> as long
+as the geometries intersect. Save the joined data as a new variable
+<code>sf_ab_listing_nghbr</code>.</p>
+<pre class="r nocopy"><code># spatial join to the left of the object 
+sf_ab_listing_nghbr &lt;- st_join(sf_ab_listing, ab_nghbr, left = T, join = st_intersects)</code></pre>
+<p>After spatial joining, the new data <code>sf_ab_listing_nghbr</code>
+has a new column compared to <code>sf_ab_listing</code>. Please compare
+those two data and answer <strong>[Q12]</strong>: What is the new column
+has been added to <code>sf_ab_listing_nghbr</code>?</p>
+<pre class="r nocopy"><code># count columns in the new variable &quot;sf_ab_listing_nghbr&quot; 
+ncol(sf_ab_listing_nghbr)
+
+# open data 
+View(sf_ab_listing_nghbr)</code></pre>
+</div>
+<div id="analysis-at-neighborhood-level" class="section level4">
+<h4>5.6.2 Analysis at Neighborhood Level</h4>
 </div>
 </div>
 
