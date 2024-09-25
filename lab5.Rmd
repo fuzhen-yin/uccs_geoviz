@@ -322,13 +322,191 @@ ncol(sf_ab_listing_nghbr)
 View(sf_ab_listing_nghbr)
 ```
 
-#### 5.6.2 Analysis at Neighborhood Level
+#### 5.6.2 Preparation
+
+Extract columns from ``` sf_ab_listing_nghbr ``` and save it as a new variable ``` df_listing_nghbr ``` for analysis.  
+```{r, eval=FALSE, class.source = "nocopy"}
+# columns for analysis  
+lt_airbnb_cols <- c("neighbourhood", "room_type", "price")
+
+# extract and save as a new variable 
+df_listing_nghbr <- sf_ab_listing_nghbr[lt_airbnb_cols]
+
+# remove geometry for more efficient calculation
+st_geometry(df_listing_nghbr) <- NULL
+```
+
+#### 5.6.3 Cleaning: Missing Values 
+Missing values "NA" (not available). 
+```{r, eval=FALSE, class.source = "nocopy"}
+## Check how many rows contain NA in the column "price"
+df_listing_nghbr[is.na(df_listing_nghbr$price),] %>% nrow()
 
 
+## remove NA
+df_listing_nghbr <- na.omit(df_listing_nghbr)
+df_listing_nghbr["n_listing"] <- 1
+```
+
+#### 5.6.4 Analysis: Statistics 
+
+Count room types in each neighborhood using one-hot encoding. 
+
+> [One-hot encoding](https://www.geeksforgeeks.org/ml-one-hot-encoding/) is a commonly used technique in machine learning to convert categorical variables into numerical values. 
+
+Let's borrow this concept and apply it for data cleaning and processing.   
+```{r, eval=FALSE, class.source = "nocopy"}
+df_nghbr <- reshape2::dcast(df_listing_nghbr, 
+                            neighbourhood ~ room_type, 
+                            fill = 0, value.var = "n_listing", 
+                            fun.aggregate = length)
+```
+
+**[Q13]**: Have a look at the table "df_nghbr", please briefly explain what this table is about? 
+```{r, eval=FALSE, class.source = "nocopy"}
+View(df_nghbr)
+```
+
+Calculate the statistics of listings' prices at neighborhood level in terms of [mean, median, max, and min prices]{.ul}.
+```{r, eval=FALSE, class.source = "nocopy"}
+# statistics of prices at neighborhood level 
+df_nghbr_2 <- df_listing_nghbr %>% group_by(neighbourhood) %>% 
+  summarise(mean_price = mean(price),
+            median_price = median(price),
+            max_price = max(price), 
+            min_price = min(price),
+            n_ttl = sum(n_listing))
+```
+
+Join the two data frames ``` df_nghbr ``` and ``` df_nghbr_2 ```. 
+```{r, eval=FALSE, class.source = "nocopy"}
+# join two neighborhood tables 
+df_nghbr_2 <- left_join(df_nghbr_2, df_nghbr, by=c("neighbourhood"="neighbourhood"))
+```
+
+#### 5.6.5 Calculation: Percentage 
+
+Calculate percentage of listings of different room types. 
+```{r, eval=FALSE, class.source = "nocopy"}
+## calculate percentage for columns 7:10
+df_nghbr_2[, 7:10]
+df_nghbr_2[, 7:10] <- 100 * df_nghbr_2[, 7:10] / df_nghbr_2$n_ttl
+```
+
+Join the attribute table ``` df_nghbr_2 ``` to the spatial data ``` ab_nghbr ```. 
+```{r, eval=FALSE, class.source = "nocopy"}
+## join "df_nghbr_2" with the simple feature "ab_nghbr"
+ab_nghbr_var <- left_join(ab_nghbr, df_nghbr_2, by="neighbourhood" )
+```
+
+Have a look at the data ``` ab_nghbr_var ``` and **[Q14]**: paste the screenshot of the table to your report.  
+```{r, eval=FALSE, class.source = "nocopy"}
+View(ab_nghbr_var)
+```
+
+#### 5.6.6 Mapping 
+MAP4: Quick map for all variables in  ``` ab_nghbr_var ```. 
+
+**[Q15]**: paste the screenshot of "map4_quick_plot_neighborhoods_airbnb.pdf".   
+```{r, eval=FALSE, class.source = "nocopy"}
+# quick map & export 
+pdf("plot/map4_quick_plot_neighborhoods_airbnb.pdf")
+plot(ab_nghbr_var)
+dev.off()
+```
+
+In mapping, **Data Classification** refers to the process of breaking data into different groups. [``` tmap```]() provides different ways to classify data such as: 
+
+* ``` pretty ``` (default) rounds breaks into **whole numbers** where possible and spaces them **evenly.** 
+* ``` jenks ``` that **minimize the within-group variance** and **maximize the between-group variance**. 
+* ``` equal ``` divides the range of values into **n equal-sized intervals**.
+* ``` quantile ``` creates several classes with exactly the **same number of objects** (e.g., spatial features), but having **intervals of various lengths**.  
+* ``` sd ``` calculates **a standard deviation** of a given variable, and next use this value as the break width. 
 
 
+Let's explore different classification methods and their impacts on mappings by visualizing two variables ``` mean_price ``` and ``` n_ttl ``` (number of listings in each neighborhood). 
+
+Create a function for mapping (it's okay that you don't understand the code below). 
+```{r, eval=FALSE, class.source = "nocopy"}
+# write a function 
+f_map_nghbr_price <- function(data, column, mapping_style, n_breaks, c_palette){
+  p <- tm_shape(data) + 
+  tm_polygons(col = as.character(column), style = as.character(mapping_style), n=n_breaks, palette = as.character(c_palette)) +
+  tm_layout(title = as.character(mapping_style))
+  
+  return(p)
+}
+```
+
+MAP5: Mean listing price in neighborhoods 
+```{r, eval=FALSE, class.source = "nocopy"}
+# histogram - quick 
+hist(ab_nghbr_var$mean_price)
+
+# number of breaks & color palette 
+n_brk = 7
+color_pal = "Blues"
+```
+
+**[Q16]**: paste the screenshot of "map5_denver_neighborhood_meanprice_classifications.pdf" and discuss which data classification method do you like the most (please pay attention both to the map and the legends). 
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# mapping using different styles
+
+map5_pretty <- f_map_nghbr_price(ab_nghbr_var, "mean_price", "pretty", n_brk, color_pal)
+map5_jenks <- f_map_nghbr_price(ab_nghbr_var, "mean_price", "jenks", n_brk, color_pal)
+map5_equal <- f_map_nghbr_price(ab_nghbr_var, "mean_price", "equal", n_brk, color_pal)
+map5_quantile <- f_map_nghbr_price(ab_nghbr_var, "mean_price", "quantile", n_brk, color_pal)
+map5_sd <- f_map_nghbr_price(ab_nghbr_var, "mean_price", "sd", n_brk, color_pal)
 
 
+## combine all maps together 
+map5_meanprice <- tmap_arrange(map5_pretty,map5_jenks, 
+                               map5_equal, map5_quantile, 
+                               map5_sd, 
+                               ncol = 2)
+
+## export 
+pdf("plot/map5_denver_neighborhood_meanprice_classifications.pdf", width = 10, height = 10)
+print(map5_meanprice)
+dev.off()
+```
+
+MAP6: Total rooms listing price in neighborhoods.
+```{r, eval=FALSE, class.source = "nocopy"}
+# histogram 
+hist(ab_nghbr_var$n_ttl)
+
+# number of breaks 
+n_brk = 7
+color_pal = "Greens"
+
+map6_pretty <- f_map_nghbr_price(ab_nghbr_var, "n_ttl", "pretty", n_brk, color_pal)
+map6_jenks <- f_map_nghbr_price(ab_nghbr_var, "n_ttl", "jenks", n_brk, color_pal)
+map6_equal <- f_map_nghbr_price(ab_nghbr_var, "n_ttl", "equal", n_brk, color_pal)
+map6_quantile <- f_map_nghbr_price(ab_nghbr_var, "n_ttl", "quantile", n_brk, color_pal)
+map6_sd <- f_map_nghbr_price(ab_nghbr_var, "n_ttl", "sd", n_brk, color_pal)
+
+## combine all maps together 
+map6_ttl <- tmap_arrange(map6_pretty, map6_jenks, 
+                         map6_equal, map6_quantile, 
+                         map6_sd, 
+                         ncol = 2) 
+
+## export 
+pdf("plot/map6_denver_neighborhood_count_total_listings_classifications.pdf", width = 10, height = 10)
+print(map6_ttl)
+dev.off()
+```
+
+**[Q17]**: paste the screenshot of "map6_denver_neighborhood_count_total_listings_classifications.pdf" and discuss which data classification method do you like the most (please pay attention both to the map and the legends). 
 
 
+### 5.7 Close & Exit
+
+Congratulations!! You have completed the entire tutorial by typing the script by yourself!! Excellent work. 
+
+Please go "File"--> "Close Project" -- a pop window asking "Do you want to save these changes" --> "Yes".
+
+Don't forget to submit the **lab5 report**  and your **script**  to Canvas. 
 

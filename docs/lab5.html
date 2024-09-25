@@ -683,7 +683,8 @@ ncol(sf_ab_listing)</code></pre>
 as the geometries intersect. Save the joined data as a new variable
 <code>sf_ab_listing_nghbr</code>.</p>
 <pre class="r nocopy"><code># spatial join to the left of the object 
-sf_ab_listing_nghbr &lt;- st_join(sf_ab_listing, ab_nghbr, left = T, join = st_intersects)</code></pre>
+sf_ab_listing_nghbr &lt;- st_join(sf_ab_listing, ab_nghbr, 
+                               left = T, join = st_intersects)</code></pre>
 <p>After spatial joining, the new data <code>sf_ab_listing_nghbr</code>
 has a new column compared to <code>sf_ab_listing</code>. Please compare
 those two data and answer <strong>[Q12]</strong>: What is the new column
@@ -694,8 +695,131 @@ ncol(sf_ab_listing_nghbr)
 # open data 
 View(sf_ab_listing_nghbr)</code></pre>
 </div>
-<div id="analysis-at-neighborhood-level" class="section level4">
-<h4>5.6.2 Analysis at Neighborhood Level</h4>
+<div id="preparation" class="section level4">
+<h4>5.6.2 Preparation</h4>
+<p>Extract columns from <code>sf_ab_listing_nghbr</code> and save it as
+a new variable <code>df_listing_nghbr</code> for analysis.</p>
+<pre class="r nocopy"><code># columns for analysis  
+lt_airbnb_cols &lt;- c(&quot;neighbourhood&quot;, &quot;room_type&quot;, &quot;price&quot;)
+
+# extract and save as a new variable 
+df_listing_nghbr &lt;- sf_ab_listing_nghbr[lt_airbnb_cols]
+
+# remove geometry for more efficient calculation
+st_geometry(df_listing_nghbr) &lt;- NULL</code></pre>
+</div>
+<div id="cleaning-missing-values" class="section level4">
+<h4>5.6.3 Cleaning: Missing Values</h4>
+<p>Missing values “NA” (not available).</p>
+<pre class="r nocopy"><code>## Check how many rows contain NA in the column &quot;price&quot;
+df_listing_nghbr[is.na(df_listing_nghbr$price),] %&gt;% nrow()
+
+
+## remove NA
+df_listing_nghbr &lt;- na.omit(df_listing_nghbr)
+df_listing_nghbr[&quot;n_listing&quot;] &lt;- 1</code></pre>
+</div>
+<div id="analysis-statistics" class="section level4">
+<h4>5.6.4 Analysis: Statistics</h4>
+<p>Count room types in each neighborhood using one-hot encoding.</p>
+<blockquote>
+<p><a href="https://www.geeksforgeeks.org/ml-one-hot-encoding/">One-hot
+encoding</a> is a commonly used technique in machine learning to convert
+categorical variables into numerical values.</p>
+</blockquote>
+<p>Let’s borrow this concept and apply it for data cleaning and
+processing.</p>
+<pre class="r nocopy"><code>df_nghbr &lt;- reshape2::dcast(df_listing_nghbr, 
+                            neighbourhood ~ room_type, 
+                            fill = 0, value.var = &quot;n_listing&quot;, 
+                            fun.aggregate = length)</code></pre>
+<p><strong>[Q13]</strong>: Have a look at the table “df_nghbr”, please
+briefly explain what this table is about?</p>
+<pre class="r nocopy"><code>View(df_nghbr)</code></pre>
+<p>Calculate the statistics of listings’ prices at neighborhood level in
+terms of <u>mean, median, max, and min prices</u>.</p>
+<pre class="r nocopy"><code># statistics of prices at neighborhood level 
+df_nghbr_2 &lt;- df_listing_nghbr %&gt;% group_by(neighbourhood) %&gt;% 
+  summarise(mean_price = mean(price),
+            median_price = median(price),
+            max_price = max(price), 
+            min_price = min(price),
+            n_ttl = sum(n_listing))</code></pre>
+<p>Join the two data frames <code>df_nghbr</code> and
+<code>df_nghbr_2</code>.</p>
+<pre class="r nocopy"><code># join two neighborhood tables 
+df_nghbr_2 &lt;- left_join(df_nghbr_2, df_nghbr, by=c(&quot;neighbourhood&quot;=&quot;neighbourhood&quot;))</code></pre>
+</div>
+<div id="calculation-percentage" class="section level4">
+<h4>5.6.5 Calculation: Percentage</h4>
+<p>Calculate percentage of listings of different room types.</p>
+<pre class="r nocopy"><code>## calculate percentage for columns 7:10
+df_nghbr_2[, 7:10]
+df_nghbr_2[, 7:10] &lt;- 100 * df_nghbr_2[, 7:10] / df_nghbr_2$n_ttl</code></pre>
+<p>Join the attribute table <code>df_nghbr_2</code> to the spatial data
+<code>ab_nghbr</code>.</p>
+<pre class="r nocopy"><code>## join &quot;df_nghbr_2&quot; with the simple feature &quot;ab_nghbr&quot;
+ab_nghbr_var &lt;- left_join(ab_nghbr, df_nghbr_2, by=&quot;neighbourhood&quot; )</code></pre>
+<p>Have a look at the data <code>ab_nghbr_var</code> and
+<strong>[Q14]</strong>: paste the screenshot of the table to your
+report.</p>
+<pre class="r nocopy"><code>View(ab_nghbr_var)</code></pre>
+</div>
+<div id="mapping-2" class="section level4">
+<h4>5.6.6 Mapping</h4>
+<p>MAP4: Quick map for all variables in <code>ab_nghbr_var</code>.</p>
+<p><strong>[Q14]</strong>: paste the screenshot of
+“map4_quick_plot_neighborhoods_airbnb.pdf”.</p>
+<pre class="r nocopy"><code># quick map &amp; export 
+pdf(&quot;plot/map4_quick_plot_neighborhoods_airbnb.pdf&quot;)
+plot(ab_nghbr_var)
+dev.off()</code></pre>
+<p>In mapping, <strong>Data Classification</strong> refers to the
+process of breaking data into different groups. <a
+href=""><code>tmap</code></a> provides different ways to classify data
+such as:</p>
+<ul>
+<li><code>pretty</code> rounds breaks into whole numbers where possible
+and spaces them evenly.</li>
+<li><code>jenks</code> that minimize the within-group variance and
+maximize the between-group variance.</li>
+<li><code>equal</code> divides the range of values into n equal-sized
+intervals</li>
+<li><code>quantile</code> creates several classes with exactly the same
+number of objects (e.g., spatial features), but having intervals of
+various lengths.<br />
+</li>
+<li><code>sd</code> calculates a standard deviation of a given variable,
+and next use this value as the break width</li>
+</ul>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
 </div>
 </div>
 
