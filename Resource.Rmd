@@ -44,7 +44,7 @@ Here are some websites where you can find inspirations and codes for visualizati
 
 :::: {.blueborder data-latex=""}
 
-Matt has a few upcoming projects working with local communities and organizations for GIS analysis. Please email Matt (matthew.gottfried@uccs.edu) to join the listserv. 
+Matt has a few upcoming projects working with local communities and organizations (e.g., [Pikes Peak Outdoor Recreation Alliance](https://ppora.org/), and [Palmer Land Conservancy](https://www.palmerland.org/)) using GIS techniques  Please email Matt (matthew.gottfried@uccs.edu) to join the listserv. 
 
 ::::
 
