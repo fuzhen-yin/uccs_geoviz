@@ -11,3 +11,14 @@ output:
 css: website.css
 ---
 
+### 5.1 Lab Goals
+
+This chapter continues to explore the techniques and analyses related to map-making. In [Chapter 4](https://fuzhen-yin.github.io/uccs_geoviz/lab4.html), we have played with census data (e.g., tables and cartographic boundaries) to make choropleth maps. Today, we will use [AirBnb data](https://insideairbnb.com/get-the-data/) as an example to learn more advanced spatial analysis skills including:
+
+* **Converting** .csv file to spatial data 
+* **Spatial joining** 
+* Mapping and analyzing **point** data
+* Using **functions** in R 
+
+
+

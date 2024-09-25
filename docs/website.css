@@ -13,9 +13,24 @@ blockquote {
     border-left: 5px solid #90e0ef;
 }
 
+blockquote_green {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 15px;
+    border-left: 5px solid #315e26;
+}
+
 .purplebox {
   padding: 1em;
   background: #f0e8fa;
+  color: #5c24a1;
+  border: 2px dotted #926dc0;
+  border-radius: 4px;
+}
+
+.purple_border {
+  padding: 1em;
+  background: white;
   color: #5c24a1;
   border: 2px dotted #926dc0;
   border-radius: 4px;
@@ -37,13 +52,23 @@ blockquote {
   border-radius: 4px;
 }
 
-.purple_border {
+.greenbox {
   padding: 1em;
-  background: white;
-  color: #5c24a1;
-  border: 2px dotted #926dc0;
+  background: #acdf87;
+  color: #1e5631;
+  border: 2px dotted #76ba1b;
   border-radius: 4px;
 }
+
+.greenborder {
+  padding: 1em;
+  background: white;
+  color: #1e5631;
+  border: 2px dotted #76ba1b;
+  border-radius: 4px;
+}
+
+
 
 .center {
   text-align: center;
