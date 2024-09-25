@@ -182,7 +182,6 @@ View(sf_ab_listing)
 tmap_mode("view")
 
 # MAP1: basic map of Airbnb listing in denver   
-tmap_mode("view")
 tm_shape(sf_ab_listing) + tm_dots()
 ```
 
