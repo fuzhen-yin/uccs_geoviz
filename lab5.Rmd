@@ -21,4 +21,36 @@ This chapter continues to explore the techniques and analyses related to map-mak
 * Using **functions** in R 
 
 
+### 5.2 Good Practice
+
+#### 5.2.1 Organizing Folders & Sub-folders
+Under the course folder, please create a folder called "**lab5**". Next, in the **lab5** folder, please create two [sub-folders]{.ul} that one is called "**data**" and another one is "**plot**". 
+
+#### 5.2.2 Data
+In this lab, we will explore data sources other than [US Census Bureau](https://data.census.gov/). Particularly, we will play with [AirBnb data](https://insideairbnb.com/get-the-data/) for the city of Denver (CO). 
+
+> [AirBnb](https://insideairbnb.com/get-the-data/) has published datasets related to [listings]{.ul}, [reviews]{.ul}, and [neighborhoods]{.ul} in major cities or tourist destinations all over the world. 
+
+
+
+Please follow the steps below to [download]{.ul} data, [unzip]{.ul} it and [move]{.ul} the data to the required folder. 
+
+* **Go** to https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab5_data.zip
+* **Download** the file _"lab5_data.zip"_
+* **Unzip** folder _"lab5_data.zip"_
+* **Move** all files from the "_lab5_data_" folder to the _"data"_ folder under "_lab5_" see [Step 5.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#421_Organizing_Folders__Sub-folders) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
