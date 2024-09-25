@@ -29,7 +29,7 @@ Under the course folder, please create a folder called "**lab5**". Next, in the 
 #### 5.2.2 Data
 In this lab, we will explore data sources other than [US Census Bureau](https://data.census.gov/). Particularly, we will play with [AirBnb data](https://insideairbnb.com/get-the-data/) for the city of Denver (CO). 
 
-> [AirBnb](https://insideairbnb.com/get-the-data/) has published datasets related to [listings]{.ul}, [reviews]{.ul}, and [neighborhoods]{.ul} in major cities or tourist destinations all over the world. 
+> [AirBnb](https://insideairbnb.com/get-the-data/) has published datasets related to [listings]{.ul}, [reviews]{.ul}, and [neighborhoods]{.ul} in major cities or tourist destinations all over the world. [Here](https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit?gid=1322284596#gid=1322284596) you can find the data dictionary of [AirBnb data](https://insideairbnb.com/get-the-data/). 
 
 
 
@@ -38,7 +38,7 @@ Please follow the steps below to [download]{.ul} data, [unzip]{.ul} it and [move
 * **Go** to https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab5_data.zip
 * **Download** the file _"lab5_data.zip"_
 * **Unzip** folder _"lab5_data.zip"_
-* **Move** all files from the "_lab5_data_" folder to the _"data"_ folder under "_lab5_" see [Step 5.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#421_Organizing_Folders__Sub-folders) 
+* **Move** all files from the "_lab5_data_" folder to the _"data"_ folder under "_lab5_" see [Step 5.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab5.html#521_Organizing_Folders__Sub-folders) 
 
 
 
