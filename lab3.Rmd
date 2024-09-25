@@ -8,43 +8,11 @@ output:
     toc_depth: 5
     toc_float: 
       collapsed: true
+css: website.css
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
-
-
-```{css style settings, echo = FALSE}
-blockquote {
-    padding: 10px 20px;
-    margin: 0 0 20px;
-    font-size: 15px;
-    border-left: 5px solid #90e0ef;
-}
-
-.purplebox {
-  padding: 1em;
-  background: #f0e8fa;
-  color: #5c24a1;
-  border: 2px dotted #926dc0;
-  border-radius: 4px;
-}
-
-.purple_border {
-  padding: 1em;
-  background: white;
-  color: #5c24a1;
-  border: 2px dotted #926dc0;
-  border-radius: 4px;
-}
-
-.center {
-  text-align: center;
-}
-.left {
-  text-align: left;
-}
 ```
 
 

@@ -1,0 +1,13 @@
+---
+title: "Chapter 5: Map Making (2) Spatial Data Manipulation"
+output: 
+  html_document:
+    fig_caption: yes
+    theme: cosmo
+    toc: yes
+    toc_depth: 5
+    toc_float: 
+      collapsed: true
+css: website.css
+---
+

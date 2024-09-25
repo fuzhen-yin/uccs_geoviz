@@ -1,5 +1,5 @@
 ---
-title: "Chapter 4: Intro to Map Making"
+title: "Chapter 4: Map Making (1) Intro"
 output: 
   html_document:
     fig_caption: yes
@@ -8,60 +8,13 @@ output:
     toc_depth: 5
     toc_float: 
       collapsed: true
-css: nocopy_cs.css
+css: website.css
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{css style settings, echo = FALSE}
-blockquote {
-    padding: 10px 20px;
-    margin: 0 0 20px;
-    font-size: 15px;
-    border-left: 5px solid #90e0ef;
-}
-
-.purplebox {
-  padding: 1em;
-  background: #f0e8fa;
-  color: #5c24a1;
-  border: 2px dotted #926dc0;
-  border-radius: 4px;
-}
-
-.bluebox {
-  padding: 1em;
-  background: #e0fbfc;
-  color: #293241;
-  border: 2px dotted #8ecae6;
-  border-radius: 4px;
-}
-
-.blueborder {
-  padding: 1em;
-  background: white;
-  color: #8ecae61;
-  border: 2px dotted #8ecae6;
-  border-radius: 4px;
-}
-
-.purple_border {
-  padding: 1em;
-  background: white;
-  color: #5c24a1;
-  border: 2px dotted #926dc0;
-  border-radius: 4px;
-}
-
-.center {
-  text-align: center;
-}
-.left {
-  text-align: left;
-}
-```
 
 
 ### 4.1 Lab Goals 
