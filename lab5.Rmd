@@ -85,8 +85,9 @@ Load libraries. We have seen most of these libraries except for ``` geojsonsf ``
 
 #### 5.3.1 Libraries & Data
 ```{r, eval=FALSE, class.source = "nocopy"}
-## install geojsonsf
+## install packages
 install.packages("geojsonsf")
+install.packages("reshape2")
 
 # library 
 library(sf)         # simple features 
