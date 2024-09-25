@@ -14,7 +14,7 @@
 
 <title>Resources</title>
 
-<script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -30,7 +30,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -61,7 +61,7 @@ if (window.hljs) {
 
 
 
-
+<link rel="stylesheet" href="website.css" type="text/css" />
 
 
 
@@ -85,9 +85,6 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
-}
-details > summary > p:only-child {
-  display: inline;
 }
 pre code {
   padding: 0;
@@ -145,15 +142,11 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark the anchor link active (and if it's in a dropdown, also mark that active)
-  var dropdown = menuAnchor.closest('li.dropdown');
-  if (window.bootstrap) { // Bootstrap 4+
-    menuAnchor.addClass('active');
-    dropdown.find('> .dropdown-toggle').addClass('active');
-  } else { // Bootstrap 3
-    menuAnchor.parent().addClass('active');
-    dropdown.addClass('active');
-  }
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -182,8 +175,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -191,9 +184,16 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
+  content: "&#xe258;";
   border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -310,7 +310,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -336,6 +336,9 @@ div.tocify {
 </li>
 <li>
   <a href="lab4.html">Lab 4</a>
+</li>
+<li>
+  <a href="lab5.html">Lab 5</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -396,6 +399,129 @@ visualization.<br />
 <ul>
 <li><a href="https://data.census.gov/">US Census Bureau</a></li>
 </ul>
+</div>
+<div id="opportunities" class="section level3">
+<h3>Opportunities</h3>
+<blockquote>
+<p>Join the Email list-serv for RA opportunities with <a
+href="https://ges.uccs.edu/directory/faculty/matt-gottfried">Matt
+Gottfried</a></p>
+</blockquote>
+<div class="blueborder">
+<p>Matt has a few upcoming projects working with local communities and
+organizations for GIS analysis. Please email Matt (<a
+href="mailto:matthew.gottfried@uccs.edu"
+class="email">matthew.gottfried@uccs.edu</a>) to join the listserv.</p>
+</div>
+<p><br> <br></p>
+<blockquote>
+<p>Penn State’s Graduate Program for fully-funded positions on
+Cartography and Geovisualization</p>
+</blockquote>
+<div class="blueborder">
+<p>The Department of Geography at Penn State is welcoming applications
+in the subfields of Cartography, Geovisualization, and GIScience to its
+resident Graduate MS &amp; PhD programs. All admitted graduate students
+at Penn State Geography are fully-funded on either teaching or research
+assistantships. Multiple externally funded projects in cartography and
+geovisualization are ongoing and available to support qualified
+applicants with backgrounds in mapping, visualization, and GIScience.
+The Department is home to multiple GIScience research centers, including
+the GeoGraphics Lab. Applications are due December 1, 2024.</p>
+<p>Please review our website for full details on how to begin your
+application: <a
+href="https://www.geog.psu.edu/graduate/graduate-admissions-and-aid/how-apply-our-resident-graduate-program"
+class="uri">https://www.geog.psu.edu/graduate/graduate-admissions-and-aid/how-apply-our-resident-graduate-program</a></p>
+<p>We invite prospective students to join us for an upcoming webinar
+information session about our graduate program on Tuesday, October 22nd
+5:00pm - 6:00pm EDT. Register here to participate:
+tinyurl.com/psugeoginfo</p>
+<p>Applicants should indicate subfield interests in Cartography,
+Geographic Information Science, and Spatial Data Science on the
+application form, as well as suggesting professors Anthony Robinson and
+Cynthia Brewer as specific people you might work with (these steps will
+ensure that applicants in cartography/viz are able to be prioritized –
+it does not require you to work with those advisors). All complete
+applications that are submitted on or before the application deadline
+are reviewed by the graduate program admissions committee, made up of
+faculty spanning the major subfields of geography. This committee works
+together to review and evaluate all applications, and after developing
+an overall ranking for the applicant pool, potential advisors listed on
+the application are brought in to provide additional feedback on top
+overall candidates.</p>
+<p>If you have questions, please contact Anthony Robinson at <a
+href="mailto:arobinson@psu.edu" class="email">arobinson@psu.edu</a>.</p>
+</div>
+<p><br> <br></p>
+<blockquote>
+<p>Project Specialist Opening at University of California Riverside</p>
+</blockquote>
+<div class="blueborder">
+<p>The School of Public Policy at the University of California,
+Riverside (UCR), is seeking a highly motivated Postdoctoral Researcher
+or Project Specialist, depending on qualifications. The successful
+candidate will work on multiple NSF-funded projects focusing on housing,
+public health, economic development, and spatial data science.
+Application review begins on Oct 1, 2024, and will continue until the
+position is filled.</p>
+<p>Special Sworn Status (SSS) is required for researchers to access
+restricted-use data at the Census Bureau’s Federal Statistical Research
+Data Centers. Therefore, the final appointment is contingent on the
+candidate’s successful attainment of SSS (the UCR team will help with
+the application).</p>
+<p>Essential Responsibilities</p>
+<p>Analyze public and confidential data relevant to funded projects
+using various methods, including but not limited to causal inference,
+spatial econometrics, and multilevel modeling Conduct an international
+survey to identify key needs and barriers in implementing Spatial Data
+Science curricula in higher education. Prepare data summaries, reports,
+manuscripts, and presentations of research results. Minimum
+Requirements</p>
+<p>Junior Project Specialist: Master’s degree in Public Policy,
+Geography, Economics, Sociology, Political Science, Statistics, Public
+Health, or a related discipline. Postdoctoral Researcher: Doctoral
+Degree in Public Policy, Geography, Economics, Sociology, Political
+Science, Statistics, Public Health, or a related discipline. Proficiency
+in Python and/or R. Experience with Causal Inference. Spatial statistics
+and experiences with GIS are preferred. Application Process Interested
+applicants should send a single document of the following materials to
+<a href="mailto:ResearchProjectsPortal@gmail.com"
+class="email">ResearchProjectsPortal@gmail.com</a>. Please direct
+inquiries about this position to this email address as well.</p>
+<p>Complete CV Contact information for three references. Cover letter (1
+page max) Research statement (2 pages max) Optional: writing samples (2
+max), personal or project websites.</p>
+</div>
+<p><br> <br></p>
+<blockquote>
+<p>Full-Time GIS Analyst Position: University of Michigan</p>
+</blockquote>
+<div class="blueborder">
+<p>Dr. Erica Twardzik in the University of Michigan School of
+Kinesiology is recruiting a full time Geographic Information Systems
+(GIS) Analyst with a start date in Fall 2024. Her lab integrates
+multiple data sources to study how environments affect mobility among
+people with disabilities to inform policies that increase participation
+and inclusion within society. The GIS Specialist would serve as the GIS
+analyst for research projects that involve working with numerous large
+spatially-referenced databases. The GIS Specialist would have primary
+responsibility for preparing spatially-referenced data for analysis
+using GIS software, generating maps to communicate research findings,
+documenting and maintaining multiple spatially-referenced datasets,
+contributing to research team meetings, and the overall lab mission.</p>
+<p>Here is the link to the posting:
+careers.umich.edu/job_detail/254783/gis-specialist. You can also email
+Dr. Twardzik for further information: <a
+href="mailto:etwardzi@umich.edu"
+class="email">etwardzi@umich.edu</a></p>
+</div>
+<p><br> <br></p>
+<blockquote>
+<p>Title</p>
+</blockquote>
+<div class="blueborder">
+
+</div>
 </div>
 
 

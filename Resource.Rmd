@@ -10,6 +10,7 @@ output:
     toc_depth: 3
     toc_float: 
       collapsed: true
+css: website.css      
 ---
 
 Please come back for more information on resources. This page will be updated frequently to share career opportunities. 
@@ -34,3 +35,107 @@ Here are some websites where you can find inspirations and codes for visualizati
 ### Data Sources 
 
 * [US Census Bureau](https://data.census.gov/)
+
+
+### Opportunities 
+
+
+> Join the Email list-serv for RA opportunities with [Matt Gottfried](https://ges.uccs.edu/directory/faculty/matt-gottfried)
+
+:::: {.blueborder data-latex=""}
+
+Matt has a few upcoming projects working with local communities and organizations for GIS analysis. Please email Matt (matthew.gottfried@uccs.edu) to join the listserv. 
+
+::::
+
+
+
+<br> 
+<br> 
+
+
+
+> Penn State's Graduate Program for fully-funded positions on Cartography and Geovisualization
+
+:::: {.blueborder data-latex=""}
+
+The Department of Geography at Penn State is welcoming applications in the subfields of Cartography, Geovisualization, and GIScience to its resident Graduate MS & PhD programs. All admitted graduate students at Penn State Geography are fully-funded on either teaching or research assistantships. Multiple externally funded projects in cartography and geovisualization are ongoing and available to support qualified applicants with backgrounds in mapping, visualization, and GIScience. The Department is home to multiple GIScience research centers, including the GeoGraphics Lab. Applications are due December 1, 2024. 
+
+Please review our website for full details on how to begin your application: https://www.geog.psu.edu/graduate/graduate-admissions-and-aid/how-apply-our-resident-graduate-program 
+
+We invite prospective students to join us for an upcoming webinar information session about our graduate program on Tuesday, October 22nd 5:00pm - 6:00pm EDT. Register here to participate: tinyurl.com/psugeoginfo 
+
+Applicants should indicate subfield interests in Cartography, Geographic Information Science, and Spatial Data Science on the application form, as well as suggesting professors Anthony Robinson and Cynthia Brewer as specific people you might work with (these steps will ensure that applicants in cartography/viz are able to be prioritized – it does not require you to work with those advisors). All complete applications that are submitted on or before the application deadline are reviewed by the graduate program admissions committee, made up of faculty spanning the major subfields of geography. This committee works together to review and evaluate all applications, and after developing an overall ranking for the applicant pool, potential advisors listed on the application are brought in to provide additional feedback on top overall candidates.
+
+If you have questions, please contact Anthony Robinson at arobinson@psu.edu.
+
+::::
+
+
+<br> 
+<br> 
+
+> Project Specialist Opening at University of California Riverside
+
+:::: {.blueborder data-latex=""}
+
+The School of Public Policy at the University of California, Riverside (UCR), is seeking a highly motivated Postdoctoral Researcher or Project Specialist, depending on qualifications. The successful candidate will work on multiple NSF-funded projects focusing on housing, public health, economic development, and spatial data science. Application review begins on Oct 1, 2024, and will continue until the position is filled.
+
+Special Sworn Status (SSS) is required for researchers to access restricted-use data at the Census Bureau's Federal Statistical Research Data Centers. Therefore, the final appointment is contingent on the candidate's successful attainment of SSS (the UCR team will help with the application).
+
+Essential Responsibilities
+
+Analyze public and confidential data relevant to funded projects using various methods, including but not limited to causal inference, spatial econometrics, and multilevel modeling
+Conduct an international survey to identify key needs and barriers in implementing Spatial Data Science curricula in higher education.
+Prepare data summaries, reports, manuscripts, and presentations of research results. 
+Minimum Requirements
+
+Junior Project Specialist: Master's degree in Public Policy, Geography, Economics, Sociology, Political Science, Statistics, Public Health, or a related discipline.
+Postdoctoral Researcher: Doctoral Degree in Public Policy, Geography, Economics, Sociology, Political Science, Statistics, Public Health, or a related discipline.
+Proficiency in Python and/or R.
+Experience with Causal Inference.
+Spatial statistics and experiences with GIS are preferred.
+Application Process
+Interested applicants should send a single document of the following materials to ResearchProjectsPortal@gmail.com. Please direct inquiries about this position to this email address as well.
+
+Complete CV
+Contact information for three references.
+Cover letter (1 page max)
+Research statement (2 pages max)
+Optional: writing samples (2 max), personal or project websites.
+
+::::
+
+
+<br> 
+<br> 
+
+
+> Full-Time GIS Analyst Position: University of Michigan
+
+:::: {.blueborder data-latex=""}
+
+Dr. Erica Twardzik in the University of Michigan School of Kinesiology is recruiting a full time Geographic Information Systems (GIS) Analyst with a start date in Fall 2024. Her lab integrates multiple data sources to study how environments affect mobility among people with disabilities to inform policies that increase participation and inclusion within society. The GIS Specialist would serve as the GIS analyst for research projects that involve working with numerous large spatially-referenced databases. The GIS Specialist would have primary responsibility for preparing spatially-referenced data for analysis using GIS software, generating maps to communicate research findings, documenting and maintaining multiple spatially-referenced datasets, contributing to research team meetings, and the overall lab mission.
+
+Here is the link to the posting: careers.umich.edu/job_detail/254783/gis-specialist. You can also email Dr. Twardzik for further information: etwardzi@umich.edu
+
+::::
+
+
+<!-- <br>  -->
+<!-- <br>  -->
+
+
+
+
+<!-- > Title -->
+
+<!-- :::: {.blueborder data-latex=""} -->
+
+
+
+<!-- :::: -->
+
+
+
+
