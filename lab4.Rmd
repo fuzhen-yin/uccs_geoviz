@@ -55,7 +55,7 @@ This practical will use **El Paso** county (where UCCS is located) as a case stu
 * **Move** all files from the "_lab4_data_" folder to the _"data"_ folder under "_lab4_" see [Step 4.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#421_Organizing_Folders__Sub-folders) 
 
 
-If there you have any questions about the above-mentioned steps, please refer to [Chapter 3.2.3](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#322_Data) for detailed instructions. 
+If there you have any questions about the above-mentioned steps, please refer to [Chapter 3.2.2](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#322_Data) for detailed instructions. 
 
 
 #### 4.2.3 Launching R Studio

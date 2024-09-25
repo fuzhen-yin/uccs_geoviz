@@ -11,9 +11,13 @@ output:
 css: website.css
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 ### 5.1 Lab Goals
 
-This chapter continues to explore the techniques and analyses related to map-making. In [Chapter 4](https://fuzhen-yin.github.io/uccs_geoviz/lab4.html), we have played with census data (e.g., tables and cartographic boundaries) to make choropleth maps. Today, we will use [AirBnb data](https://insideairbnb.com/get-the-data/) as an example to learn more advanced spatial analysis skills including:
+This chapter continues to explore the techniques and analyses related to map-making. In [Chapter 4](https://fuzhen-yin.github.io/uccs_geoviz/lab4.html), we have played with census data (e.g., tables and cartographic boundaries) to make choropleth maps. Today, we will use [Airbnb data](https://insideairbnb.com/get-the-data/) as an example to learn more advanced spatial analysis skills including:
 
 * **Converting** .csv file to spatial data 
 * **Spatial joining** 
@@ -27,9 +31,9 @@ This chapter continues to explore the techniques and analyses related to map-mak
 Under the course folder, please create a folder called "**lab5**". Next, in the **lab5** folder, please create two [sub-folders]{.ul} that one is called "**data**" and another one is "**plot**". 
 
 #### 5.2.2 Data
-In this lab, we will explore data sources other than [US Census Bureau](https://data.census.gov/). Particularly, we will play with [AirBnb data](https://insideairbnb.com/get-the-data/) for the city of Denver (CO). 
+In this lab, we will explore data sources other than [US Census Bureau](https://data.census.gov/). Particularly, we will play with [Airbnb data](https://insideairbnb.com/get-the-data/) for the city of Denver (CO). 
 
-> [AirBnb](https://insideairbnb.com/get-the-data/) has published datasets related to [listings]{.ul}, [reviews]{.ul}, and [neighborhoods]{.ul} in major cities or tourist destinations all over the world. [Here](https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit?gid=1322284596#gid=1322284596) you can find the data dictionary of [AirBnb data](https://insideairbnb.com/get-the-data/). 
+> [AirBnb](https://insideairbnb.com/get-the-data/) has published datasets related to [listings]{.ul}, [reviews]{.ul}, and [neighborhoods]{.ul} in major cities or tourist destinations all over the world. [Here](https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit?gid=1322284596#gid=1322284596) you can find the data dictionary of [Airbnb data](https://insideairbnb.com/get-the-data/). 
 
 
 
@@ -41,16 +45,228 @@ Please follow the steps below to [download]{.ul} data, [unzip]{.ul} it and [move
 * **Move** all files from the "_lab5_data_" folder to the _"data"_ folder under "_lab5_" see [Step 5.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab5.html#521_Organizing_Folders__Sub-folders) 
 
 
+If there you have any questions about the above-mentioned steps, please refer to [Chapter 3.2.3](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#322_Data) for detailed instructions. 
+
+
+#### 5.2.3 Launching R Studio
+
+Again, we would like to start a **new project** from scratch with a **clean R Script**. Please do the following steps. If you have any questions about these steps, please refer to the relevant chapters for help. 
+
+* Step 1: Make sure all existing R projects are **properly closed**. 
+    + If *not*, please close it by going to *File* --> *Close Project* --> *Save* changes (see [Chapter 2.5](https://fuzhen-yin.github.io/uccs_geoviz/lab2.html#25_Close__Exit)). 
+* Step 2: Create a **New Project** using **Existing Directory**, navigate to **lab5**, click **open**, then **Create Project**. (see [Chapter 1.3](https://fuzhen-yin.github.io/uccs_geoviz/lab1.html#13_Launching_RStudio)). 
+* Step 3: Create a **New Script** by go to **File** --> **New File** --> **R Script**. **Save** the script by giving it a proper name.
+
+
+#### 5.2.4 Before Start 
+
+:::: {.greenbox data-latex=""}
+::: {.left data-latex=""}
+[**Heads-Up! **]{.ul}
+:::
+
+All scripts is **non-copyable**. Here are some **coding standards** and **best practices** to follow: 
+
+* Use **comments** to explain code (try to annotate the codes by yourself). 
+* Ensure there is sufficient **whitespace between lines** of text to improve legibility. 
+* **Consistent** variable naming
+* When naming a new column, creating a new folder or file, please:
+    + **Avoid special characters** such as ", * _ = & " .
+    + **Avoid adding blank spaces**. For example, instead of using a name as "plot 1" (x), please use "plot_1" (✓). 
+
+::::
+
+
+### 5.3 Viz: Mapping Airbnb Listings in Denver 
+
+We start with mapping Airbnb listings. Unfortunately, there is no [Airbnb data](https://insideairbnb.com/get-the-data/) for Colorado Springs. But it has data for [Denver]{https://insideairbnb.com/denver/}. 
+
+Load libraries. We have seen most of these libraries except for ``` geojsonsf ``` which is often used to read spatial data in [.geojson]{.ul} format and convert it to simple features. 
+
+#### 5.3.1 Libraries & Data
+```{r, eval=FALSE, class.source = "nocopy"}
+## install geojsonsf
+install.packages("geojsonsf")
+
+# library 
+library(sf)         # simple features 
+library(tmap)       # mapping
+library(ggplot2)    # plot
+library(dplyr)      # data manipulation
+library(geojsonsf)  # geojson
+```
+
+
+Read data  
+```{r, eval=FALSE, class.source = "nocopy"}
+# US Cartographic Boundaries: Cities & towns in Colorado 
+co_place <- st_read("data/cb_2023_08_CO_place_500k/cb_2023_08_place_500k.shp")
+
+
+# Airbnb data 
+ab_listing <- read.csv("data/airbnb_denver/listings.csv")
+ab_nghbr <- geojson_sf("data/airbnb_denver/neighborhood.geojson")
+```
+
+Examine data. Please have a look at these tables, and report: 
+
+**[Q1]**: How many records in "co_place"? <br>
+**[Q2]**: Which columns could be used to extract "Denver" from "co_place"? <br>
+**[Q3]**: In "ab_nghbr", how many records (listings)? <br>
+**[Q4]**: In "ab_nghbr", which two columns contain spatial information and could be used for mapping?  <br>
+
+```{r, eval=FALSE, class.source = "nocopy"}
+View(co_place)
+View(ab_nghbr)
+View(ab_listing)
+```
+
+#### 5.3.2 Exploratory Analysis of Airbnb Listing 
+
+Check columns information in "ab_nghbr"
+```{r, eval=FALSE, class.source = "nocopy"}
+# column info
+str(ab_listing)
+```
+
+For all listings in Denver, count different [room types]{.ul}. The function ``` table() ``` builds a contingency table.   
+
+**[Q6]**: Report the number of listings of different room types. <br>
+**[Q7]**: Provide a screenshot of "plot1_airbnb_den_listing_room_type.pdf". 
+```{r, eval=FALSE, class.source = "nocopy"}
+# count room types
+table(ab_listing$room_type)
+
+# quick plot of room types 
+pdf("plot/plot1_airbnb_den_listing_room_type.pdf")
+table(ab_listing$room_type) %>% barplot()
+dev.off()
+```
+
+Descriptive statistics listings' prices. 
+```{r, eval=FALSE, class.source = "nocopy"}
+# statistics
+summary(ab_listing$price)
+```
+
+#### 5.3.3 Create Spatial Data from Table 
+
+Check object class of "ab_listing"
+```{r, eval=FALSE, class.source = "nocopy"}
+# class
+class(ab_listing)
+```
+
+"ab_listing" is a data frame. The two columns ``` longitude ``` and ``` latitude ``` contain spatial information of listings. Let's use these two columns to convert "ab_listing" to spatial data (simple features) and save it as a new variable ``` sf_ab_listing ```.
+
+
+**[Q8]**: Compared to the data frame "ab_listing", which new column has been added to "sf_ab_listing"?
+```{r, eval=FALSE, class.source = "nocopy"}
+# table to simple features
+sf_ab_listing <- st_as_sf(ab_listing, 
+                          coords = c("longitude", "latitude"), 
+                          crs=4326)
+
+# class of sf_ab_listing
+class(sf_ab_listing)
+
+# open data 
+View(sf_ab_listing)
+```
+
+#### 5.3.4 Mapping  
+
+**MAP1**: Quick interactive mapping of Airbnb listings in Denver. 
+```{r, eval=FALSE, class.source = "nocopy"}
+# set mode to "view" for interactive mapping 
+tmap_mode("view")
+
+# MAP1: basic map of Airbnb listing in denver   
+tmap_mode("view")
+tm_shape(sf_ab_listing) + tm_dots()
+```
+
+**[Q9]**: Run the chunk of code below and try to explain the purposes of the following commands: 
+
+* ``` tm_dots() ``` 
+* ``` size = "price" ``` 
+* ``` col = "room_type" ``` 
+* ``` alpha = 0.7 ``` 
+```{r, eval=FALSE, class.source = "nocopy"}
+# improve MAP1 
+tm_shape(sf_ab_listing) + tm_dots(size = "price", col = "room_type", alpha=0.7)
+```
+
+
+### 5.4 Coordinate Reference System (CRS)
+
+Now we have three simple feature objects including ``` co_place ``` collected from US Census, ``` ab_nghbr ``` and ``` sf_ab_listing ``` from [Airbnb data](https://insideairbnb.com/get-the-data/). Let's check their Coordinate Reference System (CRS) and geometry types. 
+
+**[Q10]**: Please report the CRS and geometry types of:
+
+* ``` co_place ``` 
+* ``` ab_nghbr ``` 
+* ``` sf_ab_listing ``` 
+```{r, eval=FALSE, class.source = "nocopy"}
+# Check CRS & geometry types 
+co_place$geometry
+ab_nghbr$geometry
+sf_ab_listing$geometry
+```
+
+The **World Geodetic System 1984 (WGS 84)** is a global reference system used for determining positions on the Earth's surface. **North American Datum of 1983 (NAD 83)** is the horizontal and geometric control datum for the United States, Canada, Mexico, and Central America. 
+
+Let's use **NAD 83** as the main CRS for this lab and convert WGS 84 to NAD 83. 
+```{r, eval=FALSE, class.source = "nocopy"}
+# convert "ab_nghbr" and "sf_ab_listing" from WGS84 to NAD83
+ab_nghbr <- st_transform(ab_nghbr, st_crs(co_place))
+sf_ab_listing <- st_transform(sf_ab_listing, st_crs(co_place))
+```
+
+### 5.5 Viz: Mapping Neighborhoods
+#### 5.5.1 Neighborhoods in Denver 
+
+We have loaded the spatial data about neighborhoods in Denver in Step 
+```{r, eval=FALSE, class.source = "nocopy"}
+# 
+
+```
+
+
+```{r, eval=FALSE, class.source = "nocopy"}
+#
+
+```
 
 
 
+```{r, eval=FALSE, class.source = "nocopy"}
+#
+
+```
 
 
+```{r, eval=FALSE, class.source = "nocopy"}
+#
+
+```
 
 
+```{r, eval=FALSE, class.source = "nocopy"}
+#
+
+```
 
 
+```{r, eval=FALSE, class.source = "nocopy"}
+#
+
+```
 
 
+```{r, eval=FALSE, class.source = "nocopy"}
+#
+
+```
 
 

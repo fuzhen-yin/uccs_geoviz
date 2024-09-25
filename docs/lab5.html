@@ -364,7 +364,7 @@ to map-making. In <a
 href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html">Chapter 4</a>,
 we have played with census data (e.g., tables and cartographic
 boundaries) to make choropleth maps. Today, we will use <a
-href="https://insideairbnb.com/get-the-data/">AirBnb data</a> as an
+href="https://insideairbnb.com/get-the-data/">Airbnb data</a> as an
 example to learn more advanced spatial analysis skills including:</p>
 <ul>
 <li><strong>Converting</strong> .csv file to spatial data</li>
@@ -386,7 +386,7 @@ please create two <u>sub-folders</u> that one is called
 <h4>5.2.2 Data</h4>
 <p>In this lab, we will explore data sources other than <a
 href="https://data.census.gov/">US Census Bureau</a>. Particularly, we
-will play with <a href="https://insideairbnb.com/get-the-data/">AirBnb
+will play with <a href="https://insideairbnb.com/get-the-data/">Airbnb
 data</a> for the city of Denver (CO).</p>
 <blockquote>
 <p><a href="https://insideairbnb.com/get-the-data/">AirBnb</a> has
@@ -395,7 +395,7 @@ published datasets related to <u>listings</u>, <u>reviews</u>, and
 the world. <a
 href="https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit?gid=1322284596#gid=1322284596">Here</a>
 you can find the data dictionary of <a
-href="https://insideairbnb.com/get-the-data/">AirBnb data</a>.</p>
+href="https://insideairbnb.com/get-the-data/">Airbnb data</a>.</p>
 </blockquote>
 <p>Please follow the steps below to <u>download</u> data, <u>unzip</u>
 it and <u>move</u> the data to the required folder.</p>
@@ -410,7 +410,194 @@ to the <em>“data”</em> folder under “<em>lab5</em>” see <a
 href="https://fuzhen-yin.github.io/uccs_geoviz/lab5.html#521_Organizing_Folders__Sub-folders">Step
 5.2.1</a></li>
 </ul>
+<p>If there you have any questions about the above-mentioned steps,
+please refer to <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#322_Data">Chapter
+3.2.3</a> for detailed instructions.</p>
 </div>
+<div id="launching-r-studio" class="section level4">
+<h4>5.2.3 Launching R Studio</h4>
+<p>Again, we would like to start a <strong>new project</strong> from
+scratch with a <strong>clean R Script</strong>. Please do the following
+steps. If you have any questions about these steps, please refer to the
+relevant chapters for help.</p>
+<ul>
+<li>Step 1: Make sure all existing R projects are <strong>properly
+closed</strong>.
+<ul>
+<li>If <em>not</em>, please close it by going to <em>File</em> –&gt;
+<em>Close Project</em> –&gt; <em>Save</em> changes (see <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab2.html#25_Close__Exit">Chapter
+2.5</a>).</li>
+</ul></li>
+<li>Step 2: Create a <strong>New Project</strong> using <strong>Existing
+Directory</strong>, navigate to <strong>lab5</strong>, click
+<strong>open</strong>, then <strong>Create Project</strong>. (see <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab1.html#13_Launching_RStudio">Chapter
+1.3</a>).</li>
+<li>Step 3: Create a <strong>New Script</strong> by go to
+<strong>File</strong> –&gt; <strong>New File</strong> –&gt; <strong>R
+Script</strong>. <strong>Save</strong> the script by giving it a proper
+name.</li>
+</ul>
+</div>
+<div id="before-start" class="section level4">
+<h4>5.2.4 Before Start</h4>
+<div class="greenbox">
+<div class="left">
+<p><u><strong>Heads-Up! </strong></u></p>
+</div>
+<p>All scripts is <strong>non-copyable</strong>. Here are some
+<strong>coding standards</strong> and <strong>best practices</strong> to
+follow:</p>
+<ul>
+<li>Use <strong>comments</strong> to explain code (try to annotate the
+codes by yourself).</li>
+<li>Ensure there is sufficient <strong>whitespace between lines</strong>
+of text to improve legibility.</li>
+<li><strong>Consistent</strong> variable naming</li>
+<li>When naming a new column, creating a new folder or file, please:
+<ul>
+<li><strong>Avoid special characters</strong> such as “, * _ = &amp;”
+.</li>
+<li><strong>Avoid adding blank spaces</strong>. For example, instead of
+using a name as “plot 1” (x), please use “plot_1” (✓).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="viz-mapping-airbnb-listings-in-denver" class="section level3">
+<h3>5.3 Viz: Mapping Airbnb Listings in Denver</h3>
+<p>We start with mapping Airbnb listings. Unfortunately, there is no <a
+href="https://insideairbnb.com/get-the-data/">Airbnb data</a> for
+Colorado Springs. But it has data for [Denver]{<a
+href="https://insideairbnb.com/denver/"
+class="uri">https://insideairbnb.com/denver/</a>}.</p>
+<p>Load libraries. We have seen most of these libraries except for
+<code>geojsonsf</code> which is often used to read spatial data in
+<u>.geojson</u> format and convert it to simple features.</p>
+<div id="libraries-data" class="section level4">
+<h4>5.3.1 Libraries &amp; Data</h4>
+<pre class="r nocopy"><code>## install geojsonsf
+install.packages(&quot;geojsonsf&quot;)
+
+# library 
+library(sf)         # simple features 
+library(tmap)       # mapping
+library(ggplot2)    # plot
+library(dplyr)      # data manipulation
+library(geojsonsf)  # geojson</code></pre>
+<p>Read data</p>
+<pre class="r nocopy"><code># US Cartographic Boundaries: Cities &amp; towns in Colorado 
+co_place &lt;- st_read(&quot;data/cb_2023_08_CO_place_500k/cb_2023_08_place_500k.shp&quot;)
+
+
+# Airbnb data 
+ab_listing &lt;- read.csv(&quot;data/airbnb_denver/listings.csv&quot;)
+ab_nghbr &lt;- geojson_sf(&quot;data/airbnb_denver/neighborhood.geojson&quot;)</code></pre>
+<p>Examine data. Please have a look at these tables, and report:</p>
+<p><strong>[Q1]</strong>: How many records in “co_place”? <br>
+<strong>[Q2]</strong>: Which columns could be used to extract “Denver”
+from “co_place”? <br> <strong>[Q3]</strong>: In “ab_nghbr”, how many
+records (listings)? <br> <strong>[Q4]</strong>: In “ab_nghbr”, which two
+columns contain spatial information and could be used for mapping?
+<br></p>
+<pre class="r nocopy"><code>View(co_place)
+View(ab_nghbr)
+View(ab_listing)</code></pre>
+</div>
+<div id="exploratory-analysis-of-airbnb-listing" class="section level4">
+<h4>5.3.2 Exploratory Analysis of Airbnb Listing</h4>
+<p>Check columns information in “ab_nghbr”</p>
+<pre class="r nocopy"><code># column info
+str(ab_listing)</code></pre>
+<p>For all listings in Denver, count different <u>room types</u>. The
+function <code>table()</code> builds a contingency table.</p>
+<p><strong>[Q6]</strong>: Report the number of listings of different
+room types. <br> <strong>[Q7]</strong>: Provide a screenshot of
+“plot1_airbnb_den_listing_room_type.pdf”.</p>
+<pre class="r nocopy"><code># count room types
+table(ab_listing$room_type)
+
+# quick plot of room types 
+pdf(&quot;plot/plot1_airbnb_den_listing_room_type.pdf&quot;)
+table(ab_listing$room_type) %&gt;% barplot()
+dev.off()</code></pre>
+<p>Descriptive statistics listings’ prices.</p>
+<pre class="r nocopy"><code># statistics
+summary(ab_listing$price)</code></pre>
+</div>
+<div id="create-spatial-data-from-table" class="section level4">
+<h4>5.3.3 Create Spatial Data from Table</h4>
+<p>Check object class of “ab_listing”</p>
+<pre class="r nocopy"><code># class
+class(ab_listing)</code></pre>
+<p>“ab_listing” is a data frame. The two columns <code>longitude</code>
+and <code>latitude</code> contain spatial information of listings. Let’s
+use these two columns to convert “ab_listing” to spatial data (simple
+features) and save it as a new variable <code>sf_ab_listing</code>.</p>
+<p><strong>[Q8]</strong>: Compared to the data frame “ab_listing”, which
+new column has been added to “sf_ab_listing”?</p>
+<pre class="r nocopy"><code># table to simple features
+sf_ab_listing &lt;- st_as_sf(ab_listing, 
+                          coords = c(&quot;longitude&quot;, &quot;latitude&quot;), 
+                          crs=4326)
+
+# class of sf_ab_listing
+class(sf_ab_listing)
+
+# open data 
+View(sf_ab_listing)</code></pre>
+</div>
+<div id="mapping" class="section level4">
+<h4>5.3.4 Mapping</h4>
+<p><strong>MAP1</strong>: Quick interactive mapping of Airbnb listings
+in Denver.</p>
+<pre class="r nocopy"><code># set mode to &quot;view&quot; for interactive mapping 
+tmap_mode(&quot;view&quot;)
+
+# MAP1: basic map of Airbnb listing in denver   
+tmap_mode(&quot;view&quot;)
+tm_shape(sf_ab_listing) + tm_dots()</code></pre>
+<p><strong>[Q9]</strong>: Run the chunk of code below and try to explain
+the purposes of the following commands:</p>
+<ul>
+<li><code>tm_dots()</code></li>
+<li><code>size = "price"</code></li>
+<li><code>col = "room_type"</code></li>
+<li><code>alpha = 0.7</code></li>
+</ul>
+<pre class="r nocopy"><code># improve MAP1 
+tm_shape(sf_ab_listing) + tm_dots(size = &quot;price&quot;, col = &quot;room_type&quot;, alpha=0.7)</code></pre>
+</div>
+</div>
+<div id="coordinate-reference-system-crs" class="section level3">
+<h3>5.4 Coordinate Reference System (CRS)</h3>
+<p>Now we have three simple feature objects including
+<code>co_place</code> collected from US Census, <code>ab_nghbr</code>
+and <code>sf_ab_listing</code> from <a
+href="https://insideairbnb.com/get-the-data/">Airbnb data</a>. Let’s
+check their Coordinate Reference System (CRS) and geometry types.</p>
+<p><strong>[Q10]</strong>: Please report the CRS and geometry types
+of:</p>
+<ul>
+<li><code>co_place</code></li>
+<li><code>ab_nghbr</code></li>
+<li><code>sf_ab_listing</code></li>
+</ul>
+<pre class="r nocopy"><code># Check CRS &amp; geometry types 
+co_place$geometry
+ab_nghbr$geometry
+sf_ab_listing$geometry</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
 </div>
 
 
