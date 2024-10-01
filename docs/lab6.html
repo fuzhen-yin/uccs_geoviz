@@ -448,6 +448,341 @@ name.</li>
 </div>
 <p>All scripts is <strong>non-copyable</strong>.</p>
 </div>
+<p><br></p>
+</div>
+</div>
+<div id="libraries-input-data" class="section level3">
+<h3>6.3 Libraries &amp; Input Data</h3>
+<p>Load libraries.</p>
+<pre class="r nocopy"><code>### Library
+library(dplyr)        # data manipulation
+library(tidyverse)    # tidy data 
+library(reshape2)     # one-hot encoding 
+
+library(sf)           # simple features     
+library(geojsonsf)    # read geojson
+
+library(tmap)         # mapping 
+library(ggplot2)      # plot 
+
+library(viridis)      # viz - color
+
+library(cartogram)    # map - cartogram
+library(pals)         # bivariate color palette
+require(classInt)     # classIntervals, findCols
+require(lattice)      # levelplot
+require(grid)         # viewport</code></pre>
+<p>Input data</p>
+<pre class="r nocopy"><code># Denver neighborhood (geojson --&gt; simple features)
+sf_den_ngbr &lt;- geojson_sf(&quot;data/Denver_neighborhood.geojson&quot;)
+
+# Denver 311 service requests (csv -- &gt; data frame)
+df_den_311 &lt;- read.csv(&quot;data/2023_denver_311_service_request_cleaned.csv&quot;)
+
+# Denver Trees (around 1 minute to read the data)
+sf_den_tree &lt;- geojson_sf(&quot;data/denver_trees.geojson&quot;)</code></pre>
+</div>
+<div id="viz-311-service-requests-by-week" class="section level3">
+<h3>6.4 Viz: 311 Service Requests by Week</h3>
+<div id="exploring-311-data" class="section level4">
+<h4>6.4.1: Exploring 311 data</h4>
+<p>Before any analysis and visualization tasks, the first step is to
+learn about the data and check what are the attributes (or columns) in
+the data.</p>
+<pre class="r nocopy"><code># open data
+View(df_den_311)</code></pre>
+<p>And the distributions of the variables you are interested in, e.g.,
+the “Agency” column.</p>
+<pre class="r nocopy"><code># contingency table of the attribute &#39;Agency&#39;
+tb_311_agency_freq &lt;- table(df_den_311$Agency)
+View(tb_311_agency_freq)
+
+# plot: contingency table
+barplot(tb_311_agency_freq, main=&quot;311 Requests - Agency&quot;, las=2, cex.names = 0.5)</code></pre>
+<p>Check data type of each column. <strong>[Q]</strong> What is the data
+type of the column “Case_Created_dttm”</p>
+<pre class="r nocopy"><code># data type
+str(df_den_311)</code></pre>
+<pre class="r nocopy"><code># convert to date 
+# format code for dates: https://www.stat.berkeley.edu/~s133/dates.html
+df_den_311$Case_Created_dttm   # Fri, 29 Dec 2023 19:20:08 GMT
+df_den_311$case_create_date &lt;- as.Date(df_den_311$Case_Created_dttm, format = &quot;%a, %d %b %Y %H:%M:%S&quot;)
+
+# **[Q]** What is the data type of column &quot;case_create_date&quot; 
+str(df_den_311)</code></pre>
+<pre class="r nocopy"><code># extract week numbers 
+df_den_311$case_create_wk &lt;- strftime(df_den_311$case_create_date, format = &quot;%V&quot;) %&gt;% as.numeric()</code></pre>
+<pre class="r nocopy"><code># Case summary 
+df_311_summary &lt;- table(df_den_311$Case_Summary) %&gt;% as.data.frame() %&gt;% arrange(-Freq)
+View(df_311_summary)
+
+# **[Q]** What are the top 5 categories of people&#39;s 311 service requests?</code></pre>
+<pre class="r nocopy"><code># only analyze 311 requests of the most mentioned categories 
+df_den_311_top &lt;- df_den_311 %&gt;% 
+  filter(Case_Summary %in% df_311_summary$Var1[1:5]) %&gt;% 
+  select(case_create_wk, Case_Summary) %&gt;% 
+  mutate(n=1)</code></pre>
+<pre class="r nocopy"><code># count 311 service requests in each category by week (one-hot encoding)
+df_den_311_top &lt;- dcast(df_den_311_top, case_create_wk ~ Case_Summary, 
+                        fill = 0, value.var = &quot;n&quot;,
+                        fun.aggregate = length)</code></pre>
+<pre class="r nocopy"><code># **[Q]** What information does the table &quot;df_den_311_top&quot; tell? 
+View(df_den_311_top)</code></pre>
+<pre class="r nocopy"><code># Tidy data using the function pivot_longer()
+# **[Q]** Please compare the &quot;df_den_311_top&quot; before and after, how does the &quot;tidy&quot; process change the data structure? 
+df_den_311_top &lt;- df_den_311_top %&gt;% 
+  pivot_longer(cols = 2:ncol(.), names_to = &quot;category&quot;, values_to =&quot;count&quot;)</code></pre>
+<pre class="r nocopy"><code># viz: time series 
+p1_311 &lt;- ggplot(df_den_311_top, aes(x=case_create_wk, y=count, fill=category)) +
+  geom_area(alpha=0.6 , linewidth=.5, colour=&quot;white&quot;)
+
+# have a look
+p1_311</code></pre>
+<pre class="r nocopy"><code># viz: improve by changing color palette &amp; add labels
+p2_311 &lt;- ggplot(df_den_311_top, aes(x=case_create_wk, y=count, fill=category)) +
+  geom_area(alpha=0.6 , linewidth=.5, colour=&quot;white&quot;) + 
+  scale_fill_viridis(discrete = T) + 
+  theme_bw() +
+  xlab(&quot;Weeks in 2023&quot;) + 
+  ylab(&quot; Count of 311 Service Requests&quot;)
+  
+  
+# export 
+pdf(&quot;plot/plot2_311_service_cat_week.pdf&quot;, width = 10, height = 6)
+print(p2_311)
+dev.off()</code></pre>
+<pre class="r nocopy"><code># viz: improve by adding annotation &amp; reference lines  
+df_311_season_label &lt;- data.frame(
+  x_season = c(5,18,31,44),
+  y_season = 2000, 
+  label = c(&quot;Winter&quot;,&quot;Spring&quot;, &quot;Summer&quot;, &quot;Fall&quot;)
+)
+
+
+p3_311 &lt;- ggplot(df_den_311_top, aes(x=case_create_wk, y=count, fill=category)) +
+  geom_area(alpha=0.6 , size=.5, colour=&quot;white&quot;) + 
+  scale_fill_viridis(discrete = T) + 
+  theme_bw() +
+  geom_vline(xintercept = c(10,23,36,49),colour=&quot;black&quot;, linetype = &quot;dotted&quot;) + 
+  geom_label(data=df_311_season_label, aes(x = x_season, y = y_season, label = label), fill = &quot;white&quot;, size=4)  + 
+  xlab(&quot;Weeks in 2023&quot;) + 
+  ylab(&quot; Count of 311 Service Requests&quot;) 
+
+
+# export 
+pdf(&quot;plot/plot3_311_service_cat_week_reference.pdf&quot;, width = 10, height = 6)
+print(p3_311)
+dev.off()</code></pre>
+</div>
+</div>
+<div id="viz-mapping-311-requests" class="section level3">
+<h3>6.5: Viz: Mapping 311 Requests</h3>
+<pre class="r nocopy"><code># **[Q]** Which columns contain spatial information of 311 requests and could be used to convert &quot;df_den_311&quot; to spatial data?  
+View(df_den_311)
+# list all column names 
+names(df_den_311)
+
+# Convert to spatial points 
+sf_den_311 &lt;- st_as_sf(df_den_311, coords = c(&quot;Longitude&quot;, &quot;Latitude&quot;), crs = 4326)</code></pre>
+<pre class="r nocopy"><code># four spatial data (simple features). Let&#39;s check their coordination systems 
+sf_den_311$geometry
+sf_den_tree$geometry
+sf_den_ngbr$geometry
+
+
+
+# project the data to NAD83 / Colorado North (ftUS)
+# https://epsg.io/2231 - NAD83 / Colorado North (ftUS)
+sf_den_311 &lt;- st_transform(sf_den_311, 2231)
+sf_den_tree &lt;- st_transform(sf_den_tree, 2231)
+sf_den_ngbr &lt;- st_transform(sf_den_ngbr, 2231)
+
+## after projection, what are their projected CRS</code></pre>
+<pre class="r nocopy"><code>## create a column &quot;label&quot; for mapping 
+sf_den_ngbr$label &lt;- sf_den_ngbr$neighbourhood
+sf_den_ngbr$label &lt;- gsub(&quot; &quot;, &quot;\n&quot;, sf_den_ngbr$label)</code></pre>
+<pre class="r nocopy"><code># Count 311 (2023) in each neighborhood  
+sf_den_ngbr_311 &lt;- sf_den_ngbr
+sf_den_ngbr_311[&quot;n_311&quot;] &lt;- lengths(st_intersects(sf_den_ngbr_311, sf_den_311))</code></pre>
+<pre class="r nocopy"><code># quick plot of count of 311 in neighborhood 
+tmap_mode(&quot;plot&quot;)
+
+map1_ngbr_311 &lt;- tm_shape(sf_den_ngbr_311) + 
+  tm_polygons(col = &quot;n_311&quot;, title = &quot;311 Calls in 2023&quot;, palette = &quot;Blues&quot;) + 
+  tm_text(text = &quot;label&quot;, size=0.4) +
+  tm_compass(position = c(&quot;left&quot;, &quot;top&quot;)) +
+  tm_scale_bar(width = 0.1, position = c(&quot;left&quot;, &quot;top&quot;))
+
+pdf(&quot;plot/map1_ngbr_311_requests_in_2023.pdf&quot;, width = 10, height = 8)
+print(map1_ngbr_311)
+dev.off()
+# **[Q]** Which neighborhood that most 311 calls complain about? </code></pre>
+<div id="cartogram-1" class="section level4">
+<h4>Cartogram 1</h4>
+<pre class="r nocopy"><code># cartogram 1
+# Construct a continuous area cartogram by a rubber sheet distortion algorithm
+sf_den_ngbr_311_carto &lt;- cartogram_cont(sf_den_ngbr_311, &quot;n_311&quot;, itermax = 10)
+
+map2_ngbr_311_c1 &lt;- tm_shape(sf_den_ngbr_311_carto) + 
+  tm_polygons(col = &quot;n_311&quot;, title = &quot;311 Calls in 2023&quot;, palette = &quot;Blues&quot;) + 
+  tm_text(text = &quot;label&quot;, size=0.4) +
+  tm_compass(position = c(&quot;left&quot;, &quot;top&quot;)) +
+  tm_scale_bar(width = 0.1, position = c(&quot;left&quot;, &quot;top&quot;))
+
+
+pdf(&quot;plot/map2_ngbr_311_requests_in_2023_carto1.pdf&quot;, width = 10, height = 8)
+print(map2_ngbr_311_c1)
+dev.off()</code></pre>
+</div>
+<div id="cartogram-2" class="section level4">
+<h4>Cartogram 2</h4>
+<pre class="r nocopy"><code># cartogram 2
+# Construct a cartogram which represents each geographic region as non-overlapping circles (Dorling 1996).
+sf_den_ngbr_311_carto_dorling &lt;- cartogram_dorling(sf_den_ngbr_311, weight = &quot;n_311&quot;, itermax = 10)
+
+map3_ngbr_311_c2 &lt;- tm_shape(sf_den_ngbr_311_carto_dorling) + 
+  tm_polygons(col = &quot;n_311&quot;,  title = &quot;311 Calls in 2023&quot;, palette = &quot;Blues&quot;) + 
+  tm_text(text = &quot;label&quot;, size=&quot;n_311&quot;) +
+  tm_compass(position = c(&quot;left&quot;, &quot;top&quot;)) +
+  tm_scale_bar(width = 0.1, position = c(&quot;left&quot;, &quot;top&quot;))
+
+pdf(&quot;plot/map3_ngbr_311_requests_in_2023_carto2_dorling.pdf&quot;, width = 10, height = 8)
+print(map3_ngbr_311_c2)
+dev.off()</code></pre>
+</div>
+</div>
+<div id="tree-maps" class="section level3">
+<h3>6.6 Tree Maps</h3>
+<pre class="r nocopy"><code>## spatial join to get neighobrhood information 
+sf_den_tree_ngbr &lt;- st_join(sf_den_tree, sf_den_ngbr[&quot;neighbourhood&quot;], left = T, join = st_intersects)
+
+#  **[Q]** Which two column tell about the species of trees? 
+View(sf_den_tree_ngbr)
+# tree species 
+df_tree_spec &lt;- table(sf_den_tree_ngbr$SPECIES_COMMON) %&gt;% as.data.frame() %&gt;% arrange(-Freq)
+View(df_tree_spec)</code></pre>
+<pre class="r nocopy"><code># neighborhood tree species count 
+df_ngbr_tree &lt;- sf_den_tree_ngbr %&gt;% 
+  select(neighbourhood, SPECIES_COMMON) %&gt;% 
+  mutate(n=1)
+st_geometry(df_ngbr_tree) &lt;- NULL
+df_ngbr_tree &lt;- dcast(df_ngbr_tree, neighbourhood ~ SPECIES_COMMON, 
+                      fill = 0, value.var = &quot;n&quot;, fun.aggregate = length)
+View(df_ngbr_tree)</code></pre>
+<pre class="r nocopy"><code># left join to simple features 
+sf_den_ngbr_tree &lt;- left_join(sf_den_ngbr, df_ngbr_tree, by = &quot;neighbourhood&quot;)</code></pre>
+<div id="bivariate-mapping" class="section level4">
+<h4>Bivariate Mapping</h4>
+<pre class="r nocopy"><code>## bivariate map 
+# two tree species 
+lt_tree_specs_lbl &lt;- c(&quot;Honey Locust&quot;, &quot;Maple, Silver&quot;)</code></pre>
+<pre class="r nocopy"><code># number of bins 
+nbins &lt;- 3
+
+# categorize count of a particular tree species into 3 bins using &quot;quantile
+brkhl &lt;- classIntervals(sf_den_ngbr_tree$`Honey Locust`, n=nbins, style=&#39;quantile&#39;)
+brkms &lt;- classIntervals(sf_den_ngbr_tree$`Maple, Silver`, n=nbins, style=&#39;quantile&#39;)
+
+class_hl &lt;- findCols(brkhl)
+class_ms &lt;- findCols(brkms)
+
+# convert x,y classes into a joint class x+3(y-1)
+sf_den_ngbr_tree$class_hl_ms &lt;- class_hl + nbins*(class_ms-1)
+
+# bivariate color palette 
+col_biv &lt;- stevens.bluered()</code></pre>
+<pre class="r nocopy"><code>map4_ngbr_trees_biv &lt;- tm_shape(sf_den_ngbr_tree) + tm_polygons(&quot;class_hl_ms&quot;, palette =col_biv, n =9 ) +
+  tm_text(text = &quot;label&quot;, size=0.5) +
+  tm_compass(position = c(&quot;left&quot;, &quot;top&quot;)) +
+  tm_scale_bar(width = 0.1, position = c(&quot;left&quot;, &quot;top&quot;)) +
+  tm_layout(legend.show = F)
+
+# add the color legend
+map_legend &lt;- levelplot(matrix(1:(nbins*nbins), nrow=nbins), axes=FALSE, col.regions=col_biv,
+          xlab=list(&quot;Honey Locust --&gt;&quot;, cex= 0.7), ylab=list(&quot;Maple, Silver --&gt;&quot;, cex=0.7), cuts=8, colorkey=FALSE,
+          scales=list(draw=0))
+
+vp &lt;- viewport(x=.75, y=.25, width=.15, height=.15)</code></pre>
+<pre class="r nocopy"><code># export 
+pdf(&quot;plot/map4_neighborhood_bivariate_trees.pdf&quot;, width = 12, height = 12)
+
+print(map4_ngbr_trees_biv)
+pushViewport(vp)
+print(map_legend, newpage=FALSE)
+popViewport()
+
+dev.off()</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<div class="float">
+<img src="figs/lab6_season_week.png" style="width:80.0%"
+alt="Figure 6.1: When four seasons start in 2024." />
+<div class="figcaption">Figure 6.1: When four seasons start in
+2024.</div>
+</div>
+<div class="float">
+<img src="figs/lab6_ggplot2_linetype.png" style="width:50.0%"
+alt="Figure 6.2: Line types in “ggplot2.”" />
+<div class="figcaption">Figure 6.2: Line types in “ggplot2.”</div>
+</div>
+<div class="float">
+<img src="figs/lab6_pals_bivariate_color_palette.png"
+style="width:70.0%"
+alt="Figure 6.2: Bivariate color palettes in “pals”." />
+<div class="figcaption">Figure 6.2: Bivariate color palettes in
+“pals”.</div>
+</div>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
+<pre class="r nocopy"><code>#</code></pre>
 </div>
 </div>
 
