@@ -120,7 +120,7 @@ This week, we will play with [311 Service Requests in Denver](https://opendata-g
 
 Before any analysis and visualization tasks, the first step is to learn about the data and check what are the attributes (or columns) in the data. 
 
-**[Q]** In your opinion, which column is most interesting and briefly explain why.
+**[Q1]** In your opinion, which column is most interesting and briefly explain why.
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # open data
@@ -139,7 +139,7 @@ barplot(tb_311_agency_freq, main="311 Requests - Agency", las=2, cex.names = 0.5
 
 #### 6.4.2 Data Type 
 
-Check data type of each column. **[Q]** What is the data type of the column ``` Case_Created_dttm ```. 
+Check data type of each column. **[Q2]** What is the data type of the column ``` Case_Created_dttm ```. 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # data type
 str(df_den_311)
@@ -158,7 +158,7 @@ df_den_311$case_create_wk <- strftime(df_den_311$case_create_date,
                                       format = "%V") %>% as.numeric()
 ```
 
-**[Q]** What is the data type of the column ``` Case_Created_dttm ```?
+**[Q3]** What is the data type of the column ``` Case_Created_dttm ```?
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # Check data type again. 
@@ -170,7 +170,7 @@ str(df_den_311)
 
 The column ``` Case_Summary ``` categorizes people's 311 requests into different types. Let's check what issues that people have reported in 2023 and their frequency.  
 
-**[Q]** What are the top 5 categories of  311 service requests?
+**[Q4]** What are the top 5 categories of  311 service requests?
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # Case summary - contingency table - ordered by frequency 
@@ -211,7 +211,7 @@ From here, we are going to change the structure of the data ``` df_den_311_top `
 
 The process if tidying is illustrated in Figure 6.1. 
 
-**[Q]** Please compare the ``` df_den_311_top ``` before and after, and try to explain how the "tidy" process changes the data structure. If you need to look at the previous data, please go back to [Step 6.4.3](https://fuzhen-yin.github.io/uccs_geoviz/lab6.html#643:_Top_5_Service_Reuqests_Categories) and rerun the script from there. 
+**[Q5]** Please compare the ``` df_den_311_top ``` before and after, and try to explain how the "tidy" process changes the data structure. If you need to look at the previous data, please go back to [Step 6.4.3](https://fuzhen-yin.github.io/uccs_geoviz/lab6.html#643:_Top_5_Service_Reuqests_Categories) and rerun the script from there. 
 
 ![Figure 6.1: Diagram of data tidying.](figs/lab6_tidy_variables.png){width=80%}
 <br>
@@ -255,7 +255,7 @@ dev.off()
 
 Okay, while the plot looks better now, the week number is very confusing. Let's add some labels by connecting week numbers to seasons as suggested by Figure 6.2. 
 
-**[Q]** Paste the screenshot of "plot3_311_service_cat_week_reference.pdf" to your report. Please **briefly discuss** your findings from this analysis (failed to provide discussion will result in _2 points deduction_). 
+**[Q6]** Paste the screenshot of "plot3_311_service_cat_week_reference.pdf" to your report. Please **briefly discuss** your findings from this analysis (failed to provide discussion will result in _2 points deduction_). 
 
 ![Figure 6.2: When four seasons start in 2024.](figs/lab6_season_week.png){width=80%}
 
@@ -292,7 +292,7 @@ dev.off()
 
 This section moves from time-series to spatial visualization of the 311 data. 
 
-**[Q]** Please open the data frame ``` df_den_311 ``` and report which columns contain spatial information of 311 requests and could be used to convert "df_den_311" to spatial data?  
+**[Q7]** Please open the data frame ``` df_den_311 ``` and report which columns contain spatial information of 311 requests and could be used to convert "df_den_311" to spatial data?  
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # open
@@ -349,7 +349,7 @@ sf_den_ngbr_311["n_311"] <- lengths(st_intersects(sf_den_ngbr_311, sf_den_311))
 
 Quick plot of 311 calls by neighborhood. 
 
-**[Q]** Have a look at the file "map1_ngbr_311_requests_in_2023.pdf" and report which neighborhood has received the highest number of complaints in 2023?
+**[Q8]** Have a look at the file "map1_ngbr_311_requests_in_2023.pdf" and report which neighborhood has received the highest number of complaints in 2023?
 ```{r, eval=FALSE, class.source = "nocopy"}
 # set mode to static mapping
 tmap_mode("plot")
@@ -409,7 +409,7 @@ dev.off()
 
 ```
 
-**[Q]** Please paste the screenshots of the three files _map1_ngbr_311_requests_in_2023.pdf_, _map2_ngbr_311_requests_in_2023_carto1.pdf_, and _map3_ngbr_311_requests_in_2023_carto2_dorling.pdf_. Briefly discuss which map do you like the most and why (failed to provide discussion will result in _2 points deduction_)? 
+**[Q9]** Please paste the screenshots of the three files _map1_ngbr_311_requests_in_2023.pdf_, _map2_ngbr_311_requests_in_2023_carto1.pdf_, and _map3_ngbr_311_requests_in_2023_carto2_dorling.pdf_. Briefly discuss which map do you like the most and why (failed to provide discussion will result in _2 points deduction_)? 
 
 
 ### 6.6 Viz: Tree Maps 
@@ -418,7 +418,7 @@ This section uses the [Parks, Medians, and Parkway Trees](https://opendata-geosp
 
 Again, have a look at the ``` sf_den_tree ``` data and explore what columns are in it. 
 
-**[Q]** Which column do you think is most interesting? 
+**[Q10]** Which column do you think is most interesting? 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 View(sf_den_tree)
@@ -474,12 +474,13 @@ sf_den_ngbr_tree <- left_join(sf_den_ngbr, df_ngbr_tree, by = "neighbourhood")
 
 #### 6.6.2 Bivariate Mapping
 
-Let's say we are interested in the two species "Honey Locust" and "Maple, Silver", and display the counts of the two species in a single map.
+Let's say we are interested in the two species "Honey Locust" and "Maple, Silver", and display the counts of two species on a single map.
 ```{r, eval=FALSE, class.source = "nocopy"}
 # two tree species 
 lt_tree_specs_lbl <- c("Honey Locust", "Maple, Silver")
 ```
 
+At the final map, for each species, we want to divide the values into three categories using the "quantile" classification methods. You could try other classification methods that we have seen in [Chapter 5.6.6](https://fuzhen-yin.github.io/uccs_geoviz/lab5.html#566_Mapping). 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # number of bins 
@@ -500,7 +501,7 @@ col_biv <- stevens.bluered()
 
 ```
 
-
+Preparing for mapping and legend.
 ```{r, eval=FALSE, class.source = "nocopy"}
 map4_ngbr_trees_biv <- tm_shape(sf_den_ngbr_tree) + tm_polygons("class_hl_ms", palette =col_biv, n =9 ) +
   tm_text(text = "label", size=0.5) +
@@ -517,6 +518,9 @@ vp <- viewport(x=.75, y=.25, width=.15, height=.15)
 
 ```
 
+Export. 
+
+**[Q11]** Please paste the screenshot of the file "map4_neighborhood_bivariate_trees.pdf" to your report.  
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # export 
@@ -531,335 +535,10 @@ dev.off()
 
 ```
 
+### 6.7 Close & Exit
 
-```{r, eval=FALSE, class.source = "nocopy"}
-#
+Congratulations!! You have completed the entire tutorial and learnt new spatial analysis and visualization techniques!! Excellent work. 
 
-```
+Please go "File"--> "Close Project" -- a pop window asking "Do you want to save these changes" --> "Yes".
 
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-
-
-
-
-
-
-![Figure 6.3: Line types in "ggplot2."](figs/lab6_ggplot2_linetype.png){width=50%}
-
-
-![Figure 6.4: Bivariate color palettes in "pals".](figs/lab6_pals_bivariate_color_palette.png){width=70%}
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-#
-
-```
+Don't forget to submit the **lab5 report**  and your **script**  to Canvas. 

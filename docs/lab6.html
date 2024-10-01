@@ -501,7 +501,7 @@ graffiti</u>.</p>
 <p>Before any analysis and visualization tasks, the first step is to
 learn about the data and check what are the attributes (or columns) in
 the data.</p>
-<p><strong>[Q]</strong> In your opinion, which column is most
+<p><strong>[Q1]</strong> In your opinion, which column is most
 interesting and briefly explain why.</p>
 <pre class="r nocopy"><code># open data
 View(df_den_311)</code></pre>
@@ -516,8 +516,8 @@ barplot(tb_311_agency_freq, main=&quot;311 Requests - Agency&quot;, las=2, cex.n
 </div>
 <div id="data-type" class="section level4">
 <h4>6.4.2 Data Type</h4>
-<p>Check data type of each column. <strong>[Q]</strong> What is the data
-type of the column <code>Case_Created_dttm</code>.</p>
+<p>Check data type of each column. <strong>[Q2]</strong> What is the
+data type of the column <code>Case_Created_dttm</code>.</p>
 <pre class="r nocopy"><code># data type
 str(df_den_311)</code></pre>
 <p>The column <code>Case_Created_dttm</code> records at what date and
@@ -533,7 +533,7 @@ df_den_311$case_create_date &lt;- as.Date(df_den_311$Case_Created_dttm,
 # extract week numbers 
 df_den_311$case_create_wk &lt;- strftime(df_den_311$case_create_date, 
                                       format = &quot;%V&quot;) %&gt;% as.numeric()</code></pre>
-<p><strong>[Q]</strong> What is the data type of the column
+<p><strong>[Q3]</strong> What is the data type of the column
 <code>Case_Created_dttm</code>?</p>
 <pre class="r nocopy"><code># Check data type again. 
 str(df_den_311)</code></pre>
@@ -543,7 +543,7 @@ str(df_den_311)</code></pre>
 <p>The column <code>Case_Summary</code> categorizes people’s 311
 requests into different types. Let’s check what issues that people have
 reported in 2023 and their frequency.</p>
-<p><strong>[Q]</strong> What are the top 5 categories of 311 service
+<p><strong>[Q4]</strong> What are the top 5 categories of 311 service
 requests?</p>
 <pre class="r nocopy"><code># Case summary - contingency table - ordered by frequency 
 df_311_summary &lt;- table(df_den_311$Case_Summary) %&gt;% 
@@ -578,7 +578,7 @@ way so that:</p>
 <li>Each value must have its own cell.</li>
 </ul>
 <p>The process if tidying is illustrated in Figure 6.1.</p>
-<p><strong>[Q]</strong> Please compare the <code>df_den_311_top</code>
+<p><strong>[Q5]</strong> Please compare the <code>df_den_311_top</code>
 before and after, and try to explain how the “tidy” process changes the
 data structure. If you need to look at the previous data, please go back
 to <a
@@ -618,7 +618,7 @@ dev.off()</code></pre>
 <p>Okay, while the plot looks better now, the week number is very
 confusing. Let’s add some labels by connecting week numbers to seasons
 as suggested by Figure 6.2.</p>
-<p><strong>[Q]</strong> Paste the screenshot of
+<p><strong>[Q6]</strong> Paste the screenshot of
 “plot3_311_service_cat_week_reference.pdf” to your report. Please
 <strong>briefly discuss</strong> your findings from this analysis
 (failed to provide discussion will result in <em>2 points
@@ -658,7 +658,7 @@ dev.off()</code></pre>
 <h3>6.5 Viz: Mapping 311 Requests</h3>
 <p>This section moves from time-series to spatial visualization of the
 311 data.</p>
-<p><strong>[Q]</strong> Please open the data frame
+<p><strong>[Q7]</strong> Please open the data frame
 <code>df_den_311</code> and report which columns contain spatial
 information of 311 requests and could be used to convert “df_den_311” to
 spatial data?</p>
@@ -707,7 +707,7 @@ neighborhoods by using the <code>st_intersects()</code> function.</p>
 sf_den_ngbr_311 &lt;- sf_den_ngbr
 sf_den_ngbr_311[&quot;n_311&quot;] &lt;- lengths(st_intersects(sf_den_ngbr_311, sf_den_311))</code></pre>
 <p>Quick plot of 311 calls by neighborhood.</p>
-<p><strong>[Q]</strong> Have a look at the file
+<p><strong>[Q8]</strong> Have a look at the file
 “map1_ngbr_311_requests_in_2023.pdf” and report which neighborhood has
 received the highest number of complaints in 2023?</p>
 <pre class="r nocopy"><code># set mode to static mapping
@@ -764,7 +764,7 @@ map3_ngbr_311_c2 &lt;- tm_shape(sf_den_ngbr_311_carto_dorling) +
 pdf(&quot;plot/map3_ngbr_311_requests_in_2023_carto2_dorling.pdf&quot;, width = 10, height = 8)
 print(map3_ngbr_311_c2)
 dev.off()</code></pre>
-<p><strong>[Q]</strong> Please paste the screenshots of the three files
+<p><strong>[Q9]</strong> Please paste the screenshots of the three files
 <em>map1_ngbr_311_requests_in_2023.pdf</em>,
 <em>map2_ngbr_311_requests_in_2023_carto1.pdf</em>, and
 <em>map3_ngbr_311_requests_in_2023_carto2_dorling.pdf</em>. Briefly
@@ -780,7 +780,7 @@ Medians, and Parkway Trees</a> in Denver to produce a bivariate
 choropleth map.</p>
 <p>Again, have a look at the <code>sf_den_tree</code> data and explore
 what columns are in it.</p>
-<p><strong>[Q]</strong> Which column do you think is most
+<p><strong>[Q10]</strong> Which column do you think is most
 interesting?</p>
 <pre class="r nocopy"><code>View(sf_den_tree)</code></pre>
 <div id="spatial-data-manipulation" class="section level4">
@@ -825,10 +825,15 @@ sf_den_ngbr_tree &lt;- left_join(sf_den_ngbr, df_ngbr_tree, by = &quot;neighbour
 <div id="bivariate-mapping" class="section level4">
 <h4>6.6.2 Bivariate Mapping</h4>
 <p>Let’s say we are interested in the two species “Honey Locust” and
-“Maple, Silver”, and display the counts of the two species in a single
+“Maple, Silver”, and display the counts of two species on a single
 map.</p>
 <pre class="r nocopy"><code># two tree species 
 lt_tree_specs_lbl &lt;- c(&quot;Honey Locust&quot;, &quot;Maple, Silver&quot;)</code></pre>
+<p>At the final map, for each species, we want to divide the values into
+three categories using the “quantile” classification methods. You could
+try other classification methods that we have seen in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab5.html#566_Mapping">Chapter
+5.6.6</a>.</p>
 <pre class="r nocopy"><code># number of bins 
 nbins &lt;- 3
 
@@ -844,6 +849,7 @@ sf_den_ngbr_tree$class_hl_ms &lt;- class_hl + nbins*(class_ms-1)
 
 # bivariate color palette 
 col_biv &lt;- stevens.bluered()</code></pre>
+<p>Preparing for mapping and legend.</p>
 <pre class="r nocopy"><code>map4_ngbr_trees_biv &lt;- tm_shape(sf_den_ngbr_tree) + tm_polygons(&quot;class_hl_ms&quot;, palette =col_biv, n =9 ) +
   tm_text(text = &quot;label&quot;, size=0.5) +
   tm_compass(position = c(&quot;left&quot;, &quot;top&quot;)) +
@@ -856,6 +862,9 @@ map_legend &lt;- levelplot(matrix(1:(nbins*nbins), nrow=nbins), axes=FALSE, col.
           scales=list(draw=0))
 
 vp &lt;- viewport(x=.75, y=.25, width=.15, height=.15)</code></pre>
+<p>Export.</p>
+<p><strong>[Q11]</strong> Please paste the screenshot of the file
+“map4_neighborhood_bivariate_trees.pdf” to your report.</p>
 <pre class="r nocopy"><code># export 
 pdf(&quot;plot/map4_neighborhood_bivariate_trees.pdf&quot;, width = 12, height = 12)
 
@@ -865,72 +874,16 @@ print(map_legend, newpage=FALSE)
 popViewport()
 
 dev.off()</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<div class="float">
-<img src="figs/lab6_ggplot2_linetype.png" style="width:50.0%"
-alt="Figure 6.3: Line types in “ggplot2.”" />
-<div class="figcaption">Figure 6.3: Line types in “ggplot2.”</div>
 </div>
-<div class="float">
-<img src="figs/lab6_pals_bivariate_color_palette.png"
-style="width:70.0%"
-alt="Figure 6.4: Bivariate color palettes in “pals”." />
-<div class="figcaption">Figure 6.4: Bivariate color palettes in
-“pals”.</div>
 </div>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-<pre class="r nocopy"><code>#</code></pre>
-</div>
+<div id="close-exit" class="section level3">
+<h3>6.7 Close &amp; Exit</h3>
+<p>Congratulations!! You have completed the entire tutorial and learnt
+new spatial analysis and visualization techniques!! Excellent work.</p>
+<p>Please go “File”–&gt; “Close Project” – a pop window asking “Do you
+want to save these changes” –&gt; “Yes”.</p>
+<p>Don’t forget to submit the <strong>lab5 report</strong> and your
+<strong>script</strong> to Canvas.</p>
 </div>
 
 
