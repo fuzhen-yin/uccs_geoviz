@@ -600,7 +600,9 @@ p1_311 &lt;- ggplot(df_den_311_top, aes(x=case_create_wk, y=count, fill=category
 
 # have a look
 p1_311</code></pre>
-<pre class="r nocopy"><code># viz: improve by changing color palette &amp; add labels
+<p>Improve the plot by using the <strong>viridis</strong> color palette
+from the <code>viridis</code> library.</p>
+<pre class="r nocopy"><code># viz: improve 
 p2_311 &lt;- ggplot(df_den_311_top, aes(x=case_create_wk, y=count, fill=category)) +
   geom_area(alpha=0.6 , linewidth=.5, colour=&quot;white&quot;) + 
   scale_fill_viridis(discrete = T) + 
@@ -613,14 +615,28 @@ p2_311 &lt;- ggplot(df_den_311_top, aes(x=case_create_wk, y=count, fill=category
 pdf(&quot;plot/plot2_311_service_cat_week.pdf&quot;, width = 10, height = 6)
 print(p2_311)
 dev.off()</code></pre>
-<pre class="r nocopy"><code># viz: improve by adding annotation &amp; reference lines  
+<p>Okay, while the plot looks better now, the week number is very
+confusing. Let’s add some labels by connecting week numbers to seasons
+as suggested by Figure 6.2.</p>
+<p><strong>[Q]</strong> Paste the screenshot of
+“plot3_311_service_cat_week_reference.pdf” to your report. Please
+<strong>briefly discuss</strong> your findings from this analysis
+(failed to do this will result in <em>2 points deduction</em>).</p>
+<div class="float">
+<img src="figs/lab6_season_week.png" style="width:80.0%"
+alt="Figure 6.2: When four seasons start in 2024." />
+<div class="figcaption">Figure 6.2: When four seasons start in
+2024.</div>
+</div>
+<p><br></p>
+<pre class="r nocopy"><code># create a df showing when the four seasons start 
 df_311_season_label &lt;- data.frame(
   x_season = c(5,18,31,44),
   y_season = 2000, 
   label = c(&quot;Winter&quot;,&quot;Spring&quot;, &quot;Summer&quot;, &quot;Fall&quot;)
 )
 
-
+# viz: improve by adding annotation &amp; reference lines  
 p3_311 &lt;- ggplot(df_den_311_top, aes(x=case_create_wk, y=count, fill=category)) +
   geom_area(alpha=0.6 , size=.5, colour=&quot;white&quot;) + 
   scale_fill_viridis(discrete = T) + 
@@ -639,13 +655,28 @@ dev.off()</code></pre>
 </div>
 <div id="viz-mapping-311-requests" class="section level3">
 <h3>6.5: Viz: Mapping 311 Requests</h3>
-<pre class="r nocopy"><code># **[Q]** Which columns contain spatial information of 311 requests and could be used to convert &quot;df_den_311&quot; to spatial data?  
+<p>This section moves from time-series to spatial visualization of the
+311 data.</p>
+<p><strong>[Q]</strong> Please open the data frame
+<code>df_den_311</code> and report which columns contain spatial
+information of 311 requests and could be used to convert “df_den_311” to
+spatial data?</p>
+<pre class="r nocopy"><code># open
 View(df_den_311)
-# list all column names 
-names(df_den_311)
 
-# Convert to spatial points 
+# list all column names 
+names(df_den_311)</code></pre>
+<p>Create simple features of 311 service requests and save the data as
+<code>sf_den_311</code>.</p>
+<pre class="r nocopy"><code># Convert to spatial points 
 sf_den_311 &lt;- st_as_sf(df_den_311, coords = c(&quot;Longitude&quot;, &quot;Latitude&quot;), crs = 4326)</code></pre>
+<p>Let’s check the CRS (coordinate reference system) of all simple
+features we have and project them to the 2D CRS, <a
+href="https://epsg.io/2231">NAD83 / Colorado North (ftUS)</a>, which has
+its centroid in Colorado. The value <strong>2231</strong> is the unique
+index for the CRS <a href="https://epsg.io/2231">NAD83 / Colorado North
+(ftUS)</a>. More CRS could be found here <a
+href="https://epsg.io/">https://epsg.io/</a>.</p>
 <pre class="r nocopy"><code># four spatial data (simple features). Let&#39;s check their coordination systems 
 sf_den_311$geometry
 sf_den_tree$geometry
@@ -657,9 +688,7 @@ sf_den_ngbr$geometry
 # https://epsg.io/2231 - NAD83 / Colorado North (ftUS)
 sf_den_311 &lt;- st_transform(sf_den_311, 2231)
 sf_den_tree &lt;- st_transform(sf_den_tree, 2231)
-sf_den_ngbr &lt;- st_transform(sf_den_ngbr, 2231)
-
-## after projection, what are their projected CRS</code></pre>
+sf_den_ngbr &lt;- st_transform(sf_den_ngbr, 2231)</code></pre>
 <pre class="r nocopy"><code>## create a column &quot;label&quot; for mapping 
 sf_den_ngbr$label &lt;- sf_den_ngbr$neighbourhood
 sf_den_ngbr$label &lt;- gsub(&quot; &quot;, &quot;\n&quot;, sf_den_ngbr$label)</code></pre>
@@ -789,12 +818,6 @@ dev.off()</code></pre>
 <pre class="r nocopy"><code>#</code></pre>
 <pre class="r nocopy"><code>#</code></pre>
 <pre class="r nocopy"><code>#</code></pre>
-<div class="float">
-<img src="figs/lab6_season_week.png" style="width:80.0%"
-alt="Figure 6.2: When four seasons start in 2024." />
-<div class="figcaption">Figure 6.2: When four seasons start in
-2024.</div>
-</div>
 <div class="float">
 <img src="figs/lab6_ggplot2_linetype.png" style="width:50.0%"
 alt="Figure 6.3: Line types in “ggplot2.”" />

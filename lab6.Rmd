@@ -235,9 +235,9 @@ p1_311 <- ggplot(df_den_311_top, aes(x=case_create_wk, y=count, fill=category)) 
 p1_311
 ```
 
-
+Improve the plot by using the **viridis** color palette from the ``` viridis ``` library. 
 ```{r, eval=FALSE, class.source = "nocopy"}
-# viz: improve by changing color palette & add labels
+# viz: improve 
 p2_311 <- ggplot(df_den_311_top, aes(x=case_create_wk, y=count, fill=category)) +
   geom_area(alpha=0.6 , linewidth=.5, colour="white") + 
   scale_fill_viridis(discrete = T) + 
@@ -253,16 +253,23 @@ dev.off()
 
 ```
 
+Okay, while the plot looks better now, the week number is very confusing. Let's add some labels by connecting week numbers to seasons as suggested by Figure 6.2. 
+
+**[Q]** Paste the screenshot of "plot3_311_service_cat_week_reference.pdf" to your report. Please **briefly discuss** your findings from this analysis (failed to do this will result in _2 points deduction_). 
+
+![Figure 6.2: When four seasons start in 2024.](figs/lab6_season_week.png){width=80%}
+
+<br>
 
 ```{r, eval=FALSE, class.source = "nocopy"}
-# viz: improve by adding annotation & reference lines  
+# create a df showing when the four seasons start 
 df_311_season_label <- data.frame(
   x_season = c(5,18,31,44),
   y_season = 2000, 
   label = c("Winter","Spring", "Summer", "Fall")
 )
 
-
+# viz: improve by adding annotation & reference lines  
 p3_311 <- ggplot(df_den_311_top, aes(x=case_create_wk, y=count, fill=category)) +
   geom_area(alpha=0.6 , size=.5, colour="white") + 
   scale_fill_viridis(discrete = T) + 
@@ -281,16 +288,32 @@ dev.off()
 ```
 
 ### 6.5: Viz: Mapping 311 Requests
+
+
+This section moves from time-series to spatial visualization of the 311 data. 
+
+**[Q]** Please open the data frame ``` df_den_311 ``` and report which columns contain spatial information of 311 requests and could be used to convert "df_den_311" to spatial data?  
+
 ```{r, eval=FALSE, class.source = "nocopy"}
-# **[Q]** Which columns contain spatial information of 311 requests and could be used to convert "df_den_311" to spatial data?  
+# open
 View(df_den_311)
+
 # list all column names 
 names(df_den_311)
+```
 
+#### 6.5.1: From Dataframe to Simple Features
+
+Create simple features of 311 service requests and save the data as ``` sf_den_311 ```. 
+```{r, eval=FALSE, class.source = "nocopy"}
 # Convert to spatial points 
 sf_den_311 <- st_as_sf(df_den_311, coords = c("Longitude", "Latitude"), crs = 4326)
-
 ```
+
+
+Let's check the CRS (coordinate reference system) of all simple features we have and project them to the 2D CRS, [NAD83 / Colorado North (ftUS)](https://epsg.io/2231), which has its centroid in Colorado.  
+
+> The value **2231** is the unique index for the CRS [NAD83 / Colorado North (ftUS)](https://epsg.io/2231). More CRS could be found here [https://epsg.io/](https://epsg.io/). 
 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
@@ -299,16 +322,11 @@ sf_den_311$geometry
 sf_den_tree$geometry
 sf_den_ngbr$geometry
 
-
-
 # project the data to NAD83 / Colorado North (ftUS)
 # https://epsg.io/2231 - NAD83 / Colorado North (ftUS)
 sf_den_311 <- st_transform(sf_den_311, 2231)
 sf_den_tree <- st_transform(sf_den_tree, 2231)
 sf_den_ngbr <- st_transform(sf_den_ngbr, 2231)
-
-## after projection, what are their projected CRS
-
 ```
 
 
@@ -572,7 +590,7 @@ dev.off()
 
 
 
-![Figure 6.2: When four seasons start in 2024.](figs/lab6_season_week.png){width=80%}
+
 
 
 
