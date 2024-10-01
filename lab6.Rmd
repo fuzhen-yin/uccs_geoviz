@@ -1,0 +1,17 @@
+---
+title: "Chapter 6: Map Making (3) Timeseries, Cartogram & Bivariate Visualization"
+output: 
+  html_document:
+    fig_caption: yes
+    theme: cosmo
+    toc: yes
+    toc_depth: 5
+    toc_float: 
+      collapsed: true
+css: website.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
