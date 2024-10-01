@@ -31,9 +31,10 @@ knitr::opts_chunk$set(echo = TRUE)
 Under the course folder, please create a folder called "**lab6**". Next, in the **lab6** folder, please create two [sub-folders]{.ul} that one is called "**data**" and another one is "**plot**". 
 
 #### 6.2.2 Data
-In this lab, we will explore data sources other than [US Census Bureau](https://data.census.gov/). Particularly, we will play with [Airbnb data](https://insideairbnb.com/get-the-data/) for the city of Denver (CO). 
+This chapter continues to explore spatial data sources other than [US Census Bureau](https://data.census.gov/). We will use the [311 Service Requests in 2023](https://opendata-geospatialdenver.hub.arcgis.com/search?q=311) and [Parks, Medians, and Parkway Trees](https://opendata-geospatialdenver.hub.arcgis.com/datasets/geospatialDenver::parks-medians-and-parkway-trees/about). 
 
-> [AirBnb](https://insideairbnb.com/get-the-data/) has published datasets related to [listings]{.ul}, [reviews]{.ul}, and [neighborhoods]{.ul} in major cities or tourist destinations all over the world. [Here](https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit?gid=1322284596#gid=1322284596) you can find the data dictionary of [Airbnb data](https://insideairbnb.com/get-the-data/). 
+
+> 311 data contains pertinent information related to inquiries and service requests for the City and County of Denver.
 
 
 
