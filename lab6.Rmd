@@ -211,7 +211,7 @@ From here, we are going to change the structure of the data ``` df_den_311_top `
 
 The process if tidying is illustrated in Figure 6.1. 
 
-Please compare the "df_den_311_top" before and after, and try to understand how does the "tidy" process change the data structure.  
+**[Q]** Please compare the ``` df_den_311_top ``` before and after, and try to explain how the "tidy" process changes the data structure. If you need to look at the previous data, please go back to [Step 6.4.3](https://fuzhen-yin.github.io/uccs_geoviz/lab6.html#643:_Top_5_Service_Reuqests_Categories) and rerun the script from there. 
 
 ![Figure 6.1: Diagram of data tidying.](figs/lab6_tidy_variables.png){width=80%}
 <br>
@@ -223,7 +223,9 @@ df_den_311_top <- df_den_311_top %>%
 
 ```
 
-#### 
+#### 6.4.4: Time Series Plot
+
+Let's make a basic plot exploring how the top 5 categories of 311 requests change over times (by week). 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # viz: time series 
 p1_311 <- ggplot(df_den_311_top, aes(x=case_create_wk, y=count, fill=category)) +

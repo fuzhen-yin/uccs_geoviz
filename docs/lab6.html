@@ -578,16 +578,22 @@ way so that:</p>
 <li>Each value must have its own cell.</li>
 </ul>
 <p>The process if tidying is illustrated in Figure 6.1.</p>
-<p>Please compare the “df_den_311_top” before and after, and try to
-understand how does the “tidy” process change the data structure.</p>
-<div class="float">
-<img src="figs/lab6_tidy_variables.png" style="width:80.0%"
-alt="Figure 6.1: Diagram of data tidying." />
-<div class="figcaption">Figure 6.1: Diagram of data tidying.</div>
-</div>
+<p><strong>[Q]</strong> Please compare the <code>df_den_311_top</code>
+before and after, and try to explain how the “tidy” process changes the
+data structure. If you need to look at the previous data, please go back
+to <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab6.html#643:_Top_5_Service_Reuqests_Categories">Step
+6.4.3</a> and rerun the script from there.</p>
+<p><img src="figs/lab6_tidy_variables.png" style="width:80.0%"
+alt="Figure 6.1: Diagram of data tidying." /> <br></p>
 <pre class="r nocopy"><code># Tidy data using the function pivot_longer()
 df_den_311_top &lt;- df_den_311_top %&gt;% 
   pivot_longer(cols = 2:ncol(.), names_to = &quot;category&quot;, values_to =&quot;count&quot;)</code></pre>
+</div>
+<div id="time-series-plot" class="section level4">
+<h4>6.4.4: Time Series Plot</h4>
+<p>Let’s make a basic plot exploring how the top 5 categories of 311
+requests change over times (by week).</p>
 <pre class="r nocopy"><code># viz: time series 
 p1_311 &lt;- ggplot(df_den_311_top, aes(x=case_create_wk, y=count, fill=category)) +
   geom_area(alpha=0.6 , linewidth=.5, colour=&quot;white&quot;)
