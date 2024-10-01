@@ -60,7 +60,7 @@ Again, we would like to start a **new project** from scratch with a **clean R Sc
 
 #### 6.2.4 Before Start 
 
-:::: {.greenbox data-latex=""}
+:::: {.bluebox data-latex=""}
 ::: {.left data-latex=""}
 [**Heads-Up! **]{.ul}
 :::
