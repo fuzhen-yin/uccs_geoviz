@@ -497,7 +497,7 @@ United States that provides access to non-emergency municipal services
 like <u>reporting abandoned vehicles, noise complaints, and
 graffiti</u>.</p>
 <div id="exploring-311-data" class="section level4">
-<h4>6.4.1: Exploring 311 data</h4>
+<h4>6.4.1 Exploring 311 data</h4>
 <p>Before any analysis and visualization tasks, the first step is to
 learn about the data and check what are the attributes (or columns) in
 the data.</p>
@@ -515,7 +515,7 @@ View(tb_311_agency_freq)
 barplot(tb_311_agency_freq, main=&quot;311 Requests - Agency&quot;, las=2, cex.names = 0.5)</code></pre>
 </div>
 <div id="data-type" class="section level4">
-<h4>6.4.2: Data Type</h4>
+<h4>6.4.2 Data Type</h4>
 <p>Check data type of each column. <strong>[Q]</strong> What is the data
 type of the column <code>Case_Created_dttm</code>.</p>
 <pre class="r nocopy"><code># data type
@@ -539,7 +539,7 @@ df_den_311$case_create_wk &lt;- strftime(df_den_311$case_create_date,
 str(df_den_311)</code></pre>
 </div>
 <div id="top-5-service-reuqests-categories" class="section level4">
-<h4>6.4.3: Top 5 Service Reuqests Categories</h4>
+<h4>6.4.3 Top 5 Service Reuqests Categories</h4>
 <p>The column <code>Case_Summary</code> categorizes people’s 311
 requests into different types. Let’s check what issues that people have
 reported in 2023 and their frequency.</p>
@@ -591,7 +591,7 @@ df_den_311_top &lt;- df_den_311_top %&gt;%
   pivot_longer(cols = 2:ncol(.), names_to = &quot;category&quot;, values_to =&quot;count&quot;)</code></pre>
 </div>
 <div id="time-series-plot" class="section level4">
-<h4>6.4.4: Time Series Plot</h4>
+<h4>6.4.4 Time Series Plot</h4>
 <p>Let’s make a basic plot exploring how the top 5 categories of 311
 requests change over times (by week).</p>
 <pre class="r nocopy"><code># viz: time series 
@@ -621,7 +621,8 @@ as suggested by Figure 6.2.</p>
 <p><strong>[Q]</strong> Paste the screenshot of
 “plot3_311_service_cat_week_reference.pdf” to your report. Please
 <strong>briefly discuss</strong> your findings from this analysis
-(failed to do this will result in <em>2 points deduction</em>).</p>
+(failed to provide discussion will result in <em>2 points
+deduction</em>).</p>
 <div class="float">
 <img src="figs/lab6_season_week.png" style="width:80.0%"
 alt="Figure 6.2: When four seasons start in 2024." />
@@ -654,7 +655,7 @@ dev.off()</code></pre>
 </div>
 </div>
 <div id="viz-mapping-311-requests" class="section level3">
-<h3>6.5: Viz: Mapping 311 Requests</h3>
+<h3>6.5 Viz: Mapping 311 Requests</h3>
 <p>This section moves from time-series to spatial visualization of the
 311 data.</p>
 <p><strong>[Q]</strong> Please open the data frame
@@ -666,6 +667,8 @@ View(df_den_311)
 
 # list all column names 
 names(df_den_311)</code></pre>
+<div id="from-dataframe-to-simple-features" class="section level4">
+<h4>6.5.1 From Dataframe to Simple Features</h4>
 <p>Create simple features of 311 service requests and save the data as
 <code>sf_den_311</code>.</p>
 <pre class="r nocopy"><code># Convert to spatial points 
@@ -673,29 +676,41 @@ sf_den_311 &lt;- st_as_sf(df_den_311, coords = c(&quot;Longitude&quot;, &quot;La
 <p>Let’s check the CRS (coordinate reference system) of all simple
 features we have and project them to the 2D CRS, <a
 href="https://epsg.io/2231">NAD83 / Colorado North (ftUS)</a>, which has
-its centroid in Colorado. The value <strong>2231</strong> is the unique
-index for the CRS <a href="https://epsg.io/2231">NAD83 / Colorado North
-(ftUS)</a>. More CRS could be found here <a
-href="https://epsg.io/">https://epsg.io/</a>.</p>
+its centroid in Colorado.</p>
+<blockquote>
+<p>The value <strong>2231</strong> is the unique index for the CRS <a
+href="https://epsg.io/2231">NAD83 / Colorado North (ftUS)</a>. More CRS
+could be found here <a href="https://epsg.io/">https://epsg.io/</a>.</p>
+</blockquote>
 <pre class="r nocopy"><code># four spatial data (simple features). Let&#39;s check their coordination systems 
 sf_den_311$geometry
 sf_den_tree$geometry
 sf_den_ngbr$geometry
-
-
 
 # project the data to NAD83 / Colorado North (ftUS)
 # https://epsg.io/2231 - NAD83 / Colorado North (ftUS)
 sf_den_311 &lt;- st_transform(sf_den_311, 2231)
 sf_den_tree &lt;- st_transform(sf_den_tree, 2231)
 sf_den_ngbr &lt;- st_transform(sf_den_ngbr, 2231)</code></pre>
+</div>
+<div id="mapping-311-calls-by-neighborhood" class="section level4">
+<h4>6.5.2 Mapping 311 Calls by Neighborhood</h4>
+<p>We will agregate 311 calls to neighborhoods. Have a look at the
+<code>sf_den_ngbr</code> data and create a new column called
+<code>label</code> for showing their names on maps.</p>
 <pre class="r nocopy"><code>## create a column &quot;label&quot; for mapping 
 sf_den_ngbr$label &lt;- sf_den_ngbr$neighbourhood
 sf_den_ngbr$label &lt;- gsub(&quot; &quot;, &quot;\n&quot;, sf_den_ngbr$label)</code></pre>
+<p>Count the number of 311 service requests with respect to different
+neighborhoods by using the <code>st_intersects()</code> function.</p>
 <pre class="r nocopy"><code># Count 311 (2023) in each neighborhood  
 sf_den_ngbr_311 &lt;- sf_den_ngbr
 sf_den_ngbr_311[&quot;n_311&quot;] &lt;- lengths(st_intersects(sf_den_ngbr_311, sf_den_311))</code></pre>
-<pre class="r nocopy"><code># quick plot of count of 311 in neighborhood 
+<p>Quick plot of 311 calls by neighborhood.</p>
+<p><strong>[Q]</strong> Have a look at the file
+“map1_ngbr_311_requests_in_2023.pdf” and report which neighborhood has
+received the highest number of complaints in 2023?</p>
+<pre class="r nocopy"><code># set mode to static mapping
 tmap_mode(&quot;plot&quot;)
 
 map1_ngbr_311 &lt;- tm_shape(sf_den_ngbr_311) + 
@@ -704,12 +719,21 @@ map1_ngbr_311 &lt;- tm_shape(sf_den_ngbr_311) +
   tm_compass(position = c(&quot;left&quot;, &quot;top&quot;)) +
   tm_scale_bar(width = 0.1, position = c(&quot;left&quot;, &quot;top&quot;))
 
+# export 
 pdf(&quot;plot/map1_ngbr_311_requests_in_2023.pdf&quot;, width = 10, height = 8)
 print(map1_ngbr_311)
-dev.off()
-# **[Q]** Which neighborhood that most 311 calls complain about? </code></pre>
-<div id="cartogram-1" class="section level4">
-<h4>Cartogram 1</h4>
+dev.off()</code></pre>
+</div>
+<div id="cartograms" class="section level4">
+<h4>6.5.3 Cartograms</h4>
+<p>This and the following sections use the same dataset
+<code>sf_den_ngbr_311</code> and variable <code>n_311</code> to explore
+additional mapping techniques, i.e., cartogram.</p>
+<blockquote>
+<p>A cartogram is a thematic map of a set of features, in which their
+geographic size is altered to be directly proportional to a selected
+variable.</p>
+</blockquote>
 <pre class="r nocopy"><code># cartogram 1
 # Construct a continuous area cartogram by a rubber sheet distortion algorithm
 sf_den_ngbr_311_carto &lt;- cartogram_cont(sf_den_ngbr_311, &quot;n_311&quot;, itermax = 10)
@@ -725,8 +749,8 @@ pdf(&quot;plot/map2_ngbr_311_requests_in_2023_carto1.pdf&quot;, width = 10, heig
 print(map2_ngbr_311_c1)
 dev.off()</code></pre>
 </div>
-<div id="cartogram-2" class="section level4">
-<h4>Cartogram 2</h4>
+<div id="cartogram---dorling" class="section level4">
+<h4>6.5.4 Cartogram - Dorling</h4>
 <pre class="r nocopy"><code># cartogram 2
 # Construct a cartogram which represents each geographic region as non-overlapping circles (Dorling 1996).
 sf_den_ngbr_311_carto_dorling &lt;- cartogram_dorling(sf_den_ngbr_311, weight = &quot;n_311&quot;, itermax = 10)
@@ -740,32 +764,70 @@ map3_ngbr_311_c2 &lt;- tm_shape(sf_den_ngbr_311_carto_dorling) +
 pdf(&quot;plot/map3_ngbr_311_requests_in_2023_carto2_dorling.pdf&quot;, width = 10, height = 8)
 print(map3_ngbr_311_c2)
 dev.off()</code></pre>
+<p><strong>[Q]</strong> Please paste the screenshots of the three files
+<em>map1_ngbr_311_requests_in_2023.pdf</em>,
+<em>map2_ngbr_311_requests_in_2023_carto1.pdf</em>, and
+<em>map3_ngbr_311_requests_in_2023_carto2_dorling.pdf</em>. Briefly
+discuss which map do you like the most and why (failed to provide
+discussion will result in <em>2 points deduction</em>)?</p>
 </div>
 </div>
-<div id="tree-maps" class="section level3">
-<h3>6.6 Tree Maps</h3>
+<div id="viz-tree-maps" class="section level3">
+<h3>6.6 Viz: Tree Maps</h3>
+<p>This section uses the <a
+href="https://opendata-geospatialdenver.hub.arcgis.com/datasets/geospatialDenver::parks-medians-and-parkway-trees/about">Parks,
+Medians, and Parkway Trees</a> in Denver to produce a bivariate
+choropleth map.</p>
+<p>Again, have a look at the <code>sf_den_tree</code> data and explore
+what columns are in it.</p>
+<p><strong>[Q]</strong> Which column do you think is most
+interesting?</p>
+<pre class="r nocopy"><code>View(sf_den_tree)</code></pre>
+<div id="spatial-data-manipulation" class="section level4">
+<h4>6.6.1 Spatial Data Manipulation</h4>
+<p>Join the two datasets <code>sf_den_tree</code> and
+<code>sf_den_ngbr</code> by using <code>st_join()</code> .</p>
 <pre class="r nocopy"><code>## spatial join to get neighobrhood information 
 sf_den_tree_ngbr &lt;- st_join(sf_den_tree, sf_den_ngbr[&quot;neighbourhood&quot;], left = T, join = st_intersects)
 
-#  **[Q]** Which two column tell about the species of trees? 
-View(sf_den_tree_ngbr)
-# tree species 
+## have a look at the data after joining
+View(sf_den_tree_ngbr)</code></pre>
+<p>The column <code>SPECIES_COMMON</code> tells about the species of
+trees. Let’s check what are &amp; how many trees of different
+species.</p>
+<pre class="r nocopy"><code># count tree species 
 df_tree_spec &lt;- table(sf_den_tree_ngbr$SPECIES_COMMON) %&gt;% as.data.frame() %&gt;% arrange(-Freq)
+
+# open data
 View(df_tree_spec)</code></pre>
+<p>Count trees of different species in each neighborhood using <a
+href="https://www.geeksforgeeks.org/ml-one-hot-encoding/">One-hot
+encoding</a>.</p>
 <pre class="r nocopy"><code># neighborhood tree species count 
 df_ngbr_tree &lt;- sf_den_tree_ngbr %&gt;% 
   select(neighbourhood, SPECIES_COMMON) %&gt;% 
   mutate(n=1)
+
+# remove geometry 
 st_geometry(df_ngbr_tree) &lt;- NULL
+
+# one-hot encoding 
 df_ngbr_tree &lt;- dcast(df_ngbr_tree, neighbourhood ~ SPECIES_COMMON, 
                       fill = 0, value.var = &quot;n&quot;, fun.aggregate = length)
+
+# open the final data 
 View(df_ngbr_tree)</code></pre>
+<p>Join the data <code>df_ngbr_tree</code> to the spatial boundaries of
+neighborhood <code>sf_den_ngbr</code>.</p>
 <pre class="r nocopy"><code># left join to simple features 
 sf_den_ngbr_tree &lt;- left_join(sf_den_ngbr, df_ngbr_tree, by = &quot;neighbourhood&quot;)</code></pre>
+</div>
 <div id="bivariate-mapping" class="section level4">
-<h4>Bivariate Mapping</h4>
-<pre class="r nocopy"><code>## bivariate map 
-# two tree species 
+<h4>6.6.2 Bivariate Mapping</h4>
+<p>Let’s say we are interested in the two species “Honey Locust” and
+“Maple, Silver”, and display the counts of the two species in a single
+map.</p>
+<pre class="r nocopy"><code># two tree species 
 lt_tree_specs_lbl &lt;- c(&quot;Honey Locust&quot;, &quot;Maple, Silver&quot;)</code></pre>
 <pre class="r nocopy"><code># number of bins 
 nbins &lt;- 3

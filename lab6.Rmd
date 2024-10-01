@@ -116,7 +116,7 @@ In the [previous chapter](https://fuzhen-yin.github.io/uccs_geoviz/lab5.html), w
 This week, we will play with [311 Service Requests in Denver](https://opendata-geospatialdenver.hub.arcgis.com/search?q=311). [311](https://denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/311-City-Services) is a special telephone number supported in many communities in the United States that provides access to non-emergency municipal services like [reporting abandoned vehicles, noise complaints, and graffiti]{.ul}. 
 
 
-#### 6.4.1: Exploring 311 data 
+#### 6.4.1 Exploring 311 data 
 
 Before any analysis and visualization tasks, the first step is to learn about the data and check what are the attributes (or columns) in the data. 
 
@@ -137,7 +137,7 @@ View(tb_311_agency_freq)
 barplot(tb_311_agency_freq, main="311 Requests - Agency", las=2, cex.names = 0.5)
 ```
 
-#### 6.4.2: Data Type 
+#### 6.4.2 Data Type 
 
 Check data type of each column. **[Q]** What is the data type of the column ``` Case_Created_dttm ```. 
 ```{r, eval=FALSE, class.source = "nocopy"}
@@ -166,7 +166,7 @@ str(df_den_311)
 ```
 
 
-#### 6.4.3: Top 5 Service Reuqests Categories  
+#### 6.4.3 Top 5 Service Reuqests Categories  
 
 The column ``` Case_Summary ``` categorizes people's 311 requests into different types. Let's check what issues that people have reported in 2023 and their frequency.  
 
@@ -223,7 +223,7 @@ df_den_311_top <- df_den_311_top %>%
 
 ```
 
-#### 6.4.4: Time Series Plot
+#### 6.4.4 Time Series Plot
 
 Let's make a basic plot exploring how the top 5 categories of 311 requests change over times (by week). 
 ```{r, eval=FALSE, class.source = "nocopy"}
@@ -255,7 +255,7 @@ dev.off()
 
 Okay, while the plot looks better now, the week number is very confusing. Let's add some labels by connecting week numbers to seasons as suggested by Figure 6.2. 
 
-**[Q]** Paste the screenshot of "plot3_311_service_cat_week_reference.pdf" to your report. Please **briefly discuss** your findings from this analysis (failed to do this will result in _2 points deduction_). 
+**[Q]** Paste the screenshot of "plot3_311_service_cat_week_reference.pdf" to your report. Please **briefly discuss** your findings from this analysis (failed to provide discussion will result in _2 points deduction_). 
 
 ![Figure 6.2: When four seasons start in 2024.](figs/lab6_season_week.png){width=80%}
 
@@ -287,7 +287,7 @@ dev.off()
 
 ```
 
-### 6.5: Viz: Mapping 311 Requests
+### 6.5 Viz: Mapping 311 Requests
 
 
 This section moves from time-series to spatial visualization of the 311 data. 
@@ -302,7 +302,7 @@ View(df_den_311)
 names(df_den_311)
 ```
 
-#### 6.5.1: From Dataframe to Simple Features
+#### 6.5.1 From Dataframe to Simple Features
 
 Create simple features of 311 service requests and save the data as ``` sf_den_311 ```. 
 ```{r, eval=FALSE, class.source = "nocopy"}
@@ -330,25 +330,28 @@ sf_den_ngbr <- st_transform(sf_den_ngbr, 2231)
 ```
 
 
+#### 6.5.2 Mapping 311 Calls by Neighborhood
+
+We will agregate 311 calls to neighborhoods. Have a look at the ``` sf_den_ngbr ``` data and create a new column called ``` label ``` for showing their names on maps. 
+
 ```{r, eval=FALSE, class.source = "nocopy"}
 ## create a column "label" for mapping 
 sf_den_ngbr$label <- sf_den_ngbr$neighbourhood
 sf_den_ngbr$label <- gsub(" ", "\n", sf_den_ngbr$label)
-
-
 ```
 
-
+Count the number of 311 service requests with respect to different neighborhoods by using the ``` st_intersects() ``` function. 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # Count 311 (2023) in each neighborhood  
 sf_den_ngbr_311 <- sf_den_ngbr
 sf_den_ngbr_311["n_311"] <- lengths(st_intersects(sf_den_ngbr_311, sf_den_311))
-
 ```
 
+Quick plot of 311 calls by neighborhood. 
 
+**[Q]** Have a look at the file "map1_ngbr_311_requests_in_2023.pdf" and report which neighborhood has received the highest number of complaints in 2023?
 ```{r, eval=FALSE, class.source = "nocopy"}
-# quick plot of count of 311 in neighborhood 
+# set mode to static mapping
 tmap_mode("plot")
 
 map1_ngbr_311 <- tm_shape(sf_den_ngbr_311) + 
@@ -357,15 +360,19 @@ map1_ngbr_311 <- tm_shape(sf_den_ngbr_311) +
   tm_compass(position = c("left", "top")) +
   tm_scale_bar(width = 0.1, position = c("left", "top"))
 
+# export 
 pdf("plot/map1_ngbr_311_requests_in_2023.pdf", width = 10, height = 8)
 print(map1_ngbr_311)
 dev.off()
-# **[Q]** Which neighborhood that most 311 calls complain about? 
-
 ```
 
 
-#### Cartogram 1 
+#### 6.5.3 Cartograms
+
+This and the following sections use the same dataset ``` sf_den_ngbr_311 ``` and variable ``` n_311 ``` to explore additional mapping techniques, i.e., cartogram. 
+
+> A cartogram is a thematic map of a set of features, in which their geographic size is altered to be directly proportional to a selected variable. 
+
 ```{r, eval=FALSE, class.source = "nocopy"}
 # cartogram 1
 # Construct a continuous area cartogram by a rubber sheet distortion algorithm
@@ -384,7 +391,7 @@ dev.off()
 
 ```
 
-#### Cartogram 2
+#### 6.5.4 Cartogram - Dorling
 ```{r, eval=FALSE, class.source = "nocopy"}
 # cartogram 2
 # Construct a cartogram which represents each geographic region as non-overlapping circles (Dorling 1996).
@@ -402,47 +409,75 @@ dev.off()
 
 ```
 
+**[Q]** Please paste the screenshots of the three files _map1_ngbr_311_requests_in_2023.pdf_, _map2_ngbr_311_requests_in_2023_carto1.pdf_, and _map3_ngbr_311_requests_in_2023_carto2_dorling.pdf_. Briefly discuss which map do you like the most and why (failed to provide discussion will result in _2 points deduction_)? 
 
-### 6.6 Tree Maps 
+
+### 6.6 Viz: Tree Maps 
+
+This section uses the [Parks, Medians, and Parkway Trees](https://opendata-geospatialdenver.hub.arcgis.com/datasets/geospatialDenver::parks-medians-and-parkway-trees/about) in Denver to produce a bivariate choropleth map. 
+
+Again, have a look at the ``` sf_den_tree ``` data and explore what columns are in it. 
+
+**[Q]** Which column do you think is most interesting? 
+
+```{r, eval=FALSE, class.source = "nocopy"}
+View(sf_den_tree)
+```
+
+#### 6.6.1 Spatial Data Manipulation
+
+Join the two datasets ``` sf_den_tree ``` and ``` sf_den_ngbr ``` by using ``` st_join()  ``` . 
 ```{r, eval=FALSE, class.source = "nocopy"}
 ## spatial join to get neighobrhood information 
 sf_den_tree_ngbr <- st_join(sf_den_tree, sf_den_ngbr["neighbourhood"], left = T, join = st_intersects)
 
-#  **[Q]** Which two column tell about the species of trees? 
+## have a look at the data after joining
 View(sf_den_tree_ngbr)
-# tree species 
-df_tree_spec <- table(sf_den_tree_ngbr$SPECIES_COMMON) %>% as.data.frame() %>% arrange(-Freq)
-View(df_tree_spec)
-
 ```
 
+The column ``` SPECIES_COMMON ``` tells about the species of trees. Let's check what are & how many trees of different species.  
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# count tree species 
+df_tree_spec <- table(sf_den_tree_ngbr$SPECIES_COMMON) %>% as.data.frame() %>% arrange(-Freq)
+
+# open data
+View(df_tree_spec)
+```
+
+Count trees of different species in each neighborhood using [One-hot encoding](https://www.geeksforgeeks.org/ml-one-hot-encoding/). 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # neighborhood tree species count 
 df_ngbr_tree <- sf_den_tree_ngbr %>% 
   select(neighbourhood, SPECIES_COMMON) %>% 
   mutate(n=1)
+
+# remove geometry 
 st_geometry(df_ngbr_tree) <- NULL
+
+# one-hot encoding 
 df_ngbr_tree <- dcast(df_ngbr_tree, neighbourhood ~ SPECIES_COMMON, 
                       fill = 0, value.var = "n", fun.aggregate = length)
-View(df_ngbr_tree)
 
+# open the final data 
+View(df_ngbr_tree)
 ```
 
 
+Join the data ``` df_ngbr_tree ``` to the spatial boundaries of neighborhood ``` sf_den_ngbr ```. 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # left join to simple features 
 sf_den_ngbr_tree <- left_join(sf_den_ngbr, df_ngbr_tree, by = "neighbourhood")
-
 ```
 
 
-#### Bivariate Mapping
+#### 6.6.2 Bivariate Mapping
+
+Let's say we are interested in the two species "Honey Locust" and "Maple, Silver", and display the counts of the two species in a single map.
 ```{r, eval=FALSE, class.source = "nocopy"}
-## bivariate map 
 # two tree species 
 lt_tree_specs_lbl <- c("Honey Locust", "Maple, Silver")
-
 ```
 
 
