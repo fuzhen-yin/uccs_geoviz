@@ -484,52 +484,108 @@ sf_den_tree &lt;- geojson_sf(&quot;data/denver_trees.geojson&quot;)</code></pre>
 </div>
 <div id="viz-311-service-requests-by-week" class="section level3">
 <h3>6.4 Viz: 311 Service Requests by Week</h3>
+<p>In the <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab5.html">previous
+chapter</a>, we have played with <a
+href="https://insideairbnb.com/get-the-data/">AirBnb data</a>.</p>
+<p>This week, we will play with <a
+href="https://opendata-geospatialdenver.hub.arcgis.com/search?q=311">311
+Service Requests in Denver</a>. <a
+href="https://denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/311-City-Services">311</a>
+is a special telephone number supported in many communities in the
+United States that provides access to non-emergency municipal services
+like <u>reporting abandoned vehicles, noise complaints, and
+graffiti</u>.</p>
 <div id="exploring-311-data" class="section level4">
 <h4>6.4.1: Exploring 311 data</h4>
 <p>Before any analysis and visualization tasks, the first step is to
 learn about the data and check what are the attributes (or columns) in
 the data.</p>
+<p><strong>[Q]</strong> In your opinion, which column is most
+interesting and briefly explain why.</p>
 <pre class="r nocopy"><code># open data
 View(df_den_311)</code></pre>
-<p>And the distributions of the variables you are interested in, e.g.,
-the “Agency” column.</p>
+<p>And the distributions of the variables in, e.g., the
+<code>Agency</code> column.</p>
 <pre class="r nocopy"><code># contingency table of the attribute &#39;Agency&#39;
 tb_311_agency_freq &lt;- table(df_den_311$Agency)
 View(tb_311_agency_freq)
 
 # plot: contingency table
 barplot(tb_311_agency_freq, main=&quot;311 Requests - Agency&quot;, las=2, cex.names = 0.5)</code></pre>
+</div>
+<div id="data-type" class="section level4">
+<h4>6.4.2: Data Type</h4>
 <p>Check data type of each column. <strong>[Q]</strong> What is the data
-type of the column “Case_Created_dttm”</p>
+type of the column <code>Case_Created_dttm</code>.</p>
 <pre class="r nocopy"><code># data type
 str(df_den_311)</code></pre>
+<p>The column <code>Case_Created_dttm</code> records at what date and
+time the “311 request” was received. Let’s convert this column to a
+particular data type as ** date **. <a
+href="https://www.stat.berkeley.edu/~s133/dates.html">Read more</a>
+about the datetime format in R.</p>
 <pre class="r nocopy"><code># convert to date 
-# format code for dates: https://www.stat.berkeley.edu/~s133/dates.html
 df_den_311$Case_Created_dttm   # Fri, 29 Dec 2023 19:20:08 GMT
-df_den_311$case_create_date &lt;- as.Date(df_den_311$Case_Created_dttm, format = &quot;%a, %d %b %Y %H:%M:%S&quot;)
+df_den_311$case_create_date &lt;- as.Date(df_den_311$Case_Created_dttm, 
+                                       format = &quot;%a, %d %b %Y %H:%M:%S&quot;)
 
-# **[Q]** What is the data type of column &quot;case_create_date&quot; 
+# extract week numbers 
+df_den_311$case_create_wk &lt;- strftime(df_den_311$case_create_date, 
+                                      format = &quot;%V&quot;) %&gt;% as.numeric()</code></pre>
+<p><strong>[Q]</strong> What is the data type of the column
+<code>Case_Created_dttm</code>?</p>
+<pre class="r nocopy"><code># Check data type again. 
 str(df_den_311)</code></pre>
-<pre class="r nocopy"><code># extract week numbers 
-df_den_311$case_create_wk &lt;- strftime(df_den_311$case_create_date, format = &quot;%V&quot;) %&gt;% as.numeric()</code></pre>
-<pre class="r nocopy"><code># Case summary 
-df_311_summary &lt;- table(df_den_311$Case_Summary) %&gt;% as.data.frame() %&gt;% arrange(-Freq)
-View(df_311_summary)
+</div>
+<div id="top-5-service-reuqests-categories" class="section level4">
+<h4>6.4.3: Top 5 Service Reuqests Categories</h4>
+<p>The column <code>Case_Summary</code> categorizes people’s 311
+requests into different types. Let’s check what issues that people have
+reported in 2023 and their frequency.</p>
+<p><strong>[Q]</strong> What are the top 5 categories of 311 service
+requests?</p>
+<pre class="r nocopy"><code># Case summary - contingency table - ordered by frequency 
+df_311_summary &lt;- table(df_den_311$Case_Summary) %&gt;% 
+  as.data.frame() %&gt;% arrange(-Freq)
 
-# **[Q]** What are the top 5 categories of people&#39;s 311 service requests?</code></pre>
-<pre class="r nocopy"><code># only analyze 311 requests of the most mentioned categories 
+# check
+View(df_311_summary)</code></pre>
+<p>OK, there are over 1000 categories of service requests. Let’s only
+focus on the top 5 frequently mentioned category and save it as a new
+data <code>df_den_311_top</code>.</p>
+<pre class="r nocopy"><code># extract 311 requests in the most mentioned categories 
 df_den_311_top &lt;- df_den_311 %&gt;% 
   filter(Case_Summary %in% df_311_summary$Var1[1:5]) %&gt;% 
   select(case_create_wk, Case_Summary) %&gt;% 
   mutate(n=1)</code></pre>
-<pre class="r nocopy"><code># count 311 service requests in each category by week (one-hot encoding)
-df_den_311_top &lt;- dcast(df_den_311_top, case_create_wk ~ Case_Summary, 
+<p>Count the number of 311 service requests in the top 5 categories by
+week.</p>
+<pre class="r nocopy"><code>#  (one-hot encoding)
+df_den_311_top &lt;- dcast(df_den_311_top, 
+                        case_create_wk ~ Case_Summary, 
                         fill = 0, value.var = &quot;n&quot;,
-                        fun.aggregate = length)</code></pre>
-<pre class="r nocopy"><code># **[Q]** What information does the table &quot;df_den_311_top&quot; tell? 
+                        fun.aggregate = length)
+
 View(df_den_311_top)</code></pre>
+<p>From here, we are going to change the structure of the data
+<code>df_den_311_top</code> and reshape (or <a
+href="https://r4ds.had.co.nz/tidy-data.html">tidy</a>) it in a specific
+way so that:</p>
+<ul>
+<li>Each variable must have its own column.</li>
+<li>Each observation must have its own row.</li>
+<li>Each value must have its own cell.</li>
+</ul>
+<p>The process if tidying is illustrated in Figure 6.1.</p>
+<p>Please compare the “df_den_311_top” before and after, and try to
+understand how does the “tidy” process change the data structure.</p>
+<div class="float">
+<img src="figs/lab6_tidy_variables.png" style="width:80.0%"
+alt="Figure 6.1: Diagram of data tidying." />
+<div class="figcaption">Figure 6.1: Diagram of data tidying.</div>
+</div>
 <pre class="r nocopy"><code># Tidy data using the function pivot_longer()
-# **[Q]** Please compare the &quot;df_den_311_top&quot; before and after, how does the &quot;tidy&quot; process change the data structure? 
 df_den_311_top &lt;- df_den_311_top %&gt;% 
   pivot_longer(cols = 2:ncol(.), names_to = &quot;category&quot;, values_to =&quot;count&quot;)</code></pre>
 <pre class="r nocopy"><code># viz: time series 
@@ -729,20 +785,20 @@ dev.off()</code></pre>
 <pre class="r nocopy"><code>#</code></pre>
 <div class="float">
 <img src="figs/lab6_season_week.png" style="width:80.0%"
-alt="Figure 6.1: When four seasons start in 2024." />
-<div class="figcaption">Figure 6.1: When four seasons start in
+alt="Figure 6.2: When four seasons start in 2024." />
+<div class="figcaption">Figure 6.2: When four seasons start in
 2024.</div>
 </div>
 <div class="float">
 <img src="figs/lab6_ggplot2_linetype.png" style="width:50.0%"
-alt="Figure 6.2: Line types in “ggplot2.”" />
-<div class="figcaption">Figure 6.2: Line types in “ggplot2.”</div>
+alt="Figure 6.3: Line types in “ggplot2.”" />
+<div class="figcaption">Figure 6.3: Line types in “ggplot2.”</div>
 </div>
 <div class="float">
 <img src="figs/lab6_pals_bivariate_color_palette.png"
 style="width:70.0%"
-alt="Figure 6.2: Bivariate color palettes in “pals”." />
-<div class="figcaption">Figure 6.2: Bivariate color palettes in
+alt="Figure 6.4: Bivariate color palettes in “pals”." />
+<div class="figcaption">Figure 6.4: Bivariate color palettes in
 “pals”.</div>
 </div>
 <pre class="r nocopy"><code>#</code></pre>

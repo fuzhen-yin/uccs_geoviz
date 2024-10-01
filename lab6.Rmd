@@ -111,16 +111,23 @@ sf_den_tree <- geojson_sf("data/denver_trees.geojson")
 
 ### 6.4 Viz: 311 Service Requests by Week
 
+In the [previous chapter](https://fuzhen-yin.github.io/uccs_geoviz/lab5.html), we have played with [AirBnb data](https://insideairbnb.com/get-the-data/). 
+
+This week, we will play with [311 Service Requests in Denver](https://opendata-geospatialdenver.hub.arcgis.com/search?q=311). [311](https://denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/311-City-Services) is a special telephone number supported in many communities in the United States that provides access to non-emergency municipal services like [reporting abandoned vehicles, noise complaints, and graffiti]{.ul}. 
+
+
 #### 6.4.1: Exploring 311 data 
 
 Before any analysis and visualization tasks, the first step is to learn about the data and check what are the attributes (or columns) in the data. 
+
+**[Q]** In your opinion, which column is most interesting and briefly explain why.
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # open data
 View(df_den_311)
 ```
 
-And the distributions of the variables you are interested in, e.g., the "Agency" column. 
+And the distributions of the variables in, e.g., the ``` Agency ``` column. 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # contingency table of the attribute 'Agency'
 tb_311_agency_freq <- table(df_den_311$Agency)
@@ -130,75 +137,93 @@ View(tb_311_agency_freq)
 barplot(tb_311_agency_freq, main="311 Requests - Agency", las=2, cex.names = 0.5)
 ```
 
-Check data type of each column. **[Q]** What is the data type of the column "Case_Created_dttm"
+#### 6.4.2: Data Type 
+
+Check data type of each column. **[Q]** What is the data type of the column ``` Case_Created_dttm ```. 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # data type
 str(df_den_311)
 ```
 
+The column ``` Case_Created_dttm ``` records at what date and time the "311 request" was received. Let's convert this column to a particular data type as ** date **. [Read more](https://www.stat.berkeley.edu/~s133/dates.html) about the datetime format in R.  
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # convert to date 
-# format code for dates: https://www.stat.berkeley.edu/~s133/dates.html
 df_den_311$Case_Created_dttm   # Fri, 29 Dec 2023 19:20:08 GMT
-df_den_311$case_create_date <- as.Date(df_den_311$Case_Created_dttm, format = "%a, %d %b %Y %H:%M:%S")
+df_den_311$case_create_date <- as.Date(df_den_311$Case_Created_dttm, 
+                                       format = "%a, %d %b %Y %H:%M:%S")
 
-# **[Q]** What is the data type of column "case_create_date" 
+# extract week numbers 
+df_den_311$case_create_wk <- strftime(df_den_311$case_create_date, 
+                                      format = "%V") %>% as.numeric()
+```
+
+**[Q]** What is the data type of the column ``` Case_Created_dttm ```?
+
+```{r, eval=FALSE, class.source = "nocopy"}
+# Check data type again. 
 str(df_den_311)
 ```
 
 
+#### 6.4.3: Top 5 Service Reuqests Categories  
+
+The column ``` Case_Summary ``` categorizes people's 311 requests into different types. Let's check what issues that people have reported in 2023 and their frequency.  
+
+**[Q]** What are the top 5 categories of  311 service requests?
 
 ```{r, eval=FALSE, class.source = "nocopy"}
-# extract week numbers 
-df_den_311$case_create_wk <- strftime(df_den_311$case_create_date, format = "%V") %>% as.numeric()
+# Case summary - contingency table - ordered by frequency 
+df_311_summary <- table(df_den_311$Case_Summary) %>% 
+  as.data.frame() %>% arrange(-Freq)
 
-```
-
-
-```{r, eval=FALSE, class.source = "nocopy"}
-# Case summary 
-df_311_summary <- table(df_den_311$Case_Summary) %>% as.data.frame() %>% arrange(-Freq)
+# check
 View(df_311_summary)
-
-# **[Q]** What are the top 5 categories of people's 311 service requests?
 ```
 
+OK, there are over 1000 categories of service requests. Let's only focus on the top 5 frequently mentioned category and save it as a new data ``` df_den_311_top ```. 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
-# only analyze 311 requests of the most mentioned categories 
+# extract 311 requests in the most mentioned categories 
 df_den_311_top <- df_den_311 %>% 
   filter(Case_Summary %in% df_311_summary$Var1[1:5]) %>% 
   select(case_create_wk, Case_Summary) %>% 
   mutate(n=1)
-
 ```
 
-
+Count the number of 311 service requests in the top 5 categories by week. 
 ```{r, eval=FALSE, class.source = "nocopy"}
-# count 311 service requests in each category by week (one-hot encoding)
-df_den_311_top <- dcast(df_den_311_top, case_create_wk ~ Case_Summary, 
+#  (one-hot encoding)
+df_den_311_top <- dcast(df_den_311_top, 
+                        case_create_wk ~ Case_Summary, 
                         fill = 0, value.var = "n",
                         fun.aggregate = length)
-```
 
-
-```{r, eval=FALSE, class.source = "nocopy"}
-# **[Q]** What information does the table "df_den_311_top" tell? 
 View(df_den_311_top)
-
 ```
 
+
+From here, we are going to change the structure of the data ``` df_den_311_top ``` and reshape (or [tidy](https://r4ds.had.co.nz/tidy-data.html)) it in a specific way so that: 
+
+* Each variable must have its own column.
+* Each observation must have its own row.
+* Each value must have its own cell.
+
+The process if tidying is illustrated in Figure 6.1. 
+
+Please compare the "df_den_311_top" before and after, and try to understand how does the "tidy" process change the data structure.  
+
+![Figure 6.1: Diagram of data tidying.](figs/lab6_tidy_variables.png){width=80%}
+<br>
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # Tidy data using the function pivot_longer()
-# **[Q]** Please compare the "df_den_311_top" before and after, how does the "tidy" process change the data structure? 
 df_den_311_top <- df_den_311_top %>% 
   pivot_longer(cols = 2:ncol(.), names_to = "category", values_to ="count")
 
 ```
 
-
+#### 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # viz: time series 
 p1_311 <- ggplot(df_den_311_top, aes(x=case_create_wk, y=count, fill=category)) +
@@ -545,14 +570,14 @@ dev.off()
 
 
 
-![Figure 6.1: When four seasons start in 2024.](figs/lab6_season_week.png){width=80%}
+![Figure 6.2: When four seasons start in 2024.](figs/lab6_season_week.png){width=80%}
 
 
 
-![Figure 6.2: Line types in "ggplot2."](figs/lab6_ggplot2_linetype.png){width=50%}
+![Figure 6.3: Line types in "ggplot2."](figs/lab6_ggplot2_linetype.png){width=50%}
 
 
-![Figure 6.2: Bivariate color palettes in "pals".](figs/lab6_pals_bivariate_color_palette.png){width=70%}
+![Figure 6.4: Bivariate color palettes in "pals".](figs/lab6_pals_bivariate_color_palette.png){width=70%}
 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
