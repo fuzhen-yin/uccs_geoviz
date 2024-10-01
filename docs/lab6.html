@@ -788,7 +788,8 @@ interesting?</p>
 <p>Join the two datasets <code>sf_den_tree</code> and
 <code>sf_den_ngbr</code> by using <code>st_join()</code> .</p>
 <pre class="r nocopy"><code>## spatial join to get neighobrhood information 
-sf_den_tree_ngbr &lt;- st_join(sf_den_tree, sf_den_ngbr[&quot;neighbourhood&quot;], left = T, join = st_intersects)
+sf_den_tree_ngbr &lt;- st_join(sf_den_tree, sf_den_ngbr[&quot;neighbourhood&quot;], 
+                            left = T, join = st_intersects)
 
 ## have a look at the data after joining
 View(sf_den_tree_ngbr)</code></pre>
@@ -796,7 +797,8 @@ View(sf_den_tree_ngbr)</code></pre>
 trees. Let’s check what are &amp; how many trees of different
 species.</p>
 <pre class="r nocopy"><code># count tree species 
-df_tree_spec &lt;- table(sf_den_tree_ngbr$SPECIES_COMMON) %&gt;% as.data.frame() %&gt;% arrange(-Freq)
+df_tree_spec &lt;- table(sf_den_tree_ngbr$SPECIES_COMMON) %&gt;% 
+  as.data.frame() %&gt;% arrange(-Freq)
 
 # open data
 View(df_tree_spec)</code></pre>
@@ -850,16 +852,19 @@ sf_den_ngbr_tree$class_hl_ms &lt;- class_hl + nbins*(class_ms-1)
 # bivariate color palette 
 col_biv &lt;- stevens.bluered()</code></pre>
 <p>Preparing for mapping and legend.</p>
-<pre class="r nocopy"><code>map4_ngbr_trees_biv &lt;- tm_shape(sf_den_ngbr_tree) + tm_polygons(&quot;class_hl_ms&quot;, palette =col_biv, n =9 ) +
+<pre class="r nocopy"><code>map4_ngbr_trees_biv &lt;- tm_shape(sf_den_ngbr_tree) + 
+  tm_polygons(&quot;class_hl_ms&quot;, palette =col_biv, n =9 ) +
   tm_text(text = &quot;label&quot;, size=0.5) +
   tm_compass(position = c(&quot;left&quot;, &quot;top&quot;)) +
   tm_scale_bar(width = 0.1, position = c(&quot;left&quot;, &quot;top&quot;)) +
   tm_layout(legend.show = F)
 
 # add the color legend
-map_legend &lt;- levelplot(matrix(1:(nbins*nbins), nrow=nbins), axes=FALSE, col.regions=col_biv,
-          xlab=list(&quot;Honey Locust --&gt;&quot;, cex= 0.7), ylab=list(&quot;Maple, Silver --&gt;&quot;, cex=0.7), cuts=8, colorkey=FALSE,
-          scales=list(draw=0))
+map_legend &lt;- levelplot(matrix(1:(nbins*nbins), nrow=nbins), 
+                        axes=FALSE, col.regions=col_biv,
+                        xlab=list(&quot;Honey Locust --&gt;&quot;, cex= 0.7), 
+                        ylab=list(&quot;Maple, Silver --&gt;&quot;, cex=0.7), cuts=8, colorkey=FALSE,
+                        scales=list(draw=0))
 
 vp &lt;- viewport(x=.75, y=.25, width=.15, height=.15)</code></pre>
 <p>Export.</p>

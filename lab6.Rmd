@@ -429,7 +429,8 @@ View(sf_den_tree)
 Join the two datasets ``` sf_den_tree ``` and ``` sf_den_ngbr ``` by using ``` st_join()  ``` . 
 ```{r, eval=FALSE, class.source = "nocopy"}
 ## spatial join to get neighobrhood information 
-sf_den_tree_ngbr <- st_join(sf_den_tree, sf_den_ngbr["neighbourhood"], left = T, join = st_intersects)
+sf_den_tree_ngbr <- st_join(sf_den_tree, sf_den_ngbr["neighbourhood"], 
+                            left = T, join = st_intersects)
 
 ## have a look at the data after joining
 View(sf_den_tree_ngbr)
@@ -439,7 +440,8 @@ The column ``` SPECIES_COMMON ``` tells about the species of trees. Let's check 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # count tree species 
-df_tree_spec <- table(sf_den_tree_ngbr$SPECIES_COMMON) %>% as.data.frame() %>% arrange(-Freq)
+df_tree_spec <- table(sf_den_tree_ngbr$SPECIES_COMMON) %>% 
+  as.data.frame() %>% arrange(-Freq)
 
 # open data
 View(df_tree_spec)
@@ -503,16 +505,19 @@ col_biv <- stevens.bluered()
 
 Preparing for mapping and legend.
 ```{r, eval=FALSE, class.source = "nocopy"}
-map4_ngbr_trees_biv <- tm_shape(sf_den_ngbr_tree) + tm_polygons("class_hl_ms", palette =col_biv, n =9 ) +
+map4_ngbr_trees_biv <- tm_shape(sf_den_ngbr_tree) + 
+  tm_polygons("class_hl_ms", palette =col_biv, n =9 ) +
   tm_text(text = "label", size=0.5) +
   tm_compass(position = c("left", "top")) +
   tm_scale_bar(width = 0.1, position = c("left", "top")) +
   tm_layout(legend.show = F)
 
 # add the color legend
-map_legend <- levelplot(matrix(1:(nbins*nbins), nrow=nbins), axes=FALSE, col.regions=col_biv,
-          xlab=list("Honey Locust -->", cex= 0.7), ylab=list("Maple, Silver -->", cex=0.7), cuts=8, colorkey=FALSE,
-          scales=list(draw=0))
+map_legend <- levelplot(matrix(1:(nbins*nbins), nrow=nbins), 
+                        axes=FALSE, col.regions=col_biv,
+                        xlab=list("Honey Locust -->", cex= 0.7), 
+                        ylab=list("Maple, Silver -->", cex=0.7), cuts=8, colorkey=FALSE,
+                        scales=list(draw=0))
 
 vp <- viewport(x=.75, y=.25, width=.15, height=.15)
 
