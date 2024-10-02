@@ -547,3 +547,8 @@ Congratulations!! You have completed the entire tutorial and learnt new spatial 
 Please go "File"--> "Close Project" -- a pop window asking "Do you want to save these changes" --> "Yes".
 
 Don't forget to submit the **lab6 report**  and your **script**  to Canvas. 
+
+
+
+
+
