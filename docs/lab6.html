@@ -534,7 +534,7 @@ df_den_311$case_create_date &lt;- as.Date(df_den_311$Case_Created_dttm,
 df_den_311$case_create_wk &lt;- strftime(df_den_311$case_create_date, 
                                       format = &quot;%V&quot;) %&gt;% as.numeric()</code></pre>
 <p><strong>[Q3]</strong> After transformation, What is the data type of
-the column <code>Case_Created_dttm</code>?</p>
+the column <code>case_create_date</code>?</p>
 <pre class="r nocopy"><code># Check data type again. 
 str(df_den_311)</code></pre>
 </div>

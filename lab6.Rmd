@@ -158,7 +158,7 @@ df_den_311$case_create_wk <- strftime(df_den_311$case_create_date,
                                       format = "%V") %>% as.numeric()
 ```
 
-**[Q3]** After transformation, What is the data type of the column ``` Case_Created_dttm ```?
+**[Q3]** After transformation, What is the data type of the column ``` case_create_date ```?
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # Check data type again. 
