@@ -501,8 +501,8 @@ graffiti</u>.</p>
 <p>Before any analysis and visualization tasks, the first step is to
 learn about the data and check what are the attributes (or columns) in
 the data.</p>
-<p><strong>[Q1]</strong> In your opinion, which column is most
-interesting and briefly explain why.</p>
+<p><strong>[Q1]</strong> In your opinion, which column in
+<code>df_den_311</code> is most interesting and briefly explain why.</p>
 <pre class="r nocopy"><code># open data
 View(df_den_311)</code></pre>
 <p>And the distributions of the variables in, e.g., the
@@ -533,8 +533,8 @@ df_den_311$case_create_date &lt;- as.Date(df_den_311$Case_Created_dttm,
 # extract week numbers 
 df_den_311$case_create_wk &lt;- strftime(df_den_311$case_create_date, 
                                       format = &quot;%V&quot;) %&gt;% as.numeric()</code></pre>
-<p><strong>[Q3]</strong> What is the data type of the column
-<code>Case_Created_dttm</code>?</p>
+<p><strong>[Q3]</strong> After transformation, What is the data type of
+the column <code>Case_Created_dttm</code>?</p>
 <pre class="r nocopy"><code># Check data type again. 
 str(df_den_311)</code></pre>
 </div>
@@ -578,7 +578,7 @@ way so that:</p>
 <li>Each value must have its own cell.</li>
 </ul>
 <p>The process if tidying is illustrated in Figure 6.1.</p>
-<p><strong>[Q5]</strong> Please compare the <code>df_den_311_top</code>
+<p><strong>[Q5]</strong> Please compare <code>df_den_311_top</code>
 before and after, and try to explain how the “tidy” process changes the
 data structure. If you need to look at the previous data, please go back
 to <a
@@ -619,7 +619,7 @@ dev.off()</code></pre>
 confusing. Let’s add some labels by connecting week numbers to seasons
 as suggested by Figure 6.2.</p>
 <p><strong>[Q6]</strong> Paste the screenshot of
-“plot3_311_service_cat_week_reference.pdf” to your report. Please
+“plot3_311_service_cat_week_reference.pdf” to your report. And
 <strong>briefly discuss</strong> your findings from this analysis
 (failed to provide discussion will result in <em>2 points
 deduction</em>).</p>
@@ -780,8 +780,8 @@ Medians, and Parkway Trees</a> in Denver to produce a bivariate
 choropleth map.</p>
 <p>Again, have a look at the <code>sf_den_tree</code> data and explore
 what columns are in it.</p>
-<p><strong>[Q10]</strong> Which column do you think is most
-interesting?</p>
+<p><strong>[Q10]</strong> Which column in <code>sf_den_tree</code> do
+you like the most and why?</p>
 <pre class="r nocopy"><code>View(sf_den_tree)</code></pre>
 <div id="spatial-data-manipulation" class="section level4">
 <h4>6.6.1 Spatial Data Manipulation</h4>
@@ -887,7 +887,7 @@ dev.off()</code></pre>
 new spatial analysis and visualization techniques!! Excellent work.</p>
 <p>Please go “File”–&gt; “Close Project” – a pop window asking “Do you
 want to save these changes” –&gt; “Yes”.</p>
-<p>Don’t forget to submit the <strong>lab5 report</strong> and your
+<p>Don’t forget to submit the <strong>lab6 report</strong> and your
 <strong>script</strong> to Canvas.</p>
 </div>
 

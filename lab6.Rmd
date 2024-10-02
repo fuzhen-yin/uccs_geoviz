@@ -120,7 +120,7 @@ This week, we will play with [311 Service Requests in Denver](https://opendata-g
 
 Before any analysis and visualization tasks, the first step is to learn about the data and check what are the attributes (or columns) in the data. 
 
-**[Q1]** In your opinion, which column is most interesting and briefly explain why.
+**[Q1]** In your opinion, which column in ``` df_den_311 ``` is most interesting and briefly explain why.
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # open data
@@ -158,7 +158,7 @@ df_den_311$case_create_wk <- strftime(df_den_311$case_create_date,
                                       format = "%V") %>% as.numeric()
 ```
 
-**[Q3]** What is the data type of the column ``` Case_Created_dttm ```?
+**[Q3]** After transformation, What is the data type of the column ``` Case_Created_dttm ```?
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 # Check data type again. 
@@ -211,7 +211,7 @@ From here, we are going to change the structure of the data ``` df_den_311_top `
 
 The process if tidying is illustrated in Figure 6.1. 
 
-**[Q5]** Please compare the ``` df_den_311_top ``` before and after, and try to explain how the "tidy" process changes the data structure. If you need to look at the previous data, please go back to [Step 6.4.3](https://fuzhen-yin.github.io/uccs_geoviz/lab6.html#643:_Top_5_Service_Reuqests_Categories) and rerun the script from there. 
+**[Q5]** Please compare ``` df_den_311_top ``` before and after, and try to explain how the "tidy" process changes the data structure. If you need to look at the previous data, please go back to [Step 6.4.3](https://fuzhen-yin.github.io/uccs_geoviz/lab6.html#643:_Top_5_Service_Reuqests_Categories) and rerun the script from there. 
 
 ![Figure 6.1: Diagram of data tidying.](figs/lab6_tidy_variables.png){width=80%}
 <br>
@@ -255,7 +255,7 @@ dev.off()
 
 Okay, while the plot looks better now, the week number is very confusing. Let's add some labels by connecting week numbers to seasons as suggested by Figure 6.2. 
 
-**[Q6]** Paste the screenshot of "plot3_311_service_cat_week_reference.pdf" to your report. Please **briefly discuss** your findings from this analysis (failed to provide discussion will result in _2 points deduction_). 
+**[Q6]** Paste the screenshot of "plot3_311_service_cat_week_reference.pdf" to your report. And **briefly discuss** your findings from this analysis (failed to provide discussion will result in _2 points deduction_). 
 
 ![Figure 6.2: When four seasons start in 2024.](figs/lab6_season_week.png){width=80%}
 
@@ -418,7 +418,7 @@ This section uses the [Parks, Medians, and Parkway Trees](https://opendata-geosp
 
 Again, have a look at the ``` sf_den_tree ``` data and explore what columns are in it. 
 
-**[Q10]** Which column do you think is most interesting? 
+**[Q10]** Which column in ``` sf_den_tree ``` do you like the most and why? 
 
 ```{r, eval=FALSE, class.source = "nocopy"}
 View(sf_den_tree)
@@ -546,4 +546,4 @@ Congratulations!! You have completed the entire tutorial and learnt new spatial 
 
 Please go "File"--> "Close Project" -- a pop window asking "Do you want to save these changes" --> "Yes".
 
-Don't forget to submit the **lab5 report**  and your **script**  to Canvas. 
+Don't forget to submit the **lab6 report**  and your **script**  to Canvas. 
