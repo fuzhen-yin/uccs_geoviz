@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Chapter 4: Map Making (1) Intro</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="website.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GeoViz Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="resource.html">Resources</a>
+</li>
+<li>
+  <a href="lab1.html">Lab 1</a>
+</li>
+<li>
+  <a href="lab2.html">Lab 2</a>
+</li>
+<li>
+  <a href="lab3.html">Lab 3</a>
+</li>
+<li>
+  <a href="lab4.html">Lab 4</a>
+</li>
+<li>
+  <a href="lab5.html">Lab 5</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Chapter 4: Map Making (1) Intro</h1>
+
+</div>
+
+
+<div id="lab-goals" class="section level3">
+<h3>4.1 Lab Goals</h3>
+<p>This chapter aims to introduce basic map making concepts and
+techniques. It applies the analysis workflow that we have learnt in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html">Chapter 3</a>
+to spatial visualization. After completing this tutorial, you should be
+able to:</p>
+<ul>
+<li><strong>Understand</strong> the basic mapping concepts in R;</li>
+<li><strong>Interpret</strong> and <strong>Manipulate</strong> tabular
+and spatial data collected from U.S. Census;
+<ul>
+<li>data <u>cleaning</u></li>
+<li>data <u>calculation</u></li>
+<li><u>filtering</u> records</li>
+<li><u>joining</u> data by columns</li>
+</ul></li>
+<li><strong>Create</strong> and <strong>Export</strong> near publishable
+static maps;
+<ul>
+<li>producing <u>choropleth</u> map</li>
+<li>adding <u>legend</u>, <u>scale bar</u> and <u>north arrow</u></li>
+<li><u>combining</u> multiple maps together</li>
+</ul></li>
+</ul>
+</div>
+<div id="good-practice" class="section level3">
+<h3>4.2 Good Practice</h3>
+<div id="organizing-folders-sub-folders" class="section level4">
+<h4>4.2.1 Organizing Folders &amp; Sub-folders</h4>
+<p>Similar to what we have done in previous labs, under the course
+folder, please create a folder called “<strong>lab4</strong>”. Next, in
+the <strong>lab4</strong> folder, please create two <u>sub-folders</u>
+that one is called “<strong>data</strong>” and another one is
+“<strong>plot</strong>”. We’ll use the “data” folder to store data
+collected from the internet. The “plot” will be used to export plots
+generated from R.</p>
+</div>
+<div id="data" class="section level4">
+<h4>4.2.2 Data</h4>
+<p>In this lab, we continue to explore <strong>US Census Bureau</strong>
+as a potential data source for administrative boundaries, and
+demographic, economic and population data. Specifically, we can
+collect:</p>
+<blockquote>
+<p><a
+href="https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html">Cartographic
+Boundaries</a> by geography (e.g., cities, counties, census tracts,
+block groups) or by scale. And</p>
+</blockquote>
+<blockquote>
+<p><a href="https://data.census.gov/">Census Tables</a> summarizing the
+socio-economic and demographic characteristics of particular areas.</p>
+</blockquote>
+<p>This practical will use <strong>El Paso</strong> county (where UCCS
+is located) as a case study to explore its <strong>poverty
+level</strong> through map making. Please follow the steps below to
+<u>download</u> data, <u>unzip</u> it and <u>move</u> the data to the
+required folder.</p>
+<ul>
+<li><strong>Go</strong> to <a
+href="https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab4_data.zip"
+class="uri">https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab4_data.zip</a></li>
+<li><strong>Download</strong> the file <em>“lab4_data.zip”</em></li>
+<li><strong>Unzip</strong> folder <em>“lab4_data.zip”</em></li>
+<li><strong>Move</strong> all files from the “<em>lab4_data</em>” folder
+to the <em>“data”</em> folder under “<em>lab4</em>” see <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#421_Organizing_Folders__Sub-folders">Step
+4.2.1</a></li>
+</ul>
+<p>If there you have any questions about the above-mentioned steps,
+please refer to <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#322_Data">Chapter
+3.2.2</a> for detailed instructions.</p>
+</div>
+<div id="launching-r-studio" class="section level4">
+<h4>4.2.3 Launching R Studio</h4>
+<p>Again, we would like to start a <strong>new project</strong> from
+scratch with a <strong>clean R Script</strong>. Please do the following
+steps. If you have any questions about these steps, please refer to the
+previous chapters for help.</p>
+<ul>
+<li>Step 1: Make sure all existing R projects are <strong>properly
+closed</strong>.
+<ul>
+<li>If <em>not</em>, please close it by going to <em>File</em> –&gt;
+<em>Close Project</em> –&gt; <em>Save</em> changes (see <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab2.html#25_Close__Exit">Chapter
+2.5</a>).</li>
+</ul></li>
+<li>Step 2: Create a <strong>New Project</strong> using <strong>Existing
+Directory</strong>, navigate to <strong>lab4</strong>, click
+<strong>open</strong>, then <strong>Create Project</strong>. (see <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab1.html#13_Launching_RStudio">Chapter
+1.3</a>).</li>
+<li>Step 3: Create a <strong>New Script</strong> by go to
+<strong>File</strong> –&gt; <strong>New File</strong> –&gt; <strong>R
+Script</strong>. <strong>Save</strong> the script by giving it a proper
+name.</li>
+</ul>
+</div>
+<div id="before-start" class="section level4">
+<h4>4.2.4 Before Start</h4>
+<div class="bluebox">
+<div class="left">
+<p><u><strong>Heads-Up! </strong></u></p>
+</div>
+<p>From this lab, all scripts will be <strong>non-copyable</strong>.
+Please try to:</p>
+<ul>
+<li>Re-write the script by yourself.
+<ul>
+<li>R is case-sensitive</li>
+<li>organize &amp; structure &amp; annotate your script.</li>
+</ul></li>
+<li>Read through the text carefully and try to understand what bits of
+code are doing as you go.</li>
+<li>It’s okay that you don’t fully understand some codes. Don’t worry as
+the key is to revisit later and try to work out what is going on.
+Learning is a iterative process.</li>
+<li>Start to think about how you can adapt a particular line of code or
+functions to your own project.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="viz-colorado-counties-map" class="section level3">
+<h3>4.3 Viz: Colorado Counties Map</h3>
+<div id="libraries-data" class="section level4">
+<h4>4.3.1 Libraries &amp; Data</h4>
+<p>This section starts with creating a simple map of counties in the
+state of Colorado.</p>
+<p>We are going to use the following packages: * <a
+href="https://dplyr.tidyverse.org/">dplyr</a>: data manipulation * <a
+href="https://r-tmap.github.io/tmap/index.html">tmap</a>: mapping * <a
+href="https://r-spatial.github.io/sf/">sf</a>: represent simple features
+as records in a data.frame or tibble with a geometry list-column. * <a
+href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html">data.table</a>:
+data manipulation such as renaming.</p>
+<p>You should have the libraries <code>tmap</code> and
+<code>dplyr</code> installed from previous labs. But in case you don’t,
+please uncomment the bottom two lines and run.</p>
+<pre class="r nocopy"><code>#### install library
+install.packages(&quot;sf&quot;)
+install.packages(&quot;data.table&quot;)
+
+#### If you don&#39;t have &quot;tmap&quot; and &quot;dplyr&quot; installed, please uncomment these two lines and run. 
+# install.packages(&quot;tmap&quot;)
+# install.packages(&quot;dplyr&quot;)</code></pre>
+<p>Next, let’s load some packages.</p>
+<pre class="r nocopy"><code># load library
+library(dplyr)
+library(tmap)
+library(sf)
+library(data.table)</code></pre>
+<p>Check the current working directory. You should see a path ending
+with something similar to <code>COURSEFOLDER/lab4</code>. If not, please
+close the RStudio, go back to <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#421_Organizing_Folders__Sub-folders">Section
+4.2.1</a> to organize your folder, and <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#423_Launching_R_Studio">Section
+4.2.3</a> to re-launch RStudio.</p>
+<pre class="r nocopy"><code># working directory
+getwd()</code></pre>
+<p>We will read the data from the “<em>data</em>” folder. Please make
+sure you can see <strong>four</strong> folders in your
+<strong>data</strong> folder as shown in Figure 4.1. If not, please go
+back to <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#422_Data">Section
+4.2.2</a>.</p>
+<div class="float">
+<img src="figs/lab4_data_folder.png" style="width:70.0%"
+alt="Figure 4.1: Files in the “data” folder to import." />
+<div class="figcaption">Figure 4.1: Files in the “data” folder to
+import.</div>
+</div>
+<p><br></p>
+<p>We will import four data files and save them under different variable
+names. In previous labs, we have used the function
+<code>read.csv()</code> to import <code>.csv</code> files. This time, we
+will use <code>st_read()</code> to read shapefile (.shp).</p>
+<p><strong>Hint</strong>: The easy way to write the
+<code>"FILE_PATH"</code> is to go to your “<em>data</em>” folder and
+copy folder &amp; file names, and organize them using forward slashes
+<code>/</code>.</p>
+<pre class="r nocopy"><code>## US counties (simple features)
+sf_us_county &lt;- st_read(&quot;data/cb_2023_us_county_500k/cb_2023_us_county_500k.shp&quot;)
+
+## Colorado census tracts (simple features)
+sf_co_tract &lt;- st_read(&quot;data/cb_2023_08_CO_tract_500k/cb_2023_08_tract_500k.shp&quot;)
+
+## El Paso family in poverty - data (data frame)
+df_ep_poverty &lt;- read.csv(&quot;data/ACSST5Y2022.S1702_poverty_family_El Paso/ACSST5Y2022.S1702-Data.csv&quot;)
+
+## El Paso family in poverty - metadata (data frame)
+df_ep_poverty_meta &lt;- read.csv(&quot;data/ACSST5Y2022.S1702_poverty_family_El Paso/ACSST5Y2022.S1702-Column-Metadata.csv&quot;)</code></pre>
+<p>Please open these data in RStudio (by clicking objects in the
+<em>Environment</em> panel) and take some time to understand what are
+the columns.</p>
+</div>
+<div id="data-pre-processing" class="section level4">
+<h4>4.3.2 Data Pre-processing</h4>
+<p>We will start with the <code>sf_us_county</code>. This data includes
+the information for all counties in the U.S. It also has a column
+<em>geometry</em> storing the spatial boundaries of counties as
+polygons.</p>
+<p>Let’s check the class of the <code>sf_us_county</code> data by using
+the function <code>class()</code> and have a look at it using
+<code>View()</code>.</p>
+<pre class="r nocopy"><code># check class
+class(sf_us_county)
+
+# open
+View(sf_us_county)</code></pre>
+<p>After examining the data, it seems <code>sf_us_county</code> includes
+all counties in the U.S. But we are only interested in those in the
+state of Colorado. Let’s use the function <code>filter()</code> to
+<strong>extract</strong> only Colorado counties from
+<code>sf_us_county</code> based on their values in the
+<code>STATE_NAME</code> column, and save it as a new object
+<code>sf_co_county</code>.</p>
+<pre class="r nocopy"><code># extract CO counties
+sf_co_county &lt;- sf_us_county %&gt;% filter(STATE_NAME == &quot;Colorado&quot;)</code></pre>
+<blockquote>
+<p>The <code>%&gt;%</code> symbol is used to build
+<strong>pipes</strong> that chains multiple operations together. It
+takes the output of the expression on its left and passes it as the
+first argument to the function on its right. The shortcut of
+<code>%&gt;%</code> is [<code>ctrl</code> + <code>shift</code> +
+<code>M</code>] (Windows) or [<code>Cmd</code> + <code>Shift</code> +
+<code>M</code>] (Mac).</p>
+</blockquote>
+<p>Have a look at the data <code>sf_co_county</code>. Please write to
+your <strong><em>lab4 report</em></strong>:</p>
+<p><strong>[Q1]</strong> How many counties in Colorado based on the data
+<code>sf_co_county</code></p>
+<p><strong>[Q2]</strong> In <code>sf_co_county</code>, please locate the
+record of El Paso county, what is its <code>GEOID</code>?</p>
+<pre class="r nocopy"><code>View(sf_co_county)</code></pre>
+<p>Next,we will extract the record of <u>El Paso county</u> from
+<code>sf_co_county</code> based on its value in the column
+<code>NAME</code>.</p>
+<pre class="r nocopy"><code># El Paso County
+sf_ep_county &lt;- sf_co_county %&gt;% filter(NAME == &quot;El Paso&quot;)</code></pre>
+<p>In addition to use the <code>NAME</code> column to extract <u>El Paso
+county</u> from <code>sf_co_county</code>. We can also use other columns
+such as <code>GEOID</code> and <code>NAMELSAD</code>.
+<strong>[Q3]</strong> Please fill and run the commands below, and type
+your answers to <strong><em>lab4 report</em></strong>.</p>
+<p><strong>Hint</strong>: Have a look at the code above and also have a
+look at the data <code>sf_co_county</code>.</p>
+<pre class="r nocopy"><code>sf_ep_county &lt;- sf_co_county %&gt;% filter(GEOID == &quot;TYPE_ANSWER&quot;)
+sf_ep_county &lt;- sf_co_county %&gt;% filter(NAMELSAD == &quot;TYPE_ANSWER&quot;)</code></pre>
+</div>
+<div id="map-making" class="section level4">
+<h4>4.3.3 Map making</h4>
+<p>Okay, after data extraction, we have two new datasets representing
+counties in Colorado and also the county of El Paso. Let’s do some
+mapping using the <code>tmap</code> package.</p>
+<p>First, we set the <code>tmap_mode()</code> to <code>plot</code> for
+static maps.</p>
+<pre class="r nocopy"><code># static map
+tmap_mode(&quot;plot&quot;)</code></pre>
+<p>Then, produce a simple map of Colorado Counties
+(<strong>MAP1</strong>).</p>
+<ul>
+<li><code>tm_shape()</code> specifies what a spatial data object (in our
+case, the simple feature class).</li>
+<li><code>tm_polygons()</code> draws polygons.</li>
+</ul>
+<pre class="r nocopy"><code># MAP1 
+tm_shape(sf_co_county) + tm_polygons()</code></pre>
+<p>Produce another map of El Paso county only (<strong>MAP2</strong>).
+This time, we specify the fill color and also the border color. Feel
+free to try other colors.</p>
+<pre class="r nocopy"><code># MAP2
+tm_shape(sf_ep_county) + tm_polygons(col = &quot;orange&quot;, border.col = &quot;blue&quot;)</code></pre>
+<p>Overlap MAP1 and MAP2 to produce another map that highlights the El
+Paso county (<strong>MAP3</strong>).</p>
+<pre class="r nocopy"><code># MAP3
+tm_shape(sf_co_county) + tm_polygons() +
+  tm_shape(sf_ep_county) + tm_polygons(col = &quot;orange&quot;, border.col = &quot;blue&quot;)</code></pre>
+<p>Improve <strong>MAP3</strong> by using the following functions and
+save the plot as a new variable <code>map_ep_county</code>.</p>
+<ul>
+<li><code>tm_text()</code> adds labels showing county names based on the
+<code>sf_co_county</code> data.</li>
+<li><code>tm_compass()</code>: adds a north arrow.</li>
+<li><code>tm_scale_bar()</code>: adds a scale bar and put it in the
+bottom-right.</li>
+</ul>
+<pre class="r nocopy"><code># improve MAP3
+map_ep_county &lt;- tm_shape(sf_co_county) + tm_polygons(alpha = 0) +
+  tm_shape(sf_ep_county) + tm_polygons(col = &quot;orange&quot;, border.col = &quot;black&quot;, lwd = 2) + 
+  tm_shape(sf_co_county) + tm_text(text = &quot;NAME&quot;, size = 0.3) + 
+  tm_compass(north = 0, size = 1) + tm_scale_bar(position = c(&quot;right&quot;, &quot;bottom&quot;), width = 0.15) </code></pre>
+<p>Export the improved <strong>MAP3</strong> to the “<em>plot</em>”
+folder we have created in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#421_Organizing_Folders__Sub-folders">Step
+4.2.1</a>.</p>
+<pre class="r nocopy"><code># export 
+pdf(&quot;plot/map3_elpaso_county.pdf&quot;)
+map_ep_county
+dev.off()</code></pre>
+<p><strong>[Q4]</strong> Please go to your <em>“plot”</em> folder, open
+the pdf <em>“map3_elpaso_county.pdf”</em>, and paste the screenshot to
+your <strong><em>lab4 report</em></strong>.</p>
+</div>
+</div>
+<div id="viz-el-paso-census-tracts-map" class="section level3">
+<h3>4.4 Viz: El Paso Census Tracts Map</h3>
+<p>This section will zoom into the census tracts in the state of
+Colorado.</p>
+<blockquote>
+<p>According to U.S. Census Bureau, <strong>census tracts</strong> are
+small, relatively. permanent statistical subdivisions of a county that
+are used to collect and present census data. On average, each census
+tract typically has 4,000 residents (min=2,500, and max=8,000).</p>
+</blockquote>
+<div id="data-pre-processing-1" class="section level4">
+<h4>4.4.1 Data Pre-processing</h4>
+<p>We have imported the census tract boundaries in Colorado in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#431_Libraries__Data">Step
+4.3.1</a> and saved it into the variable <code>sf_co_tract</code>. Let’s
+have a look at the data.</p>
+<p><strong>[Q5]</strong> Please report how many census tracts in
+Colorado according to <code>sf_co_tract</code>.</p>
+<p><strong>[Q6]</strong> What column to use to extract census tracts
+that are located in El Paso county?</p>
+<pre class="r nocopy"><code>## Open 
+View(sf_co_tract)</code></pre>
+<p>Next, we check the class and data types of
+<code>sf_co_tract</code>.</p>
+<pre class="r nocopy"><code>## Check class
+class(sf_co_tract)
+
+## data type of each column
+str(sf_co_tract)</code></pre>
+<p>In terms of data type, it seems of most columns are characters (or
+string). But it also has two columns <code>ALAND</code> (land area) and
+<code>AWATER</code> (water area) as numeric.</p>
+<p><strong>[Q7]</strong> Please report the data type of column
+<code>geometry</code> to <strong><em>lab4 report</em></strong>.</p>
+<p>Let’s extract all <strong>census tracts</strong> that are located in
+El Paso County using the function <code>filter()</code>. (I know, the
+chunk of code below reveals the answer of Q6 :)</p>
+<pre class="r nocopy"><code># El Paso census tracts 
+sf_ep_tract &lt;- sf_co_tract %&gt;% filter(NAMELSADCO == &quot;El Paso County&quot;)
+
+# open data
+View(sf_ep_tract)</code></pre>
+</div>
+<div id="map-making-1" class="section level4">
+<h4>4.4.2 Map making</h4>
+<p>Make a map showing census tracts in El Paso County
+(<strong>MAP4</strong>).</p>
+<pre class="r nocopy"><code>## MAP4
+tm_shape(sf_ep_tract) + tm_polygons() </code></pre>
+<p>Highlight the border of El Paso County in <strong>MAP4</strong>
+(through overlapping the census tracts map with El Paso county map).</p>
+<blockquote>
+<p><code>alpha=</code> represents the transparency of used colors.</p>
+</blockquote>
+<pre class="r nocopy"><code>## highlight county boundary in MAP4 
+tm_shape(sf_ep_tract) + tm_polygons() +
+  tm_shape(sf_ep_county) + tm_polygons(alpha = 0, lwd = 3)</code></pre>
+<p>Continue to improve <strong>MAP4</strong> by adding a north arrow, a
+scale bar, and removing frame using <code>tm_layout()</code>.</p>
+<pre class="r nocopy"><code>## improve MAP4 
+map_ep_tract &lt;- tm_shape(sf_ep_tract) + tm_polygons(col=&quot;white&quot;) +
+  tm_shape(sf_ep_county) + tm_polygons(alpha = 0, lwd = 3) + 
+  tm_compass(north = 0, size = 1.5) + 
+  tm_scale_bar(position = c(&quot;right&quot;, &quot;bottom&quot;), width = 0.15) + 
+  tm_layout(frame = F)
+
+## Export
+pdf(&quot;plot/map4_elpaso_tracts.pdf&quot;)
+map_ep_tract
+dev.off()</code></pre>
+<p><strong>[Q8]</strong> Please go to your <em>“plot”</em> folder, open
+the pdf <em>“map4_elpaso_tracts.pdf”</em>, and paste the screenshot to
+your <strong><em>lab4 report</em></strong>.</p>
+</div>
+</div>
+<div id="viz-mapping-families-in-poverty" class="section level3">
+<h3>4.5 Viz: Mapping Families in Poverty</h3>
+<p>Finally, we are approaching the most <strong>“exciting”</strong> part
+of this tutorial which is to combine tabular and spatial data and
+produce a <strong>choropleth map</strong> exploring the poverty issues
+in El Paso county.</p>
+<div id="poverty-data" class="section level4">
+<h4>4.5.1 Poverty Data</h4>
+<p>Remember the two poverty data frames <code>df_ep_poverty</code> and
+<code>df_ep_poverty_meta</code> that we have loaded in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#431_Libraries__Data">Step
+4.2.2</a>?</p>
+<ul>
+<li><p>Both data frames are collected from <a
+href="https://data.census.gov/">US Census Bureau</a> using the <a
+href="https://data.census.gov/table/ACSST5Y2022.S1702?q=poverty&amp;g=050XX00US08041$1400000">Table
+S1702: Poverty Status in the Past 12 Months of Families</a>.</p></li>
+<li><p>Unlike the census data we haves seen in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#33_Viz:_Population_Growth">Lab
+3</a> that have been cleaned and pre-processed, the two data frame here
+are the <strong>raw data</strong> that are directly collected from the
+Census.<br />
+Let’s have a look at them.</p></li>
+</ul>
+<pre class="r nocopy"><code>## open
+View(df_ep_poverty)
+View(df_ep_poverty_meta)</code></pre>
+<blockquote>
+<p>The <code>df_ep_poverty</code> table shows the <u>poverty data</u>
+itself. The <code>df_ep_poverty_meta</code> is the <a
+href="https://en.wikipedia.org/wiki/Metadata">metadata</a> that tells
+<u>information</u> about the poverty data. Particularly, it explains the
+meaning of column names in <code>df_ep_poverty</code>.</p>
+</blockquote>
+<div class="blueborder">
+<p>For example, <code>df_ep_poverty_meta</code> suggests that</p>
+<ul>
+<li><code>S1702_C01_001E</code> is the estimate <strong>total</strong>
+number of families in each census tract</li>
+<li><code>S1702_C01_041E</code> measures the number of families
+occupying a housing unit as <strong>owners</strong>.</li>
+<li><code>S1702_C01_042E</code> measures the number of families
+occupying a housing unit as <strong>renter</strong>.</li>
+</ul>
+</div>
+<p><br></p>
+<p>The <code>df_ep_poverty_meta</code> also explains what are the
+columns of <strong>income-to-poverty ratio</strong>.</p>
+<blockquote>
+<p>The <strong>income-to-poverty ratio</strong> measures an individual
+or family’s income to the poverty threshold. A ratio less than 100%
+suggests that a family’s income is less than the poverty level.</p>
+</blockquote>
+<div class="blueborder">
+<ul>
+<li><code>S1702_C01_043E</code> tells about the estimate number of
+families that has income <strong>less than 50% of the poverty
+threshold</strong>. These are the families that suffer the most.</li>
+</ul>
+</div>
+<p><strong>[Q9]</strong> What is the meaning of column name
+<code>S1702_C01_044E</code>. Write your answer to <strong><em>lab4
+report</em></strong> <strong>Hint</strong>: Please (1) open the data
+`<code>df_ep_poverty_meta</code>, (2) search <u>S1702_C01_044E</u> on
+the top right (as shown in Figure 4.2), and (3) try to figure out the
+“Label” associated with “S1702_C01_044E”.</p>
+<div class="float">
+<img src="figs/lab4_search_poverty_meta.png" style="width:70.0%"
+alt="Figure 4.2: Search values in data frames" />
+<div class="figcaption">Figure 4.2: Search values in data frames</div>
+</div>
+<p><br></p>
+</div>
+<div id="data-cleaning-pre-processing" class="section level4">
+<h4>4.5.2 Data Cleaning &amp; Pre-processing</h4>
+<p>Going back to our data, let’s check how many columns and rows are in
+<code>df_ep_poverty</code>.</p>
+<pre class="r nocopy"><code># number of rows
+nrow(df_ep_poverty)
+
+# number of columns
+ncol(df_ep_poverty)</code></pre>
+<p>While the <code>df_ep_poverty</code> has 603 columns. But we only
+need some of them. Let’s create a list storing the column names that we
+are interested in including (the list below is copyable):</p>
+<p><code>"GEO_ID", "NAME", "S1702_C01_001E", "S1702_C01_041E", "S1702_C01_042E", "S1702_C01_043E", "S1702_C01_044E"</code>.</p>
+<pre class="r nocopy"><code># list of column names
+lt_poverty_col &lt;- c(&quot;GEO_ID&quot;, &quot;NAME&quot;, &quot;S1702_C01_001E&quot;, &quot;S1702_C01_041E&quot;, &quot;S1702_C01_042E&quot;, &quot;S1702_C01_043E&quot;, &quot;S1702_C01_044E&quot;)</code></pre>
+<p>Then, we create a dataframe that explains the above mentioned column
+names.</p>
+<pre class="r nocopy"><code>df_poverty_cols &lt;- data.frame(
+  old_col_name = lt_poverty_col, 
+  new_col_name = c(&quot;GEO_ID&quot;, &quot;NAME&quot;, &quot;ttl_famly&quot;, &quot;famly_owner&quot;, &quot;famly_renter&quot;, &quot;famly_50pct_poverty&quot;, &quot;famly_125pct_poverty&quot;)
+)
+
+View(df_poverty_cols)</code></pre>
+<p><strong>[Q10]</strong> Open <code>df_poverty_cols</code> and paste a
+screenshot of it to <strong><em>lab4 report</em></strong></p>
+<p>Based on the column names in the list <code>lt_poverty_col</code>, we
+data corpus from <code>df_ep_poverty</code> and save it as a new &amp;
+clean data frame <code>df_ep_poverty_cln</code>.</p>
+<pre class="r nocopy"><code># extract useful columns
+df_ep_poverty_cln &lt;- df_ep_poverty[lt_poverty_col]</code></pre>
+<p>Replace column names in <code>df_ep_poverty_cln</code> based on table
+<code>df_poverty_cols</code>.</p>
+<pre class="r nocopy"><code># update column names 
+setnames(df_ep_poverty_cln, old=df_poverty_cols$old_col_name, new=df_poverty_cols$new_col_name)
+
+# view data 
+View(df_ep_poverty_cln)</code></pre>
+<p>Delete the first row <code>df_ep_poverty_cln</code> and reset the row
+index. Do you know why?</p>
+<pre class="r nocopy"><code># delete the first row 
+df_ep_poverty_cln &lt;- df_ep_poverty_cln[-1, ]
+
+# reset row index 
+rownames(df_ep_poverty_cln) &lt;- NULL</code></pre>
+<p>Check data types in <code>df_ep_poverty_cln</code>.</p>
+<pre class="r nocopy"><code># check the data 
+str(df_ep_poverty_cln)</code></pre>
+<p>While the columns
+<code>"ttl_famly", "famly_owner", "famly_renter", "famly_50pct_poverty", "famly_125pct_poverty"</code>
+contain numerical values, they are identified as characters. Let’s make
+them numeric.</p>
+<pre class="r nocopy"><code># convert one column from string to numeric 
+df_ep_poverty_cln$ttl_famly &lt;- as.numeric(df_ep_poverty_cln$ttl_famly)
+
+
+# convert multiple columns from string to numeric
+df_ep_poverty_cln[,3:7] &lt;- sapply(df_ep_poverty_cln[,3:7], as.numeric) %&gt;% as.data.frame()
+
+# check the data type again 
+str(df_ep_poverty_cln)</code></pre>
+<p>Calculate percentage by using the column <code>famly_renter</code>
+(renter occupied family) as an example.</p>
+<p><span class="math display">\[ \% \ of \ renter \ occupied \ family =
+100 * \frac {count \ of \ renter \ occupied \ family} {total \ count \
+of \ family} \]</span></p>
+<pre class="r nocopy"><code>df_ep_poverty_cln[&quot;pct_fam_renter&quot;] &lt;- 100 * df_ep_poverty_cln$famly_renter / df_ep_poverty_cln$ttl_famly
+df_ep_poverty_cln[&quot;pct_fam_pov_50pct&quot;] &lt;- 100 * df_ep_poverty_cln$famly_50pct_poverty / df_ep_poverty_cln$ttl_famly
+df_ep_poverty_cln[&quot;pct_fam_pov_125pct&quot;] &lt;- 100 * df_ep_poverty_cln$famly_125pct_poverty / df_ep_poverty_cln$ttl_famly</code></pre>
+<p>Have a look at the <code>df_ep_poverty_cln</code> and check values
+for <u>Census Tract 38.02</u>. It seems this row as some not valid
+values (e.g., <code>NA</code>). Replace <code>NA</code> with
+<code>0</code>.</p>
+<pre class="r nocopy"><code># replace NA
+df_ep_poverty_cln[is.na(df_ep_poverty_cln)] &lt;- 0</code></pre>
+<p>Quick look at the data.</p>
+<pre class="r nocopy"><code># open data 
+View(df_ep_poverty_cln)</code></pre>
+</div>
+<div id="exploratory-analysis" class="section level4">
+<h4>4.5.3 Exploratory Analysis</h4>
+<p>Let’s check the <u>distribution</u> of <code>ttl_famly</code> of all
+census tracts in El Paso by producing a histogram
+<code>hist()</code>.</p>
+<pre class="r nocopy"><code># Exploratory analysis 
+hist(df_ep_poverty_cln$ttl_famly)</code></pre>
+<p>Check the distribution of three variables together including:</p>
+<ul>
+<li><code>pct_fam_renter</code> percentage of renter-occupied
+family;</li>
+<li><code>pct_fam_pov_50pct</code> percentage of family below 50% of
+poverty level;<br />
+</li>
+<li><code>pct_fam_pov_125pct</code> percentage of family below 125% of
+poverty level;</li>
+</ul>
+<pre class="r nocopy"><code># run the three lines below together
+hist(df_ep_poverty_cln$pct_fam_renter, col=&#39;orange&#39;)
+hist(df_ep_poverty_cln$pct_fam_pov_125pct, col=&#39;blue&#39;, add= T)
+hist(df_ep_poverty_cln$pct_fam_pov_50pct, col=&#39;green&#39;, add= T)</code></pre>
+</div>
+<div id="joining" class="section level4">
+<h4>4.5.4 Joining</h4>
+<p>Let’s join the table <code>df_ep_poverty_cln</code> with the spatial
+boundaries stored in the simple data <code>sf_ep_tract</code> based on
+GEOIDs (i.e., a unique identifier for each census tract).</p>
+<pre class="r nocopy"><code># left join
+sf_ep_tract_pov &lt;- left_join(sf_ep_tract, df_ep_poverty_cln, by=c(&quot;GEOIDFQ&quot;=&quot;GEO_ID&quot;))</code></pre>
+</div>
+<div id="mapping" class="section level4">
+<h4>4.5.5 Mapping</h4>
+<p>Set the plot mode to static</p>
+<pre class="r nocopy"><code># static
+tmap_mode(&quot;plot&quot;)</code></pre>
+<p>Quick mapping to explore four variables including
+<code>"ttl_famly", "pct_fam_renter", "pct_fam_pov_50pct", "pct_fam_pov_125pct"</code>.</p>
+<pre class="r nocopy"><code># quick mapping 
+lt_map_col &lt;- c(&quot;ttl_famly&quot;, &quot;pct_fam_renter&quot;, &quot;pct_fam_pov_50pct&quot;, &quot;pct_fam_pov_125pct&quot;)
+for (column in lt_map_col){
+  print(column)
+  print(tm_shape(sf_ep_tract_pov) + tm_polygons(col = as.character(column)))
+}</code></pre>
+<p>Please use the arrows in the <em>Plot</em> panels to see all maps (as
+shown in Figure 4.3).</p>
+<div class="float">
+<img src="figs/lab4_plot_history.png" style="width:50.0%"
+alt="Figure 4.3: Use arrows to view old plots" />
+<div class="figcaption">Figure 4.3: Use arrows to view old plots</div>
+</div>
+<p>Okay, after quickly mapping the four variables, let’s produce maps
+one by one and:</p>
+<ul>
+<li>give them proper legend labels</li>
+<li>use different color palettes</li>
+<li>export as a pdf</li>
+</ul>
+<pre class="r nocopy"><code># MAP5 - # of families in each census tract 
+map_ep_tract_family &lt;- tm_shape(sf_ep_tract_pov) + tm_polygons(col = &quot;ttl_famly&quot;, title = &quot;# of family&quot;, palette = &quot;YlGnBu&quot;) + 
+  tm_layout(legend.outside = T)
+
+# export 
+pdf(&quot;plot/map5_elpaso_tracts_family_counts.pdf&quot;)
+map_ep_tract_family
+dev.off()</code></pre>
+<pre class="r nocopy"><code># MAP6 - % of renter-occupied families in each census tract 
+map_ep_tract_renter &lt;- tm_shape(sf_ep_tract_pov) + 
+  tm_polygons(col = &quot;pct_fam_renter&quot;, title = &quot;renter-occupied family (%)&quot;, palette = &quot;Purples&quot;) + 
+  tm_layout(legend.outside = T)
+
+# export 
+pdf(&quot;plot/map6_elpaso_tracts_renter_occupied_family_pct.pdf&quot;)
+map_ep_tract_renter
+dev.off()</code></pre>
+<pre class="r nocopy"><code># MAP7 - % of families below 50% of poverty in each census tract 
+map_ep_tract_50pct_pov &lt;- tm_shape(sf_ep_tract_pov) + 
+  tm_polygons(col = &quot;pct_fam_pov_50pct&quot;, title = &quot;below 50% poverty (%)&quot;, palette = &quot;Greens&quot;) + 
+  tm_layout(legend.outside = T)
+
+# export 
+pdf(&quot;plot/map7_elpaso_tracts_family_below_50pct_poverty.pdf&quot;)
+map_ep_tract_50pct_pov
+dev.off()</code></pre>
+<pre class="r nocopy"><code># MAP8 - % of families below 125% of poverty in each census tract 
+map_ep_tract_125pct_pov &lt;- tm_shape(sf_ep_tract_pov) + 
+  tm_polygons(col = &quot;pct_fam_pov_125pct&quot;, title = &quot;below 125% poverty (%)&quot;, palette = &quot;Blues&quot;) + 
+  tm_layout(legend.outside = T)
+
+# export 
+pdf(&quot;plot/map8_elpaso_tracts_family_below_125pct_poverty.pdf&quot;)
+map_ep_tract_125pct_pov
+dev.off()</code></pre>
+<p>At the end, we combine all maps together into a single plot.</p>
+<pre class="r nocopy"><code># organize all maps together 
+t=tmap_arrange(map_ep_tract_family, 
+               map_ep_tract_renter, 
+               map_ep_tract_50pct_pov, 
+               map_ep_tract_125pct_pov, ncol=2)
+
+
+pdf(&quot;plot/map9_elpaso_tracts_analysis.pdf&quot;, width = 12, height = 8)
+t
+dev.off()</code></pre>
+<p><strong>[Q11]</strong> Please go to your <em>“plot”</em> folder, open
+the pdf <em>“map9_elpaso_tracts_analysis.pdf”</em>, and paste the
+screenshot to your <strong><em>lab4 report</em></strong>.</p>
+</div>
+</div>
+<div id="close-exit" class="section level3">
+<h3>4.6. Close &amp; Exit</h3>
+<p>Congratulations!! You have completed the entire tutorial by typing
+the script by yourself!! Excellent work.</p>
+<p>Please go “File”–&gt; “Close Project” – a pop window asking “Do you
+want to save these changes” –&gt; “Yes”.</p>
+<p>Don’t forget to submit the <strong>lab4 report</strong> and your
+<strong>script</strong> to Canvas.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

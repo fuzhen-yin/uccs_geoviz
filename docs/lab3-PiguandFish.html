@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Chapter 3: The Data Analysis &amp; Visualization Workflow</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="website.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GeoViz Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="resource.html">Resources</a>
+</li>
+<li>
+  <a href="lab1.html">Lab 1</a>
+</li>
+<li>
+  <a href="lab2.html">Lab 2</a>
+</li>
+<li>
+  <a href="lab3.html">Lab 3</a>
+</li>
+<li>
+  <a href="lab4.html">Lab 4</a>
+</li>
+<li>
+  <a href="lab5.html">Lab 5</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Chapter 3: The Data Analysis &amp;
+Visualization Workflow</h1>
+
+</div>
+
+
+<div id="lab-goals" class="section level3">
+<h3>3.1 Lab Goals</h3>
+<p>This chapter aims to introduce the complete workflow of data analysis
+and visualization using R. After reading it, you should be able to:</p>
+<ul>
+<li><strong>import</strong> data from local files</li>
+<li><strong>clean</strong> and <strong>transforming</strong> data, such
+as:
+<ul>
+<li>extract data corpus</li>
+<li>join rows of different data frames into one</li>
+<li>understand sorting and ordering</li>
+</ul></li>
+<li><strong>draw</strong> standard plots for <em>exploratory</em> and
+<em>visualization</em> purpose by producing:
+<ul>
+<li>bar charts</li>
+<li>line plots</li>
+<li>pie charts</li>
+<li>waffle charts</li>
+</ul></li>
+<li><strong>export</strong> plots as local files</li>
+</ul>
+</div>
+<div id="good-practice" class="section level3">
+<h3>3.2 Good Practice</h3>
+<p>Okay, I guess you already know what I am going to repeat. However,
+there are something <u>new</u> for this lab. I will try to be brief
+:)</p>
+<div id="organizing-folders-sub-folders" class="section level4">
+<h4>3.2.1 Organizing Folders &amp; Sub-folders</h4>
+<p>Similar to what we have done in previous labs, under the course
+folder, please create a folder called “<strong>lab3</strong>”. Next, in
+the <strong>lab3</strong> folder, please create two <u>sub-folders</u>
+that one is called “<strong>data</strong>” and another one is
+“<strong>plot</strong>”. We’ll use the “<strong>data</strong>” folder to
+store data collected from the internet. The “<strong>plot</strong>” will
+be used to export plots generated from R.</p>
+<p>After created these folders, your folders should look similar to
+Figure 3.1.</p>
+<p><img src="figs/lab3_folder_structure.png" style="width:70.0%"
+alt="Figure 3.1: The organization of folders for “lab3”." /> <br>
+<br></p>
+</div>
+<div id="data" class="section level4">
+<h4>3.2.2 Data</h4>
+<p>I have collected some tables for this lab. These tables tell use
+about population’s <u>education attainment</u> and <u>racial
+diversity</u> in two cities: Colorado Springs (CO) and Buffalo (NY).
+These data are collected from <a href="https://data.census.gov/">US
+Census Bureau</a> using the <a
+href="https://www.census.gov/programs-surveys/acs/about.html">American
+Community Survey</a>’s 5-year estimates.</p>
+<p>Please follow the steps below:</p>
+<ul>
+<li><p><strong>Go</strong> to <a
+href="https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab3_data.zip"
+class="uri">https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab3_data.zip</a></p></li>
+<li><p><strong>Download</strong> the file <em>“lab3_data.zip”</em> (see
+Figure 3.2)</p>
+<div class="float">
+<img src="figs/lab3_download_data.png" style="width:70.0%"
+alt="Figure 3.2: Download “lab3_data.zip” ." />
+<div class="figcaption">Figure 3.2: Download <em>“lab3_data.zip”</em>
+.</div>
+</div></li>
+<li><p><strong>Unzip</strong> folder <em>“lab3_data.zip”</em> (see
+Figure 3.3)</p>
+<div class="float">
+<img src="figs/lab3_extract_data.png" style="width:35.0%"
+alt="Figure 3.3: Extract files from “lab3_data.zip” ." />
+<div class="figcaption">Figure 3.3: Extract files from
+<em>“lab3_data.zip”</em> .</div>
+</div></li>
+<li><p><strong>Move</strong> all files to the <em>“data”</em> folder we
+just created in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#32_Good_Practice">Step
+3.2.1</a> (see Figure 3.4)</p>
+<div class="float">
+<img src="figs/lab3_move_tables_to_datafolder.png" style="width:60.0%"
+alt="Figure 3.4: Move files to “data” folder under “lab3”." />
+<div class="figcaption">Figure 3.4: Move files to <em>“data”</em> folder
+under <em>“lab3”</em>.</div>
+</div></li>
+</ul>
+</div>
+<div id="housekeeping-launching-rstudio" class="section level4">
+<h4>3.2.3 Housekeeping &amp; Launching RStudio</h4>
+<p>Again, we would like to start a <strong>new project</strong> from
+scratch with a <strong>clean R Script</strong>. Please do the following
+steps. If you have any questions about these steps, please refer to the
+previous chapters for help.</p>
+<ul>
+<li>Step 1: Make sure all existing R projects are <strong>properly
+closed</strong>.
+<ul>
+<li>If <em>not</em>, please close it by going to <em>File</em> –&gt;
+<em>Close Project</em> –&gt; <em>Save</em> changes (see <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab2.html#25_Close__Exit">Chapter
+2.5</a>).</li>
+</ul></li>
+<li>Step 2: Create a <strong>New Project</strong> using <strong>Existing
+Directory</strong>, navigate to <strong>lab3</strong>, click
+<strong>open</strong>, then <strong>Create Project</strong>. (see <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab1.html#13_Launching_RStudio">Chapter
+1.3</a>).</li>
+<li>Step 3: Create a <strong>New Script</strong> by go to
+<strong>File</strong> –&gt; <strong>New File</strong> –&gt; <strong>R
+Script</strong>. <strong>Save</strong> the script by giving it a proper
+name.</li>
+</ul>
+</div>
+<div id="before-you-start" class="section level4">
+<h4>3.2.4 Before You Start</h4>
+<div class="purplebox">
+<div class="left">
+<p><u><strong>Heads-Up! </strong></u></p>
+</div>
+<p>This is a pretty <strong>long tutorial</strong> but it will guide you
+through a complete workflow of data analysis and visualization. As you
+can imagine, this will be a steep learning curve. Please take
+<em>regular breaks</em> (see instructions below).</p>
+<p>This tutorial covers most of the techniques for <strong>Assignment
+2</strong>. Please try to:</p>
+<ul>
+<li>Re-write the script by yourself.</li>
+<li>Read through the text carefully and try to understand what bits of
+code are doing as you go.</li>
+<li>It’s okay that you don’t fully understand some codes. Don’t worry as
+the key is to revisit later and try to work out what is going on.
+Learning is a iterative process.</li>
+<li>Start to think about how you can adapt a particular line of code or
+functions to your own project.</li>
+<li>Be CURIOUS!! Ask QUESTIONS!!</li>
+</ul>
+</div>
+<p><br></p>
+<div class="purple_border">
+<div class="left">
+<p><u><strong>Only Read This If You Plan to Take
+Breaks!</strong></u></p>
+</div>
+<p>If you plan to work on this lab later, please remember to
+<strong>save your script</strong>, and <strong>properly close</strong>
+the <u>project</u> and <u>RStudio</u>. To <strong>reopen</strong> your
+project, please:</p>
+<ul>
+<li>Step 1: launch RStudio.</li>
+<li>Step 2: open project by going to <em>“File”</em> –&gt; <em>“Open
+<u>Project</u>”</em> –&gt; Navigate to your <em>“lab3”</em> folder,
+click to open <u><strong>lab3.Rproj</strong></u>.</li>
+<li>Step 3: You should be able to see your script for lab3.
+<ul>
+<li>If not, go to <em>“File”</em> –&gt; <em>“Open <u>File</u>”</em>
+–&gt; Navigate to your <em>“lab3”</em> folder, and open the script with
+the suffix <strong><u>.R</u></strong>.</li>
+</ul></li>
+<li>Step 4: Before writing new lines, please run the existing script
+from top to bottom.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="viz-population-growth" class="section level3">
+<h3>3.3 Viz: Population Growth</h3>
+<p>Finally, we’ll start coding! From now, each section is an
+<strong>independent</strong> project that each produces one or more
+graphics for different purposes. Each project will expose you to a
+complete data analysis and visualization <strong>workflow.</strong></p>
+<p>We will use two cities <em>Colorado Springs (CO)</em> (a growing
+city) and <em>Buffalo (NY)</em> (a declining city) for case studies. The
+purpose of these graphics is to understand their different
+<em>socio-demographic characteristics</em>. This section is to produce a
+plot <u>comparing the population growth between two cities</u>.</p>
+<p>Let’s <strong>install</strong> &amp; <strong>call</strong> some
+libraries first. Last time, we have used <code>ggplot2</code>. This
+time, we will learn another library <code>dplyr</code> and
+<code>waffle</code>.</p>
+<blockquote>
+<p><code>dplyr</code> is a very commonly used package for <strong>data
+frame manipulation</strong> (<a href="https://dplyr.tidyverse.org/">read
+more</a>). <code>waffle</code> is a package to produce waffle chart.</p>
+</blockquote>
+<pre class="r"><code>## Install libraries
+install.packages(&quot;dplyr&quot;)
+install.packages(&quot;waffle&quot;)
+
+## If you don&#39;t have the package &quot;ggplot2&quot; installed
+## please (1) un-comment the code below by deleting the hash tag; (2) run it
+# install.packages(&quot;ggplot2&quot;)</code></pre>
+<p>After installing packages, we call the three libraries. <em>Hint:
+Everytime you open or restart an R project/script, you would need to
+call libraries. But you don’t need to install them every time</em></p>
+<pre class="r"><code>## Library 
+library(ggplot2)  # plot
+library(dplyr)    # data manipulation
+library(waffle)   # waffle chart</code></pre>
+<div id="create-population-data-2010-2022" class="section level4">
+<h4>3.3.1 Create Population Data 2010-2022</h4>
+<p>Data is the fundamentals of visualization. Here, we create a data
+frame (or table) to store the population data of Colorado Springs (COS)
+for 12 years, from 2010 to 2022. The <strong>original data</strong> is
+from <a href="https://data.census.gov/">US Census Bureau</a> and <a
+href="https://data.census.gov/table/ACSST5Y2022.S0101?g=160XX00US0816000,3611000">Table
+S0101: Age and Sex</a>. Here, we replicate some of the data records from
+that table.</p>
+<blockquote>
+<p>We use the function <code>data.frame()</code> to create a new table
+and give the table a name <em>“pop_cos”</em>. We want the table have
+three columns which are <em>year</em>, <em>population</em> and
+<em>city</em>.</p>
+</blockquote>
+<pre class="r"><code>## Colorado Springs, CO (COS)&#39;s Population Change 2010-2022 
+pop_cos &lt;- data.frame(
+  year = c(2010:2022),
+  population = c(403983,410688,417534,425805,433547,442040,448759,450000,457502,464871,471686,475282,479612),
+  city = &quot;Colorado Springs&quot;
+)</code></pre>
+<p>Next, let’s briefly check the data types in this table using the
+<code>str()</code> function. And have a look at the table using
+<code>View()</code>. The <code>View()</code> function is the same as you
+click the <em>“pop_cos”</em> variable in the
+<strong>Environment</strong> Tab.</p>
+<pre class="r"><code># Check data type 
+str(pop_cos)
+
+# View the data frame &quot;pop_cos&quot;. 
+View(pop_cos)</code></pre>
+<p>Okay, let’s go back to the script and create another data frame for
+Buffalo (NY) and assign the data frame to the variable
+<em>“pop_buf”</em>.</p>
+<pre class="r"><code>## Buffalo, NY (BUF)&#39;s Population Change 2010-2022 
+pop_buf &lt;- data.frame(
+  year = c(2010:2022),
+  population = c(266012,263914,261955,260568,259959,259517,258989,259574,257518,256480,255805,276011,276688),
+  city = &quot;Buffalo&quot;
+)</code></pre>
+</div>
+<div id="data-query-analysis" class="section level4">
+<h4>3.3.2 Data Query &amp; Analysis</h4>
+<p>Let’s explore these two data frames <em>“pop_cos”</em> and
+<em>“pop_buf”</em> a little bit. Remember the <code>$</code> symbol? It
+can be used to select a particular column from a data frame. Let’s check
+the summary statistics of population in the two cities by using
+<code>summary()</code>.</p>
+<pre class="r"><code># What are the column names? 
+names(pop_cos)
+names(pop_buf)
+
+# Summary statistics of the population column - COS? 
+summary(pop_cos$population)
+
+# Summary statistics of the population column - BUF? 
+summary(pop_buf$population)</code></pre>
+<p>The summary statistic suggests that Colorado Springs has more
+population than BUF. Next, let’s look at the data frame more carefully
+by sub-setting particular records based some conditions.</p>
+<ul>
+<li>Extract a particular column within the data frame by calling the
+column name.</li>
+</ul>
+<pre class="r"><code># subset the &quot;population&quot; column from the &quot;pop_cos&quot; data frame
+pop_cos[&#39;population&#39;]</code></pre>
+<ul>
+<li>Exacting two or more column by calling column names. The
+<code>c()</code> function combines two elements <code>"year"</code> and
+<code>"population"</code> into a vector.</li>
+</ul>
+<pre class="r"><code># subset two columns &quot;year&quot; and &quot;population&quot; from the &quot;pop_cos&quot; data frame
+pop_cos[c(&#39;year&#39;,&#39;population&#39;)]</code></pre>
+<ul>
+<li>Select records based on conditions (e.g., when population is over
+450000). The code below gives you all rows that with a population over
+450000.</li>
+</ul>
+<pre class="r"><code># Check at what years COS has more than 450000 population 
+pop_cos[pop_cos$population &gt; 450000,]</code></pre>
+<p>Okay, the output suggests that since 2018, Colorado Springs has
+population exceeding 450000. Now, let’s check that for Buffalo.</p>
+<pre class="r"><code># Check at what years BUF has more than 450000 population 
+pop_buf[pop_buf$population &gt; 450000,]</code></pre>
+<p>Oops! It seems Buffalo never had its population over 450000. All
+these comparison suggests at least in the last decade, Colorado Springs
+is more populated than Buffalo.</p>
+<p>Next, let’s calculate the <strong>population growth rate</strong>
+from 2010 to 2022 for the two cities. The population growth rate is
+calculated using the equation below (Eq. 3.1):</p>
+<p><span class="math display">\[ Growth Rate = 100 * \frac
+{Population_{2022} - Population_{2010}} {Population_{2010}}
+\]</span></p>
+<p><br></p>
+<p>Calculate the population growth rate for Colorado Springs. We extract
+the # of population in 2010 and 2022 separately.</p>
+<p>The code below is (1) asking the machine to locate the record (or
+row) in the data frame <em>“pop_cos”</em> with the <code>year</code>
+column equal to 2022, (2) asking the machine to return the value in the
+<code>population</code> column, (3) and save that value as a new
+variable <code>pop_cos_2022</code>.</p>
+<pre class="r"><code># Filter a particular value  population in a particular year 
+# Colorado Springs&#39; population in 2022
+pop_cos_2022 &lt;- pop_cos[pop_cos$year == &quot;2022&quot;, &quot;population&quot;]
+# Colorado Springs&#39; population in 2010
+pop_cos_2010 &lt;- pop_cos[pop_cos$year == &quot;2010&quot;, &quot;population&quot;]</code></pre>
+<p>After extracting the population values for 2010 and 2022, let’s
+calculate the growth rate using Eq. 3.1. Please report the value of
+<code>pop_change_cos</code> to the <strong>lab3 report</strong>.</p>
+<pre class="r"><code># population growth rate - COS
+pop_change_cos &lt;- 100 * (pop_cos_2022 - pop_cos_2010) / pop_cos_2010
+pop_change_cos</code></pre>
+<p>Next, we calculate the population growth rate for Buffalo. Please
+report the value of <code>pop_change_buf</code> to the <strong>lab3
+report</strong>.</p>
+<pre class="r"><code># Buffalo&#39; population in 2022
+pop_buf_2022 &lt;- pop_buf[pop_buf$year == &quot;2022&quot;, &quot;population&quot;]
+# COS&#39; population in 2010
+pop_buf_2010 &lt;- pop_buf[pop_buf$year == &quot;2010&quot;, &quot;population&quot;]
+
+# calculate population growth rate 
+pop_change_buf &lt;- 100 * (pop_buf_2022 - pop_buf_2010) / pop_buf_2010
+pop_change_buf</code></pre>
+<p>Okay, it seems both cities have positive population growth rates
+between 2010 and 2022. But Colorado Springs has such a rapid growth in
+the past decade. Compared to Colorado Springs, Buffalo was experiencing
+an incremental population growth.</p>
+<p><strong>BUT</strong>! Does this give us a <strong>full
+picture</strong> of population changes of two cities? I am not sure.
+Let’s visualize their population year by year and see what we can
+find.</p>
+</div>
+<div id="line-plots" class="section level4">
+<h4>3.3.3 Line Plots</h4>
+<p>Let’s combine the two data frame <code>pop_cos</code> and
+<code>pop_buf</code> together and save it as a new variable
+<code>pop_cos_buf</code>. Remember that we have checked their column
+names in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#332_Data_Query__Analysis">Step
+3.3.2.</a> One condition to combine rows together is that they need to
+have the same column names.</p>
+<pre class="r"><code>## Combine two data frames together by rows. This requires two data frames have the same column names 
+pop_cos_buf &lt;- rbind(pop_cos, pop_buf)
+
+## Have a look at the table 
+View(pop_cos_buf)</code></pre>
+<p>Then, we produce a simple line chart of population growth for two
+cities by using the <code>ggplot()</code> function. The code below asks
+the machine to do the following tasks.</p>
+<ul>
+<li><code>data =</code> specifies to use <code>pop_cos_buf</code> as the
+base data;</li>
+<li><code>aes()</code> describe how variables in the data are mapped to
+visual properties;</li>
+<li><code>geom_line()</code> makes a line plot.</li>
+</ul>
+<pre class="r"><code># a line chart of population growths: basic version 
+ggplot(data = pop_cos_buf, 
+       aes(x=year, y=population, group=city, color=city)) + 
+  geom_line()</code></pre>
+<p>Well, it produces a plot showing the population trend in two cities.
+It’s good and fast to explore the data. But, I am not satisfied with how
+it looks. For example:</p>
+<ul>
+<li>I don’t like the grey background.</li>
+<li>The x-axis labels are with decimals which are not good for
+years.</li>
+<li>The lines seem not thick enough.</li>
+</ul>
+<p>Let’s improve the plot by giving more instructions in terms of how we
+want the plot illustrates the data. Please run the code blow and observe
+how this plot is different from the previous one. In <strong>lab3
+report</strong>, please report what are the purpose of these codes:</p>
+<ul>
+<li><code>scale_x_continuous(breaks =c(2010,2012,2014,2016,2018,2020,2022))</code></li>
+<li><code>ggtitle("Population Changes in Two Cities")</code></li>
+<li><code>xlab("Year")</code></li>
+<li><code>ylab("Population")</code></li>
+</ul>
+<pre class="r"><code># update plot 
+ggplot(data = pop_cos_buf, aes(x=year, y=population, group=city, color=city)) + 
+  geom_line() + 
+  scale_x_continuous(breaks =c(2010,2012,2014,2016,2018,2020,2022)) + 
+  ggtitle(&quot;Population Changes in Two Cities&quot;) + 
+  xlab(&quot;Year&quot;) + 
+  ylab(&quot;Population&quot;)</code></pre>
+<p>Let’s continue to improve the plot by:</p>
+<ul>
+<li>adding data points to the plot using <code>geom_point()</code></li>
+<li>changing line colors using
+<code>scale_color_manual( values = c())</code></li>
+<li>apply the minimalist theme <code>theme_minimal()</code>. The package
+<code>ggplot</code> has many pre-defined themes (see <a
+href="https://ggplot2.tidyverse.org/reference/ggtheme.html">here</a>).</li>
+</ul>
+<p>This time, instead of visualizing the plot directly, we save it into
+the variable <code>plot1_growth</code> and plot it later by calling this
+variable.</p>
+<pre class="r"><code># improve the plot
+plot1_growth &lt;- ggplot(data = pop_cos_buf, aes(x=year, y=population, group=city, color=city)) + 
+  geom_line(linewidth  = 0.5) + 
+  geom_point(size = 0.7) + 
+  scale_x_continuous(breaks =c(2010,2012,2014,2016,2018,2020,2022)) + 
+  scale_color_manual(values = c(&quot;purple&quot;,&quot;orange&quot;)) + 
+  ggtitle(&quot;Population Changes in Two Cities&quot;) + 
+  xlab(&quot;Year&quot;) + 
+  ylab(&quot;Population&quot;) +
+  theme_minimal()
+
+# view the plot 
+plot1_growth</code></pre>
+</div>
+<div id="export-plots" class="section level4">
+<h4>3.3.4 Export Plots</h4>
+<p>It seems the plot <code>plot1_growth</code> is good enough. Let’s
+stop here for now and export it to the <em>“plot”</em> folder we have
+created in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#321_Organizing_Folders__Sub-folders">Step
+3.2.1.</a>. We will export it as a <u>.pdf</u> file because it can store
+information in vector format and is easier to edit later. We will use
+the function <code>pdf()</code>.</p>
+<blockquote>
+<p>The path <code>"plot/plot1_population_growth_two_cities.pdf"</code>
+tells the machine to save the pdf to the <em>“plot”</em> folder and name
+it as <em>“plot1_population_growth_two_cities.pdf”</em>. Feel free to
+use a different name.</p>
+</blockquote>
+<pre class="r"><code>pdf(&quot;plot/plot1_population_growth_two_cities.pdf&quot;, width = 6, height =3 )
+print(plot1_growth)
+dev.off()</code></pre>
+<p>After running the code above, please go to <strong>lab3</strong>
+folder –&gt; <strong>plot</strong> folder. Do you see a pdf there? Open
+it and do a screenshot for <strong>lab3 report</strong>.</p>
+<p><br></p>
+</div>
+</div>
+<div id="viz-education-attainment" class="section level3">
+<h3>3.4 Viz: Education Attainment</h3>
+<p>I know it’s a lot already. If you plan to <strong>take a
+break</strong>, this is a good time! Please refer to <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#324_Before_You_Start">Section
+3.2.4</a> for instructions on how to properly close the project and
+re-open it later.</p>
+<div id="get-data" class="section level4">
+<h4>3.4.1 Get Data</h4>
+<p>Okay, if you plan to continue, hang on tight! I will be very brief to
+save times &amp; efforts.</p>
+<p>This section explores the education attainment (of people 25 years
+and older) of the two cities, Colorado Springs and Buffalo. Unlike the
+previous section, this time we read the data from local
+<strong>.csv</strong> files using the function <code>read.csv()</code>.
+The file path <code>data/S1501_Education_ColoradoSprings.csv</code>
+tells the machine to go to the <code>data</code> folder and import the
+<strong>.csv</strong> file
+<em>“S1501_Education_ColoradoSprings.csv”</em>.</p>
+<pre class="r"><code>## Education Attainment - Colorado Springs
+edu_cos &lt;- read.csv(&quot;data/S1501_Education_ColoradoSprings.csv&quot;)
+
+## Education Attainment - Buffalo
+edu_buf &lt;- read.csv(&quot;data/S1501_Education_Buffalo.csv&quot;)</code></pre>
+<p>Check data type.</p>
+<pre class="r"><code>str(edu_cos)
+str(edu_buf)</code></pre>
+<blockquote>
+<p>The Education Attainment data is collected from <a
+href="https://data.census.gov/">US Census Bureau</a> via ACS 5-year
+survey. The link of the original table is <a
+href="https://data.census.gov/table/ACSST1Y2022.S1501?q=education&amp;g=160XX00US0816000,3611000">S1501:
+Educational Attainment</a>. The data we have in the .csv files are a
+corpus of that table by focusing on population age 25 and elder.</p>
+</blockquote>
+<p>Let’s have a look at the table first.</p>
+<pre class="r"><code>View(edu_cos)
+View(edu_buf)</code></pre>
+</div>
+<div id="data-manipulation" class="section level4">
+<h4>3.4.2 Data Manipulation</h4>
+<p>The <code>Count</code> column tells us how many people is at a
+particular education level. Let’s check the total number of people in
+this data by using the <code>sum()</code> function.</p>
+<pre class="r"><code># Check the total population age 25 and over in each city 
+sum(edu_cos$Count)
+sum(edu_buf$Count)</code></pre>
+<p>Intead of the column <em>“count”</em>, we are more interested in
+calculating the <em>“percentage”</em> of population in each level. The
+percentage is calculated as:</p>
+<p><span class="math display">\[ \% \ of \ people \ in \ a \ particular
+\ level =  100 * \frac {Count \ of \ people \ in \ a \ particular \
+level} {Total \ population} \]</span> <br></p>
+<p>Let’s calculate the percentage in each education level and save it as
+a new column <em>“Percentage”</em>.</p>
+<pre class="r"><code># Create a new column to calculate the percentage (%) of population attaining different education levels
+edu_cos[&quot;Percentage&quot;] &lt;- 100 * edu_cos$Count / sum(edu_cos$Count)
+edu_buf[&quot;Percentage&quot;] &lt;- 100 * edu_buf$Count / sum(edu_buf$Count)</code></pre>
+</div>
+<div id="bar-plot" class="section level4">
+<h4>3.4.3 Bar Plot</h4>
+<p>Let’s start to plot the education attainment for Colorado
+Springs.</p>
+<pre class="r"><code># basic version. Plot two cities separately. 
+ggplot(edu_cos, aes(x=Education_Level, y=Percentage)) + 
+  geom_bar(stat = &quot;identity&quot;)</code></pre>
+<p>Hmmm, the plot really doesn’t look great. The x-axis texts stick
+together and hard to read. It will be better if we can rotate the x-axis
+a little bit. Let’s rotate it by 45 degree.</p>
+<pre class="r"><code># rotate x axis 
+ggplot(edu_cos, aes(x=Education_Level, y=Percentage)) + 
+  geom_bar(stat = &quot;identity&quot;) + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))</code></pre>
+<p>It is much better. But it seems the x-axis does follow the order as
+the data frame. Let’s check how the education level is ordered in the
+table <code>edu_cos</code>.</p>
+<pre class="r"><code>edu_cos$Education_Level </code></pre>
+<p>The order of education level makes more sense because it is from the
+lowest to the highest. Let’s force the machine to order the x-aixs as
+the data frame, and reproduce the plot.</p>
+<pre class="r"><code># reorder x-axis as the data frame shows 
+edu_cos$Education_Level &lt;- factor(edu_cos$Education_Level, levels=unique(edu_cos$Education_Level))
+
+# plot 
+ggplot(edu_cos, aes(x=Education_Level, y=Percentage)) + 
+  geom_bar(stat = &quot;identity&quot;) + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))</code></pre>
+<p>Let’s combine Buffalo and Colorado Springs together and make a bar
+plot for comparison.</p>
+<pre class="r"><code># combine the rows from the two data frames &quot;edu_cos&quot;, &quot;edu_buf&quot; 
+edu_cos_buf &lt;- rbind(edu_cos, edu_buf)
+edu_cos_buf$Education_Level &lt;- factor(edu_cos_buf$Education_Level, levels=unique(edu_cos_buf$Education_Level))
+
+# make a bar plot for comparison 
+ggplot(edu_cos_buf, aes(x=Education_Level, y=Percentage, fill = NAME)) + 
+  geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))</code></pre>
+<p>Improve the plot a little bit by:</p>
+<ul>
+<li>using different colors: <code>scale_fill_manual()</code></li>
+<li>rename x and y labels: <code>xlab()</code> and
+<code>ylab()</code></li>
+<li>apply a black &amp; white theme: <code>theme_bw()</code></li>
+</ul>
+<p>We will save the plot under the variable <code>plot1_education</code>
+and call it to see the figure.</p>
+<pre class="r"><code># change colors and use a customized theme 
+plot1_education &lt;- ggplot(edu_cos_buf, aes(x=Education_Level, y=Percentage, fill = NAME)) + 
+  geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) + 
+  scale_fill_manual(values=c(&quot;#F5B19C&quot;,&quot;#0F4C81&quot;)) + 
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
+  xlab(&quot;Education Attainment&quot;) + 
+  ylab(&quot;Percentage (%)&quot;)
+
+plot1_education</code></pre>
+<p>Have a look at the plot and observes how the two cities are different
+from each other in terms of education attainment.</p>
+</div>
+<div id="export" class="section level4">
+<h4>3.4.4 Export</h4>
+<pre class="r"><code># export 
+pdf(&quot;plot/plot2_education_attainment_percentage_two_cities.pdf&quot;, width = 8, height =5 )
+print(plot1_education)
+dev.off()</code></pre>
+<p>After running the code above, please go to <strong>lab3</strong>
+folder –&gt; <strong>plot</strong> folder. Do you see a new pdf there?
+Open it and do a screenshot for <strong>lab3 report</strong>.</p>
+</div>
+</div>
+<div id="viz-racial-diversity" class="section level3">
+<h3>3.5 Viz: Racial Diversity</h3>
+<p>This section examines the racial diversity in Colorado Springs and
+Buffalo, and uses different visualization techniques (e.g., pie chart
+and waffle chart) to illustrate the same data.</p>
+<div id="import-data" class="section level4">
+<h4>3.5.1 Import Data</h4>
+<p>First, let’s import the data from local <strong>.csv</strong> files:
+<em>“B02001_Race_ColoradoSprings.csv”</em> and
+<em>“B02001_Race_Buffalo.csv”</em>.</p>
+<blockquote>
+<p>This data is collected by <a href="https://data.census.gov/">US
+Census Bureau</a> via ACS 5-year survey. The original table is <a
+href="https://data.census.gov/table/ACSDT5Y2022.B02001?q=Race%20and%20Ethnicity&amp;g=160XX00US0816000,3611000">B02001:Race</a>.</p>
+</blockquote>
+<pre class="r"><code># Read Data 
+race_cos &lt;- read.csv(&quot;data/B02001_Race_ColoradoSprings.csv&quot;)
+race_buf &lt;- read.csv(&quot;data/B02001_Race_Buffalo.csv&quot;)</code></pre>
+<pre class="r"><code># Examine data type 
+str(race_cos)
+str(race_buf)</code></pre>
+<pre class="r"><code># Have a look at the data frame  
+View(race_cos)
+View(race_buf)</code></pre>
+</div>
+<div id="data-manipulation-1" class="section level4">
+<h4>3.5.2 Data Manipulation</h4>
+<p>Similar to <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#342_Data_Manipulation">step
+3.4.2</a>, we create a new column called <em>“Percentage”</em> to
+calculate the proportion of population under each category. But this
+time, we want to round the column <em>“Percentage”</em> to two decimal
+digits (0.00) by using the function <code>round()</code>.</p>
+<pre class="r"><code># Calculate Percentage - COS
+race_cos[&#39;Percentage&#39;] &lt;- 100 * race_cos$Count / sum(race_cos$Count)
+# Round it to two decimal digits
+race_cos[&#39;Percentage&#39;] &lt;- round(race_cos[&#39;Percentage&#39;], 2)
+
+# Let&#39;s do the same to the Buffalo race dataset 
+race_buf[&#39;Percentage&#39;] &lt;- 100 * race_buf$Count / sum(race_buf$Count)
+race_buf[&#39;Percentage&#39;] &lt;- round(race_buf[&#39;Percentage&#39;], 2)</code></pre>
+</div>
+<div id="pie-charts" class="section level4">
+<h4>3.5.3 Pie Charts</h4>
+<p>Create a basic pie chart representing racial composition for Colorado
+Springs and save it to the <em>“plot”</em> folder.</p>
+<blockquote>
+<p>In the <code>scale_fill_brewer(palette="Set3")</code>, we ask the
+machine to apply a color palette called <code>Set3</code>.</p>
+</blockquote>
+<p>You can try other color palette by checking the <a
+href="https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf">R
+Color Cheatsheet</a>.</p>
+<pre class="r"><code># Basic pie chart - Colorado Springs
+plot3_race_cos &lt;- ggplot(race_cos, aes(x=&quot;&quot;, y=Percentage, fill=Race)) +
+  geom_bar(stat=&quot;identity&quot;, width=1) +
+  coord_polar(&quot;y&quot;, start=0) + 
+  theme_void() + 
+  scale_fill_brewer(palette=&quot;Set3&quot;) +
+  ggtitle(&quot;Colorado Springs&quot;)
+
+# export 
+pdf(&quot;plot/plot3_race_cos.pdf&quot;)
+print(plot3_race_cos)
+dev.off()</code></pre>
+<p>Create a basic pie chart for Buffalo.</p>
+<pre class="r"><code># Basic pie chart - Buffalo 
+plot3_race_buf &lt;- ggplot(race_buf, aes(x=&quot;&quot;, y=Percentage, fill=Race)) +
+  geom_bar(stat=&quot;identity&quot;, width=1) +
+  coord_polar(&quot;y&quot;, start=0) + 
+  theme_void() + 
+  scale_fill_brewer(palette=&quot;Set3&quot;) + 
+  ggtitle(&quot;Buffalo&quot;)
+  
+pdf(&quot;plot/plot3_race_buff.pdf&quot;)
+print(plot3_race_buf)
+dev.off()</code></pre>
+</div>
+<div id="waffle-charts" class="section level4">
+<h4>3.5.4 Waffle Charts</h4>
+<p>It almost the end. Let’s have some fun to conclude this practical by
+creating a waffle chart for the two cities. First, we combine the two
+data frame <code>race_cos</code> and <code>race_buf</code> and save it
+as a new variable <code>race_cos_buf</code>.</p>
+<pre class="r"><code>## Combine rows
+race_cos_buf &lt;- rbind(race_cos, race_buf)</code></pre>
+<p>Ready for something exciting? Run the code below.</p>
+<pre class="r"><code># waffle chart 
+ggplot(data = race_cos_buf, aes(fill=Race, values=Percentage)) +
+  geom_waffle(color = &quot;white&quot;, size = 1.125, n_rows = 6) +
+  facet_wrap(~City, ncol=1) +
+  theme_void()</code></pre>
+<p>Let’s try a different color palette <code>Set2</code> and save the
+plot as a new variable.</p>
+<pre class="r"><code># Try a different color palette
+plot4_race_waffle &lt;- ggplot(data = race_cos_buf, aes(fill=Race, values=Percentage)) +
+  geom_waffle(color = &quot;white&quot;, size = 1.125, n_rows = 6) +
+  facet_wrap(~City, ncol=1) + 
+  scale_fill_brewer(palette=&quot;Set2&quot;) +
+  theme_void()
+
+# call the plot 
+plot4_race_waffle</code></pre>
+</div>
+<div id="export-1" class="section level4">
+<h4>3.5.5 Export</h4>
+<pre class="r"><code># Export as a pdf
+pdf(&quot;plot/plot4_race_waffle_cos_buf.pdf&quot;)
+print(plot4_race_waffle)
+dev.off()</code></pre>
+<p>After running the code above, please go to <strong>lab3</strong>
+folder –&gt; <strong>plot</strong> folder. Do you see a new pdf there?
+Open it and do a screenshot for <strong>lab3 report</strong>.</p>
+</div>
+</div>
+<div id="close-exit" class="section level3">
+<h3>3.6. Close &amp; Exit</h3>
+<p>Congratulations!! You made it to the end. Let’s close the
+project.</p>
+<p>Please go “File”–&gt; “Close Project” – a pop window asking “Do you
+want to save these changes” –&gt; “Yes”.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

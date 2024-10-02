@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Chapter 5: Map Making (2) Spatial Data Manipulation</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="website.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GeoViz Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="resource.html">Resources</a>
+</li>
+<li>
+  <a href="lab1.html">Lab 1</a>
+</li>
+<li>
+  <a href="lab2.html">Lab 2</a>
+</li>
+<li>
+  <a href="lab3.html">Lab 3</a>
+</li>
+<li>
+  <a href="lab4.html">Lab 4</a>
+</li>
+<li>
+  <a href="lab5.html">Lab 5</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Chapter 5: Map Making (2) Spatial Data
+Manipulation</h1>
+
+</div>
+
+
+<div id="lab-goals" class="section level3">
+<h3>5.1 Lab Goals</h3>
+<p>This chapter continues to explore the techniques and analyses related
+to map-making. In <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html">Chapter 4</a>,
+we have played with census data (e.g., tables and cartographic
+boundaries) to make choropleth maps. Today, we will use <a
+href="https://insideairbnb.com/get-the-data/">Airbnb data</a> as an
+example to learn more advanced spatial analysis skills including:</p>
+<ul>
+<li><strong>Converting</strong> .csv file to spatial data</li>
+<li><strong>Spatial joining</strong></li>
+<li>Mapping and analyzing <strong>point</strong> data</li>
+<li>Using <strong>functions</strong> in R</li>
+</ul>
+</div>
+<div id="good-practice" class="section level3">
+<h3>5.2 Good Practice</h3>
+<div id="organizing-folders-sub-folders" class="section level4">
+<h4>5.2.1 Organizing Folders &amp; Sub-folders</h4>
+<p>Under the course folder, please create a folder called
+“<strong>lab5</strong>”. Next, in the <strong>lab5</strong> folder,
+please create two <u>sub-folders</u> that one is called
+“<strong>data</strong>” and another one is “<strong>plot</strong>”.</p>
+</div>
+<div id="data" class="section level4">
+<h4>5.2.2 Data</h4>
+<p>In this lab, we will explore data sources other than <a
+href="https://data.census.gov/">US Census Bureau</a>. Particularly, we
+will play with <a href="https://insideairbnb.com/get-the-data/">Airbnb
+data</a> for the city of Denver (CO).</p>
+<blockquote>
+<p><a href="https://insideairbnb.com/get-the-data/">AirBnb</a> has
+published datasets related to <u>listings</u>, <u>reviews</u>, and
+<u>neighborhoods</u> in major cities or tourist destinations all over
+the world. <a
+href="https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit?gid=1322284596#gid=1322284596">Here</a>
+you can find the data dictionary of <a
+href="https://insideairbnb.com/get-the-data/">Airbnb data</a>.</p>
+</blockquote>
+<p>Please follow the steps below to <u>download</u> data, <u>unzip</u>
+it and <u>move</u> the data to the required folder.</p>
+<ul>
+<li><strong>Go</strong> to <a
+href="https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab5_data.zip"
+class="uri">https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab5_data.zip</a></li>
+<li><strong>Download</strong> the file <em>“lab5_data.zip”</em></li>
+<li><strong>Unzip</strong> folder <em>“lab5_data.zip”</em></li>
+<li><strong>Move</strong> all files from the “<em>lab5_data</em>” folder
+to the <em>“data”</em> folder under “<em>lab5</em>” see <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab5.html#521_Organizing_Folders__Sub-folders">Step
+5.2.1</a></li>
+</ul>
+<p>If there you have any questions about the above-mentioned steps,
+please refer to <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#322_Data">Chapter
+3.2.3</a> for detailed instructions.</p>
+</div>
+<div id="launching-r-studio" class="section level4">
+<h4>5.2.3 Launching R Studio</h4>
+<p>Again, we would like to start a <strong>new project</strong> from
+scratch with a <strong>clean R Script</strong>. Please do the following
+steps. If you have any questions about these steps, please refer to the
+relevant chapters for help.</p>
+<ul>
+<li>Step 1: Make sure all existing R projects are <strong>properly
+closed</strong>.
+<ul>
+<li>If <em>not</em>, please close it by going to <em>File</em> –&gt;
+<em>Close Project</em> –&gt; <em>Save</em> changes (see <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab2.html#25_Close__Exit">Chapter
+2.5</a>).</li>
+</ul></li>
+<li>Step 2: Create a <strong>New Project</strong> using <strong>Existing
+Directory</strong>, navigate to <strong>lab5</strong>, click
+<strong>open</strong>, then <strong>Create Project</strong>. (see <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab1.html#13_Launching_RStudio">Chapter
+1.3</a>).</li>
+<li>Step 3: Create a <strong>New Script</strong> by go to
+<strong>File</strong> –&gt; <strong>New File</strong> –&gt; <strong>R
+Script</strong>. <strong>Save</strong> the script by giving it a proper
+name.</li>
+</ul>
+</div>
+<div id="before-start" class="section level4">
+<h4>5.2.4 Before Start</h4>
+<div class="greenbox">
+<div class="left">
+<p><u><strong>Heads-Up! </strong></u></p>
+</div>
+<p>All scripts is <strong>non-copyable</strong>. Here are some
+<strong>coding standards</strong> and <strong>best practices</strong> to
+follow:</p>
+<ul>
+<li>Use <strong>comments</strong> to explain code (try to annotate the
+codes by yourself).</li>
+<li>Ensure there is sufficient <strong>whitespace between lines</strong>
+of text to improve legibility.</li>
+<li><strong>Consistent</strong> variable naming</li>
+<li>When naming a new column, creating a new folder or file, please:
+<ul>
+<li><strong>Avoid special characters</strong> such as “, * _ = &amp;”
+.</li>
+<li><strong>Avoid adding blank spaces</strong>. For example, instead of
+using a name as “plot 1” (x), please use “plot_1” (✓).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="viz-mapping-airbnb-listings-in-denver" class="section level3">
+<h3>5.3 Viz: Mapping Airbnb Listings in Denver</h3>
+<p>We start with mapping Airbnb listings. Unfortunately, there is no <a
+href="https://insideairbnb.com/get-the-data/">Airbnb data</a> for
+Colorado Springs. But it has data for [Denver]{<a
+href="https://insideairbnb.com/denver/"
+class="uri">https://insideairbnb.com/denver/</a>}.</p>
+<p>Load libraries. We have seen most of these libraries except for
+<code>geojsonsf</code> which is often used to read spatial data in
+<u>.geojson</u> format and convert it to simple features.</p>
+<div id="libraries-data" class="section level4">
+<h4>5.3.1 Libraries &amp; Data</h4>
+<pre class="r nocopy"><code>## install geojsonsf
+install.packages(&quot;geojsonsf&quot;)
+
+# library 
+library(sf)         # simple features 
+library(tmap)       # mapping
+library(ggplot2)    # plot
+library(dplyr)      # data manipulation
+library(geojsonsf)  # geojson</code></pre>
+<p>Read data</p>
+<pre class="r nocopy"><code># US Cartographic Boundaries: Cities &amp; towns in Colorado 
+co_place &lt;- st_read(&quot;data/cb_2023_08_CO_place_500k/cb_2023_08_place_500k.shp&quot;)
+
+
+# Airbnb data 
+ab_listing &lt;- read.csv(&quot;data/airbnb_denver/listings.csv&quot;)
+ab_nghbr &lt;- geojson_sf(&quot;data/airbnb_denver/neighborhood.geojson&quot;)</code></pre>
+<p>Examine data. Please have a look at these tables, and report:</p>
+<p><strong>[Q1]</strong>: How many records in “co_place”? <br>
+<strong>[Q2]</strong>: Which columns could be used to extract “Denver”
+from “co_place”? <br> <strong>[Q3]</strong>: In “ab_nghbr”, how many
+records (listings)? <br> <strong>[Q4]</strong>: In “ab_nghbr”, which two
+columns contain spatial information and could be used for mapping?
+<br></p>
+<pre class="r nocopy"><code>View(co_place)
+View(ab_nghbr)
+View(ab_listing)</code></pre>
+</div>
+<div id="exploratory-analysis-of-airbnb-listing" class="section level4">
+<h4>5.3.2 Exploratory Analysis of Airbnb Listing</h4>
+<p>Check columns information in “ab_nghbr”</p>
+<pre class="r nocopy"><code># column info
+str(ab_listing)</code></pre>
+<p>For all listings in Denver, count different <u>room types</u>. The
+function <code>table()</code> builds a contingency table.</p>
+<p><strong>[Q5]</strong>: Report the number of listings of different
+room types. <br> <strong>[Q6]</strong>: Provide a screenshot of
+“plot1_airbnb_den_listing_room_type.pdf”.</p>
+<pre class="r nocopy"><code># count room types
+table(ab_listing$room_type)
+
+# quick plot of room types 
+pdf(&quot;plot/plot1_airbnb_den_listing_room_type.pdf&quot;)
+table(ab_listing$room_type) %&gt;% barplot()
+dev.off()</code></pre>
+<p>Descriptive statistics listings’ prices.</p>
+<pre class="r nocopy"><code># statistics
+summary(ab_listing$price)</code></pre>
+</div>
+<div id="create-spatial-data-from-table" class="section level4">
+<h4>5.3.3 Create Spatial Data from Table</h4>
+<p>Check object class of “ab_listing”</p>
+<pre class="r nocopy"><code># class
+class(ab_listing)</code></pre>
+<p>“ab_listing” is a data frame. The two columns <code>longitude</code>
+and <code>latitude</code> contain spatial information of listings. Let’s
+use these two columns to convert “ab_listing” to spatial data (simple
+features) and save it as a new variable <code>sf_ab_listing</code>.</p>
+<p><strong>[Q7]</strong>: Compared to the data frame “ab_listing”, which
+new column has been added to “sf_ab_listing”?</p>
+<pre class="r nocopy"><code># table to simple features
+sf_ab_listing &lt;- st_as_sf(ab_listing, 
+                          coords = c(&quot;longitude&quot;, &quot;latitude&quot;), 
+                          crs=4326)
+
+# class of sf_ab_listing
+class(sf_ab_listing)
+
+# open data 
+View(sf_ab_listing)</code></pre>
+</div>
+<div id="mapping" class="section level4">
+<h4>5.3.4 Mapping</h4>
+<p><strong>MAP1</strong>: Quick interactive mapping of Airbnb listings
+in Denver.</p>
+<pre class="r nocopy"><code># set mode to &quot;view&quot; for interactive mapping 
+tmap_mode(&quot;view&quot;)
+
+# MAP1: basic map of Airbnb listing in denver   
+tmap_mode(&quot;view&quot;)
+tm_shape(sf_ab_listing) + tm_dots()</code></pre>
+<p><strong>[Q8]</strong>: Run the chunk of code below and try to explain
+the purposes of the following commands:</p>
+<ul>
+<li><code>tm_dots()</code></li>
+<li><code>size = "price"</code></li>
+<li><code>col = "room_type"</code></li>
+<li><code>alpha = 0.7</code></li>
+</ul>
+<pre class="r nocopy"><code># improve MAP1 
+tm_shape(sf_ab_listing) + tm_dots(size = &quot;price&quot;, col = &quot;room_type&quot;, alpha=0.7)</code></pre>
+</div>
+</div>
+<div id="coordinate-reference-system-crs" class="section level3">
+<h3>5.4 Coordinate Reference System (CRS)</h3>
+<p>Now we have three simple feature objects including
+<code>co_place</code> collected from US Census, <code>ab_nghbr</code>
+and <code>sf_ab_listing</code> from <a
+href="https://insideairbnb.com/get-the-data/">Airbnb data</a>. Let’s
+check their Coordinate Reference System (CRS) and geometry types.</p>
+<p><strong>[Q9]</strong>: Please report the CRS and geometry types
+of:</p>
+<ul>
+<li><code>co_place</code></li>
+<li><code>ab_nghbr</code></li>
+<li><code>sf_ab_listing</code></li>
+</ul>
+<pre class="r nocopy"><code># Check CRS &amp; geometry types 
+co_place$geometry
+ab_nghbr$geometry
+sf_ab_listing$geometry</code></pre>
+<p>The <strong>World Geodetic System 1984 (WGS 84)</strong> is a global
+reference system used for determining positions on the Earth’s surface.
+<strong>North American Datum of 1983 (NAD 83)</strong> is the horizontal
+and geometric control datum for the United States, Canada, Mexico, and
+Central America.</p>
+<p>Let’s use <strong>NAD 83</strong> as the main CRS for this lab and
+convert WGS 84 to NAD 83.</p>
+<pre class="r nocopy"><code># convert &quot;ab_nghbr&quot; and &quot;sf_ab_listing&quot; from WGS84 to NAD83
+ab_nghbr &lt;- st_transform(ab_nghbr, st_crs(co_place))
+sf_ab_listing &lt;- st_transform(sf_ab_listing, st_crs(co_place))</code></pre>
+</div>
+<div id="viz-mapping-neighborhoods" class="section level3">
+<h3>5.5 Viz: Mapping Neighborhoods</h3>
+<div id="neighborhoods-in-denver" class="section level4">
+<h4>5.5.1 Neighborhoods in Denver</h4>
+<p>We have loaded the spatial data about neighborhoods in Denver in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab5.html#531_Libraries__Data">Step
+5.3.1</a>. .</p>
+<p>Have a look at the neighborhood data <code>ab_nghbr</code>.</p>
+<pre class="r nocopy"><code>View(ab_nghbr)</code></pre>
+<p>Let’s do a quick map of it. <em><strong>Hint</strong>: the following
+command will produce an error message (no worries, errors are a natural
+and inevitable part of coding)</em>.</p>
+<p><strong>[Q10]</strong>: What error message pops up in the Console?
+Please try to interpret it using your own words.</p>
+<pre class="r nocopy"><code># quick map 
+tm_shape(ab_nghbr) + tm_polygons(alpha = 0, lwd = 1)</code></pre>
+<p>It seems that the data <code>ab_nghbr</code> contains some invalid
+polygons. Let’s make them valid using the function
+<code>st_make_valid()</code>.</p>
+<pre class="r nocopy"><code># make valid
+ab_nghbr &lt;- st_make_valid(ab_nghbr)</code></pre>
+</div>
+<div id="mapping-1" class="section level4">
+<h4>5.5.2 Mapping</h4>
+<p>MAP2: neighborhoods in Denver</p>
+<pre class="r nocopy"><code># set plot mode to static 
+tmap_mode(&quot;plot&quot;)
+
+# map 2
+map2_den_nghbr &lt;- tm_shape(ab_nghbr) + tm_polygons(alpha = 0, lwd = 1) +
+  tm_compass() + tm_scale_bar(width = 0.15) + 
+  tm_text(text = &quot;neighbourhood&quot;, size = 0.3)
+
+# export 
+pdf(&quot;plot/map2_denver_neighborhood.pdf&quot;)
+print(map2_den_nghbr)
+dev.off()</code></pre>
+<p>MAP3: Overlap three maps together (listing, neighborhoods, Denver
+city boundary)</p>
+<p><strong>[Q11]</strong>: Provide a screenshot of
+“map3_denver_airbnb_listing_point.pdf”.</p>
+<pre class="r nocopy"><code># extract Denver city boundary from &quot;co_place&quot; 
+den_city &lt;- co_place %&gt;% filter(NAME == &quot;Denver&quot;)
+
+# map 3
+map_den_listing &lt;- tm_shape(den_city) + tm_polygons(alpha = 0, lwd = 2) +
+  tm_shape(ab_nghbr) + tm_polygons(alpha = 0, lwd = 1) + 
+  tm_shape(sf_ab_listing) + tm_dots(size = &quot;price&quot;, 
+                                    col = &quot;room_type&quot;, 
+                                    alpha=0.5) +
+  tm_compass() + tm_scale_bar(width = 0.15) + 
+  tm_layout(legend.position = c(&quot;left&quot;, &quot;top&quot;), frame = F)
+
+# export 
+pdf(&quot;plot/map3_denver_airbnb_listing_point.pdf&quot;, width = 12, height = 8)
+print(map_den_listing)
+dev.off()</code></pre>
+</div>
+</div>
+<div id="viz-airbnb-listings-in-neighborhoods" class="section level3">
+<h3>5.6 Viz: Airbnb Listings in Neighborhoods</h3>
+<p>While the data <code>sf_ab_listing</code> tells us where the listings
+are located, and the data <code>ab_nghbr</code> shows the boundaries of
+neighborhoods. But they are not enough. Let’s say we want to know more
+about the <strong>spatial distribution</strong> of those listings in
+terms of:</p>
+<blockquote>
+<p>how many listings are located in each neighborhoods and also their
+mean prices?</p>
+</blockquote>
+<p>This section performs analysis and produces visualizations of
+<strong>Airbnb listings at the <u>neighborhood level</u></strong>.</p>
+<div id="spatial-joining" class="section level4">
+<h4>5.6.1 Spatial Joining</h4>
+<p>Examine the <code>sf_ab_listing</code> data.</p>
+<pre class="r nocopy"><code># count columns in &quot;sf_ab_listing&quot;
+ncol(sf_ab_listing)</code></pre>
+<p>Spatial joining two data <code>sf_ab_listing</code> and
+<code>ab_nghbr</code> using the function <code>st_join()</code> as long
+as the geometries intersect. Save the joined data as a new variable
+<code>sf_ab_listing_nghbr</code>.</p>
+<pre class="r nocopy"><code># spatial join to the left of the object 
+sf_ab_listing_nghbr &lt;- st_join(sf_ab_listing, ab_nghbr, 
+                               left = T, join = st_intersects)</code></pre>
+<p>After spatial joining, the new data <code>sf_ab_listing_nghbr</code>
+has a new column compared to <code>sf_ab_listing</code>. Please compare
+those two data and answer <strong>[Q12]</strong>: What is the new column
+has been added to <code>sf_ab_listing_nghbr</code>?</p>
+<pre class="r nocopy"><code># count columns in the new variable &quot;sf_ab_listing_nghbr&quot; 
+ncol(sf_ab_listing_nghbr)
+
+# open data 
+View(sf_ab_listing_nghbr)</code></pre>
+</div>
+<div id="preparation" class="section level4">
+<h4>5.6.2 Preparation</h4>
+<p>Extract columns from <code>sf_ab_listing_nghbr</code> and save it as
+a new variable <code>df_listing_nghbr</code> for analysis.</p>
+<pre class="r nocopy"><code># columns for analysis  
+lt_airbnb_cols &lt;- c(&quot;neighbourhood&quot;, &quot;room_type&quot;, &quot;price&quot;)
+
+# extract and save as a new variable 
+df_listing_nghbr &lt;- sf_ab_listing_nghbr[lt_airbnb_cols]
+
+# remove geometry for more efficient calculation
+st_geometry(df_listing_nghbr) &lt;- NULL</code></pre>
+</div>
+<div id="cleaning-missing-values" class="section level4">
+<h4>5.6.3 Cleaning: Missing Values</h4>
+<p>Missing values “NA” (not available).</p>
+<pre class="r nocopy"><code>## Check how many rows contain NA in the column &quot;price&quot;
+df_listing_nghbr[is.na(df_listing_nghbr$price),] %&gt;% nrow()
+
+
+## remove NA
+df_listing_nghbr &lt;- na.omit(df_listing_nghbr)
+df_listing_nghbr[&quot;n_listing&quot;] &lt;- 1</code></pre>
+</div>
+<div id="analysis-statistics" class="section level4">
+<h4>5.6.4 Analysis: Statistics</h4>
+<p>Count room types in each neighborhood using one-hot encoding.</p>
+<blockquote>
+<p><a href="https://www.geeksforgeeks.org/ml-one-hot-encoding/">One-hot
+encoding</a> is a commonly used technique in machine learning to convert
+categorical variables into numerical values.</p>
+</blockquote>
+<p>Let’s borrow this concept and apply it for data cleaning and
+processing.</p>
+<pre class="r nocopy"><code>df_nghbr &lt;- reshape2::dcast(df_listing_nghbr, 
+                            neighbourhood ~ room_type, 
+                            fill = 0, value.var = &quot;n_listing&quot;, 
+                            fun.aggregate = length)</code></pre>
+<p><strong>[Q13]</strong>: Have a look at the table “df_nghbr”, please
+briefly explain what this table is about?</p>
+<pre class="r nocopy"><code>View(df_nghbr)</code></pre>
+<p>Calculate the statistics of listings’ prices at neighborhood level in
+terms of <u>mean, median, max, and min prices</u>.</p>
+<pre class="r nocopy"><code># statistics of prices at neighborhood level 
+df_nghbr_2 &lt;- df_listing_nghbr %&gt;% group_by(neighbourhood) %&gt;% 
+  summarise(mean_price = mean(price),
+            median_price = median(price),
+            max_price = max(price), 
+            min_price = min(price),
+            n_ttl = sum(n_listing))</code></pre>
+<p>Join the two data frames <code>df_nghbr</code> and
+<code>df_nghbr_2</code>.</p>
+<pre class="r nocopy"><code># join two neighborhood tables 
+df_nghbr_2 &lt;- left_join(df_nghbr_2, df_nghbr, by=c(&quot;neighbourhood&quot;=&quot;neighbourhood&quot;))</code></pre>
+</div>
+<div id="calculation-percentage" class="section level4">
+<h4>5.6.5 Calculation: Percentage</h4>
+<p>Calculate percentage of listings of different room types.</p>
+<pre class="r nocopy"><code>## calculate percentage for columns 7:10
+df_nghbr_2[, 7:10]
+df_nghbr_2[, 7:10] &lt;- 100 * df_nghbr_2[, 7:10] / df_nghbr_2$n_ttl</code></pre>
+<p>Join the attribute table <code>df_nghbr_2</code> to the spatial data
+<code>ab_nghbr</code>.</p>
+<pre class="r nocopy"><code>## join &quot;df_nghbr_2&quot; with the simple feature &quot;ab_nghbr&quot;
+ab_nghbr_var &lt;- left_join(ab_nghbr, df_nghbr_2, by=&quot;neighbourhood&quot; )</code></pre>
+<p>Have a look at the data <code>ab_nghbr_var</code> and
+<strong>[Q14]</strong>: paste the screenshot of the table to your
+report.</p>
+<pre class="r nocopy"><code>View(ab_nghbr_var)</code></pre>
+</div>
+<div id="mapping-2" class="section level4">
+<h4>5.6.6 Mapping</h4>
+<p>MAP4: Quick map for all variables in <code>ab_nghbr_var</code>.</p>
+<p><strong>[Q15]</strong>: paste the screenshot of
+“map4_quick_plot_neighborhoods_airbnb.pdf”.</p>
+<pre class="r nocopy"><code># quick map &amp; export 
+pdf(&quot;plot/map4_quick_plot_neighborhoods_airbnb.pdf&quot;)
+plot(ab_nghbr_var)
+dev.off()</code></pre>
+<p>In mapping, <strong>Data Classification</strong> refers to the
+process of breaking data into different groups. <a
+href=""><code>tmap</code></a> provides different ways to classify data
+such as:</p>
+<ul>
+<li><code>pretty</code> (default) rounds breaks into <strong>whole
+numbers</strong> where possible and spaces them
+<strong>evenly.</strong></li>
+<li><code>jenks</code> that <strong>minimize the within-group
+variance</strong> and <strong>maximize the between-group
+variance</strong>.</li>
+<li><code>equal</code> divides the range of values into <strong>n
+equal-sized intervals</strong>.</li>
+<li><code>quantile</code> creates several classes with exactly the
+<strong>same number of objects</strong> (e.g., spatial features), but
+having <strong>intervals of various lengths</strong>.<br />
+</li>
+<li><code>sd</code> calculates <strong>a standard deviation</strong> of
+a given variable, and next use this value as the break width.</li>
+</ul>
+<p>Let’s explore different classification methods and their impacts on
+mappings by visualizing two variables <code>mean_price</code> and
+<code>n_ttl</code> (number of listings in each neighborhood).</p>
+<p>Create a function for mapping (it’s okay that you don’t understand
+the code below).</p>
+<pre class="r nocopy"><code># write a function 
+f_map_nghbr_price &lt;- function(data, column, mapping_style, n_breaks, c_palette){
+  p &lt;- tm_shape(data) + 
+  tm_polygons(col = as.character(column), style = as.character(mapping_style), n=n_breaks, palette = as.character(c_palette)) +
+  tm_layout(title = as.character(mapping_style))
+  
+  return(p)
+}</code></pre>
+<p>MAP5: Mean listing price in neighborhoods</p>
+<pre class="r nocopy"><code># histogram - quick 
+hist(ab_nghbr_var$mean_price)
+
+# number of breaks &amp; color palette 
+n_brk = 7
+color_pal = &quot;Blues&quot;</code></pre>
+<p><strong>[Q16]</strong>: paste the screenshot of
+“map5_denver_neighborhood_meanprice_classifications.pdf” and discuss
+which data classification method do you like the most (please pay
+attention both to the map and the legends).</p>
+<pre class="r nocopy"><code># mapping using different styles
+
+map5_pretty &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;mean_price&quot;, &quot;pretty&quot;, n_brk, color_pal)
+map5_jenks &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;mean_price&quot;, &quot;jenks&quot;, n_brk, color_pal)
+map5_equal &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;mean_price&quot;, &quot;equal&quot;, n_brk, color_pal)
+map5_quantile &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;mean_price&quot;, &quot;quantile&quot;, n_brk, color_pal)
+map5_sd &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;mean_price&quot;, &quot;sd&quot;, n_brk, color_pal)
+
+
+## combine all maps together 
+map5_meanprice &lt;- tmap_arrange(map5_pretty,map5_jenks, 
+                               map5_equal, map5_quantile, 
+                               map5_sd, 
+                               ncol = 2)
+
+## export 
+pdf(&quot;plot/map5_denver_neighborhood_meanprice_classifications.pdf&quot;, width = 10, height = 10)
+print(map5_meanprice)
+dev.off()</code></pre>
+<p>MAP6: Total rooms listing price in neighborhoods.</p>
+<pre class="r nocopy"><code># histogram 
+hist(ab_nghbr_var$n_ttl)
+
+# number of breaks 
+n_brk = 7
+color_pal = &quot;Greens&quot;
+
+map6_pretty &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;n_ttl&quot;, &quot;pretty&quot;, n_brk, color_pal)
+map6_jenks &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;n_ttl&quot;, &quot;jenks&quot;, n_brk, color_pal)
+map6_equal &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;n_ttl&quot;, &quot;equal&quot;, n_brk, color_pal)
+map6_quantile &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;n_ttl&quot;, &quot;quantile&quot;, n_brk, color_pal)
+map6_sd &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;n_ttl&quot;, &quot;sd&quot;, n_brk, color_pal)
+
+## combine all maps together 
+map6_ttl &lt;- tmap_arrange(map6_pretty, map6_jenks, 
+                         map6_equal, map6_quantile, 
+                         map6_sd, 
+                         ncol = 2) 
+
+## export 
+pdf(&quot;plot/map6_denver_neighborhood_count_total_listings_classifications.pdf&quot;, width = 10, height = 10)
+print(map6_ttl)
+dev.off()</code></pre>
+<p><strong>[Q17]</strong>: paste the screenshot of
+“map6_denver_neighborhood_count_total_listings_classifications.pdf” and
+discuss which data classification method do you like the most (please
+pay attention both to the map and the legends).</p>
+</div>
+</div>
+<div id="close-exit" class="section level3">
+<h3>5.7 Close &amp; Exit</h3>
+<p>Congratulations!! You have completed the entire tutorial by typing
+the script by yourself!! Excellent work.</p>
+<p>Please go “File”–&gt; “Close Project” – a pop window asking “Do you
+want to save these changes” –&gt; “Yes”.</p>
+<p>Don’t forget to submit the <strong>lab5 report</strong> and your
+<strong>script</strong> to Canvas.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

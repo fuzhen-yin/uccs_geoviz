@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Fuzhen Yin" />
+
+
+<title>Resources</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="website.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GeoViz Labs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="resource.html">Resources</a>
+</li>
+<li>
+  <a href="lab1.html">Lab 1</a>
+</li>
+<li>
+  <a href="lab2.html">Lab 2</a>
+</li>
+<li>
+  <a href="lab3.html">Lab 3</a>
+</li>
+<li>
+  <a href="lab4.html">Lab 4</a>
+</li>
+<li>
+  <a href="lab5.html">Lab 5</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Resources</h1>
+<h4 class="author">Fuzhen Yin</h4>
+<h4 class="date">UCCS Geoviz - Fall 2024</h4>
+
+</div>
+
+
+<p>Please come back for more information on resources. This page will be
+updated frequently to share career opportunities.</p>
+<div id="acknowledgement" class="section level3">
+<h3>Acknowledgement</h3>
+<p>Thanks to the following people who have provided references to style
+and structure this tutorial.<br />
+</p>
+<ul>
+<li><a
+href="https://andrewmaclachlan.github.io/CASA0005repo/index.html">CASA0005
+Geographic Information Systems and Science</a> by <a
+href="https://x.com/andymaclachlan">Andy MacLachlan</a><br />
+</li>
+<li><a
+href="https://learning.oreilly.com/library/view/learning-r/9781449357160/">Learning
+R</a> by <a href="https://github.com/richierocks">Richard
+Cotton</a></li>
+</ul>
+</div>
+<div id="visualization-ideas" class="section level3">
+<h3>Visualization Ideas</h3>
+<p>Here are some websites where you can find inspirations and codes for
+visualization.<br />
+</p>
+<ul>
+<li><a href="https://r-graph-gallery.com/">The R Graph Gallery</a></li>
+</ul>
+</div>
+<div id="portfolio-inspirations" class="section level3">
+<h3>Portfolio Inspirations</h3>
+<ul>
+<li><a href="https://www.julian-hoffmann-anton.com/">JHA</a></li>
+<li><a href="https://cartoguophy.com/">Atlas Guo</a></li>
+</ul>
+</div>
+<div id="data-sources" class="section level3">
+<h3>Data Sources</h3>
+<ul>
+<li><a href="https://data.census.gov/">US Census Bureau</a></li>
+</ul>
+</div>
+<div id="opportunities" class="section level3">
+<h3>Opportunities</h3>
+<blockquote>
+<p>Join the Email list-serv for RA opportunities with <a
+href="https://ges.uccs.edu/directory/faculty/matt-gottfried">Matt
+Gottfried</a></p>
+</blockquote>
+<div class="blueborder">
+<p>Matt has a few upcoming projects working with local communities and
+organizations for GIS analysis. Please email Matt (<a
+href="mailto:matthew.gottfried@uccs.edu"
+class="email">matthew.gottfried@uccs.edu</a>) to join the listserv.</p>
+</div>
+<p><br> <br></p>
+<blockquote>
+<p>Penn State’s Graduate Program for fully-funded positions on
+Cartography and Geovisualization</p>
+</blockquote>
+<div class="blueborder">
+<p>The Department of Geography at Penn State is welcoming applications
+in the subfields of Cartography, Geovisualization, and GIScience to its
+resident Graduate MS &amp; PhD programs. All admitted graduate students
+at Penn State Geography are fully-funded on either teaching or research
+assistantships. Multiple externally funded projects in cartography and
+geovisualization are ongoing and available to support qualified
+applicants with backgrounds in mapping, visualization, and GIScience.
+The Department is home to multiple GIScience research centers, including
+the GeoGraphics Lab. Applications are due December 1, 2024.</p>
+<p>Please review our website for full details on how to begin your
+application: <a
+href="https://www.geog.psu.edu/graduate/graduate-admissions-and-aid/how-apply-our-resident-graduate-program"
+class="uri">https://www.geog.psu.edu/graduate/graduate-admissions-and-aid/how-apply-our-resident-graduate-program</a></p>
+<p>We invite prospective students to join us for an upcoming webinar
+information session about our graduate program on Tuesday, October 22nd
+5:00pm - 6:00pm EDT. Register here to participate:
+tinyurl.com/psugeoginfo</p>
+<p>Applicants should indicate subfield interests in Cartography,
+Geographic Information Science, and Spatial Data Science on the
+application form, as well as suggesting professors Anthony Robinson and
+Cynthia Brewer as specific people you might work with (these steps will
+ensure that applicants in cartography/viz are able to be prioritized –
+it does not require you to work with those advisors). All complete
+applications that are submitted on or before the application deadline
+are reviewed by the graduate program admissions committee, made up of
+faculty spanning the major subfields of geography. This committee works
+together to review and evaluate all applications, and after developing
+an overall ranking for the applicant pool, potential advisors listed on
+the application are brought in to provide additional feedback on top
+overall candidates.</p>
+<p>If you have questions, please contact Anthony Robinson at <a
+href="mailto:arobinson@psu.edu" class="email">arobinson@psu.edu</a>.</p>
+</div>
+<p><br> <br></p>
+<blockquote>
+<p>Project Specialist Opening at University of California Riverside</p>
+</blockquote>
+<div class="blueborder">
+<p>The School of Public Policy at the University of California,
+Riverside (UCR), is seeking a highly motivated Postdoctoral Researcher
+or Project Specialist, depending on qualifications. The successful
+candidate will work on multiple NSF-funded projects focusing on housing,
+public health, economic development, and spatial data science.
+Application review begins on Oct 1, 2024, and will continue until the
+position is filled.</p>
+<p>Special Sworn Status (SSS) is required for researchers to access
+restricted-use data at the Census Bureau’s Federal Statistical Research
+Data Centers. Therefore, the final appointment is contingent on the
+candidate’s successful attainment of SSS (the UCR team will help with
+the application).</p>
+<p>Essential Responsibilities</p>
+<p>Analyze public and confidential data relevant to funded projects
+using various methods, including but not limited to causal inference,
+spatial econometrics, and multilevel modeling Conduct an international
+survey to identify key needs and barriers in implementing Spatial Data
+Science curricula in higher education. Prepare data summaries, reports,
+manuscripts, and presentations of research results. Minimum
+Requirements</p>
+<p>Junior Project Specialist: Master’s degree in Public Policy,
+Geography, Economics, Sociology, Political Science, Statistics, Public
+Health, or a related discipline. Postdoctoral Researcher: Doctoral
+Degree in Public Policy, Geography, Economics, Sociology, Political
+Science, Statistics, Public Health, or a related discipline. Proficiency
+in Python and/or R. Experience with Causal Inference. Spatial statistics
+and experiences with GIS are preferred. Application Process Interested
+applicants should send a single document of the following materials to
+<a href="mailto:ResearchProjectsPortal@gmail.com"
+class="email">ResearchProjectsPortal@gmail.com</a>. Please direct
+inquiries about this position to this email address as well.</p>
+<p>Complete CV Contact information for three references. Cover letter (1
+page max) Research statement (2 pages max) Optional: writing samples (2
+max), personal or project websites.</p>
+</div>
+<p><br> <br></p>
+<blockquote>
+<p>Full-Time GIS Analyst Position: University of Michigan</p>
+</blockquote>
+<div class="blueborder">
+<p>Dr. Erica Twardzik in the University of Michigan School of
+Kinesiology is recruiting a full time Geographic Information Systems
+(GIS) Analyst with a start date in Fall 2024. Her lab integrates
+multiple data sources to study how environments affect mobility among
+people with disabilities to inform policies that increase participation
+and inclusion within society. The GIS Specialist would serve as the GIS
+analyst for research projects that involve working with numerous large
+spatially-referenced databases. The GIS Specialist would have primary
+responsibility for preparing spatially-referenced data for analysis
+using GIS software, generating maps to communicate research findings,
+documenting and maintaining multiple spatially-referenced datasets,
+contributing to research team meetings, and the overall lab mission.</p>
+<p>Here is the link to the posting:
+careers.umich.edu/job_detail/254783/gis-specialist. You can also email
+Dr. Twardzik for further information: <a
+href="mailto:etwardzi@umich.edu"
+class="email">etwardzi@umich.edu</a></p>
+</div>
+<p><br> <br></p>
+<blockquote>
+<p>Title</p>
+</blockquote>
+<div class="blueborder">
+
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
