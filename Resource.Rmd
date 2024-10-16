@@ -32,6 +32,13 @@ Here are some websites where you can find inspirations and codes for visualizati
 * [JHA](https://www.julian-hoffmann-anton.com/)
 * [Atlas Guo](https://cartoguophy.com/)
 
+### To Create Your Own Website
+
+* [Google Sites](https://support.google.com/a/users/answer/9310491?hl=en)
+* [Blogger](https://www.blogger.com/about/)
+* [Squarespace](https://www.squarespace.com/website-design?clickid=WwgyNVUKGxyKTRSRXQwXnS7hUkCRiYXNRxWEQo0&gad_source=1)
+
+
 ### Data Sources 
 
 * [US Census Bureau](https://data.census.gov/)
@@ -39,6 +46,19 @@ Here are some websites where you can find inspirations and codes for visualizati
 
 ### Opportunities 
 
+> [Mountain Lion Research Day](https://surveyuccs.co1.qualtrics.com/jfe/form/SV_4OfwNbc5HzXFBiK) (Presentation on December 16th) 
+
+![Mountain Lion Research Day](figs/r_mountain lion.png){width=70%} 
+
+<br>
+
+
+> Jacquelyn Beyer Fellowship (ddl: Nov. 1st)
+
+
+![Jacquelyn Beyer](figs/r_Jacquelyn Beyer Fellowship.png){width=70%}
+
+<br>
 
 > Join the Email list-serv for RA opportunities with [Matt Gottfried](https://ges.uccs.edu/directory/faculty/matt-gottfried)
 
