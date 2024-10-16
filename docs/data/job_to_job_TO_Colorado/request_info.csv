@@ -1,0 +1,80 @@
+Filters,
+Indicator,Job-to-Job Flows (J2J)
+Origin State,Alabama; Alaska; Arizona; Arkansas; California; Connecticut; Delaware; District of Columbia; Florida; Georgia; Hawaii; Idaho; Illinois; Indiana; Iowa; Kansas; Kentucky; Louisiana; Maine; Maryland; Massachusetts; Michigan; Minnesota; Mississippi; Missouri; Montana; Nebraska; Nevada; New Hampshire; New Jersey; New Mexico; New York; North Carolina; North Dakota; Ohio; Oklahoma; Oregon; Pennsylvania; Rhode Island; South Carolina; South Dakota; Tennessee; Texas; Utah; Vermont; Virginia; Washington; West Virginia; Wisconsin; Wyoming
+Destination NAICS Sector,"Agriculture, Forestry, Fishing and Hunting; Mining, Quarrying, and Oil and Gas Extraction; Utilities; Construction; Manufacturing; Wholesale Trade; Retail Trade; Transportation and Warehousing; Information; Finance and Insurance; Real Estate and Rental and Leasing; Professional, Scientific, and Technical Services; Management of Companies and Enterprises; Administrative and Support and Waste Management and Remediation Services; Educational Services; Health Care and Social Assistance; Arts, Entertainment, and Recreation; Accommodation and Food Services; Other Services (except Public Administration); Public Administration"
+Year/Quarter,2023 Q1; 2023 Q2; 2023 Q3
+Destination State,Colorado
+
+Grouped by,State; NAICS Sector
+,
+Ranking:,None
+,
+Normalization:,None
+
+Date Generated,14 October 2024
+
+Source,"Job-to-Job Flows Explorer, j2jexplorer.ces.census.gov"
+
+Version,J2JOD NJ 34 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_nj_20240922_0118
+,J2JOD IA 19 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_ia_20240922_0259
+,J2JOD NC 37 2000:2-2023:1 V4.11.1 R2024Q3 j2jodpu_nc_20240922_0228
+,J2JOD OR 41 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_or_20240922_0254
+,J2JOD MO 29 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_mo_20240921_2304
+,J2JOD VT 50 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_vt_20240922_0136
+,J2JOD DC 11 2005:3-2023:3 V4.11.1 R2024Q3 j2jodpu_dc_20240922_0256
+,J2JOD AL 01 2001:2-2023:3 V4.11.1 R2024Q3 j2jodpu_al_20240922_0005
+,J2JOD VA 51 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_va_20240922_0020
+,J2JOD MN 27 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_mn_20240922_0334
+,J2JOD CO 08 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_co_20240922_0032
+,J2JOD FL 12 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_fl_20240921_2302
+,J2JOD IN 18 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_in_20240922_0022
+,J2JOD NV 32 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_nv_20240922_0340
+,J2JOD OH 39 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_oh_20240922_0026
+,J2JOD PA 42 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_pa_20240922_0408
+,J2JOD WV 54 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_wv_20240921_2307
+,J2JOD HI 15 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_hi_20240922_0153
+,J2JOD CT 09 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_ct_20240922_0150
+,J2JOD MI 26 2000:4-2021:3 V4.11.1 R2024Q3 j2jodpu_mi_20240922_0223
+,J2JOD GA 13 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_ga_20240922_0030
+,J2JOD MA 25 2010:2-2023:3 V4.11.1 R2024Q3 j2jodpu_ma_20240921_2304
+,J2JOD UT 49 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_ut_20240921_2306
+,J2JOD NM 35 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_nm_20240922_0232
+,J2JOD MS 28 2003:4-2018:1 V4.11.1 R2024Q3 j2jodpu_ms_20240922_0019
+,J2JOD MT 30 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_mt_20240922_0121
+,J2JOD RI 44 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_ri_20240921_2306
+,J2JOD ME 23 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_me_20240922_0121
+,J2JOD ND 38 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_nd_20240922_0345
+,J2JOD NE 31 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_ne_20240921_2305
+,J2JOD WI 55 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_wi_20240922_0353
+,J2JOD NY 36 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_ny_20240921_2305
+,J2JOD ID 16 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_id_20240922_0410
+,J2JOD CA 06 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_ca_20240921_2302
+,J2JOD TN 47 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_tn_20240922_0226
+,J2JOD SC 45 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_sc_20240922_0007
+,J2JOD DE 10 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_de_20240922_0358
+,J2JOD WA 53 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_wa_20240922_0237
+,J2JOD AK 02 2000:2-2016:1 V4.11.1 R2024Q3 j2jodpu_ak_20240921_2301
+,J2JOD AR 05 2002:4-2023:3 V4.11.1 R2024Q3 j2jodpu_ar_20240922_0117
+,J2JOD KS 20 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_ks_20240922_0142
+,J2JOD OK 40 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_ok_20240922_0143
+,J2JOD LA 22 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_la_20240922_0404
+,J2JOD NH 33 2003:2-2023:3 V4.11.1 R2024Q3 j2jodpu_nh_20240922_0015
+,J2JOD KY 21 2001:2-2023:3 V4.11.1 R2024Q3 j2jodpu_ky_20240922_0253
+,J2JOD TX 48 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_tx_20240922_0340
+,J2JOD IL 17 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_il_20240921_2303
+,J2JOD SD 46 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_sd_20240922_0120
+,J2JOD WY 56 2001:2-2023:3 V4.11.1 R2024Q3 j2jodpu_wy_20240922_0014
+,J2JOD AZ 04 2004:2-2023:3 V4.11.1 R2024Q3 j2jodpu_az_20240922_0226
+,J2JOD MD 24 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_md_20240922_0009
+
+Flags,
+-2,No data available in this category for this quarter.
+-1,Data not available to compute this estimate.
+1,"OK, fuzzed value released."
+5,Value suppressed because it does not meet U.S. Census Bureau publication standards.
+6,"Value calculated from other released measures, no significant distortion."
+7,"Value calculated from other released measures, some of which have significantly distorted data."
+9,"Data significantly distorted, fuzzed value released."
+10,"Aggregate of cells, no significant distortion."
+11,Aggregate of cells not released because component cells do not meet U.S. Census Bureau publication standards.
+12,"Aggregate of cells, some of which have significantly distorted data."

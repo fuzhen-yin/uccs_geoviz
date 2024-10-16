@@ -51,18 +51,13 @@ You would need to use [Job-to-Job Flows (J2J)](https://j2jexplorer.ces.census.go
 
 ::::
 
-to explore spatial data sources other than [US Census Bureau](https://data.census.gov/). We will use the [311 Service Requests in 2023](https://opendata-geospatialdenver.hub.arcgis.com/search?q=311) and [Parks, Medians, and Parkway Trees](https://opendata-geospatialdenver.hub.arcgis.com/datasets/geospatialDenver::parks-medians-and-parkway-trees/about). 
-
-
-> 311 data contains pertinent information related to inquiries and service requests for the City and County of Denver.
-
 
 Please follow the steps below to [download]{.ul} data, [unzip]{.ul} it and [move]{.ul} the data to the required folder. 
 
-* **Go** to https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab6_data.zip
-* **Download** the file _"lab6_data.zip"_
-* **Unzip** folder _"lab6_data.zip"_
-* **Move** all files from the "_lab6_data_" folder to the _"data"_ folder under "_lab6_" see [Step 6.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab6.html#621_Organizing_Folders__Sub-folders) 
+* **Go** to https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab7_data.zip
+* **Download** the file _"lab7_data.zip"_
+* **Unzip** folder _"lab7_data.zip"_
+* **Move** all files from the "_lab7_data_" folder to the _"data"_ folder under "_lab7_" see [Step 6.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab6.html#621_Organizing_Folders__Sub-folders) 
 
 
 If there you have any questions about the above-mentioned steps, please refer to [Chapter 3.2.3](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#322_Data) for detailed instructions. 
@@ -85,7 +80,7 @@ Again, we would like to start a **new project** from scratch with a **clean R Sc
 [**Heads-Up! **]{.ul}
 :::
 
-All scripts is **non-copyable**. 
+All scripts are **non-copyable**. 
 
 ::::
 

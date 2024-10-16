@@ -65,7 +65,7 @@ Again, we would like to start a **new project** from scratch with a **clean R Sc
 [**Heads-Up! **]{.ul}
 :::
 
-All scripts is **non-copyable**. Here are some **coding standards** and **best practices** to follow: 
+All scripts are **non-copyable**. Here are some **coding standards** and **best practices** to follow: 
 
 * Use **comments** to explain code (try to annotate the codes by yourself). 
 * Ensure there is sufficient **whitespace between lines** of text to improve legibility. 
