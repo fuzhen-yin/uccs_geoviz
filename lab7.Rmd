@@ -1,0 +1,92 @@
+---
+title: "Chapter 6: Network Visualization (1) Flow & Mobility"
+output: 
+  html_document:
+    fig_caption: yes
+    theme: cosmo
+    toc: yes
+    toc_depth: 5
+    toc_float: 
+      collapsed: true
+css: website.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### 6.1 Lab Goals
+
+In this chapter, you will learn
+
+* **clean** & **organize** network data
+* create network based on **nodes** and **edges** 
+* **map** network
+
+
+### 7.2 Good Practice
+
+#### 7.2.1 Organizing Folders & Sub-folders
+Under the course folder, please create a folder called "**lab7**". Next, in the **lab7** folder, please create two [sub-folders]{.ul} that one is called "**data**" and another one is "**plot**". 
+
+#### 7.2.2 Data
+This chapter explores the [Longitudinal Employer-Household Dynamics](https://lehd.ces.census.gov/data/) data from US Census. Particularly, we will play with the [Job-to-Job Flows (J2J)](https://j2jexplorer.ces.census.gov/). 
+
+> **Job-to-Job Flows (J2J)** is a set of statistics on job mobility in the United States. J2J include statistics on: 
+>
+  * the job-to-job transition rate, 
+  * hires and separations to and from employment,
+  * earnings changes due to job change, and
+  * characteristics of origin and destination jobs for job-to-job transitions. 
+> 
+These statistics are available at the national, state, and metropolitan area levels and by worker and firm characteristics.
+
+
+:::: {.bluebox data-latex=""}
+::: {.left data-latex=""}
+[**Heads-Up! **]{.ul}
+:::
+
+You would need to use [Job-to-Job Flows (J2J)](https://j2jexplorer.ces.census.gov/) for Assignment 3. 
+
+::::
+
+to explore spatial data sources other than [US Census Bureau](https://data.census.gov/). We will use the [311 Service Requests in 2023](https://opendata-geospatialdenver.hub.arcgis.com/search?q=311) and [Parks, Medians, and Parkway Trees](https://opendata-geospatialdenver.hub.arcgis.com/datasets/geospatialDenver::parks-medians-and-parkway-trees/about). 
+
+
+> 311 data contains pertinent information related to inquiries and service requests for the City and County of Denver.
+
+
+Please follow the steps below to [download]{.ul} data, [unzip]{.ul} it and [move]{.ul} the data to the required folder. 
+
+* **Go** to https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab6_data.zip
+* **Download** the file _"lab6_data.zip"_
+* **Unzip** folder _"lab6_data.zip"_
+* **Move** all files from the "_lab6_data_" folder to the _"data"_ folder under "_lab6_" see [Step 6.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab6.html#621_Organizing_Folders__Sub-folders) 
+
+
+If there you have any questions about the above-mentioned steps, please refer to [Chapter 3.2.3](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#322_Data) for detailed instructions. 
+
+
+#### 7.2.3 Launching R Studio
+
+Again, we would like to start a **new project** from scratch with a **clean R Script**. Please do the following steps. If you have any questions about these steps, please refer to the relevant chapters for help. 
+
+* Step 1: Make sure all existing R projects are **properly closed**. 
+    + If *not*, please close it by going to *File* --> *Close Project* --> *Save* changes (see [Chapter 2.5](https://fuzhen-yin.github.io/uccs_geoviz/lab2.html#25_Close__Exit)). 
+* Step 2: Create a **New Project** using **Existing Directory**, navigate to **lab6**, click **open**, then **Create Project**. (see [Chapter 1.3](https://fuzhen-yin.github.io/uccs_geoviz/lab1.html#13_Launching_RStudio)). 
+* Step 3: Create a **New Script** by go to **File** --> **New File** --> **R Script**. **Save** the script by giving it a proper name.
+
+
+#### 7.2.4 Before Start 
+
+:::: {.bluebox data-latex=""}
+::: {.left data-latex=""}
+[**Heads-Up! **]{.ul}
+:::
+
+All scripts is **non-copyable**. 
+
+::::
+
+<br>
