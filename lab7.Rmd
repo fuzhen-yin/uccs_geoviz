@@ -146,19 +146,26 @@ str(j2j_from_co)
 ##### 7.4.2.1 Tidy Data
 ```{r, class.source = "nocopy"}
 ### tidy the data 
-j2j_from_co_cln <- j2j_from_co %>% pivot_longer(cols = 2:ncol(j2j_from_co), names_to = "to_state", values_to = "avg_n_job")
+j2j_from_co_cln <- j2j_from_co %>% 
+  pivot_longer(cols = 2:ncol(j2j_from_co), 
+               names_to = "to_state", values_to = "avg_n_job")
 ```
 
 
 ```{r, class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
 #### remove the record with ".flag". "!";    %like% operator.  find names containing the pattern ".flag"
-j2j_from_co_cln <- j2j_from_co_cln %>% filter(!to_state %like% ".flag")
+j2j_from_co_cln <- j2j_from_co_cln %>% 
+  filter(!to_state %like% ".flag")
+
 #### remove missing values (na - not available) 
 j2j_from_co_cln <- j2j_from_co_cln %>% na.omit()
+
 #### update first column name from "X" to "naics_sector"
 setnames(j2j_from_co_cln, old="X", new="naics_sector")
+
 #### add a new column indicating the origin state of job flow
 j2j_from_co_cln$from_state <- "Colorado"
+
 #### add a new column showing flow director 
 j2j_from_co_cln$direction <- "outflow_from_co"
 
@@ -169,7 +176,8 @@ j2j_from_co_cln$to_state <- gsub("\\.", " " ,j2j_from_co_cln$to_state )
 
 ```{r, class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
 #### re-order columns
-j2j_from_co_cln <- j2j_from_co_cln[c("from_state", "to_state", "direction", "naics_sector", "avg_n_job")]
+j2j_from_co_cln <- j2j_from_co_cln[c("from_state", "to_state", 
+                                     "direction", "naics_sector", "avg_n_job")]
 ```
 
 ##### 7.4.2.2 Quick Plot 
@@ -197,7 +205,8 @@ Use the pipe operator ``` %>% ``` to chain functions together.
 ```{r, class.source = "nocopy", message=FALSE, warning=FALSE, cache=FALSE}
 ### tidy data; remove records with ".flag" suffix, remove na
 j2j_to_co_cln <-  j2j_to_co %>% 
-  pivot_longer(cols = 2:ncol(.), names_to = "naics_sector", values_to = "avg_n_job" ) %>% 
+  pivot_longer(cols = 2:ncol(.), 
+               names_to = "naics_sector", values_to = "avg_n_job" ) %>% 
   filter(!naics_sector %like% ".flag") %>% 
   na.omit() %>% 
   setnames(old="X", new="from_state") %>% 
@@ -221,7 +230,10 @@ j2j_to_co_cln$naics_sector <- j2j_to_co_cln$naics_sector %>%
 data <- j2j_to_co_cln 
 
 #### box plot, reorder by median
-ggplot(data = data, aes(x = reorder(naics_sector, avg_n_job), y=avg_n_job, fill =naics_sector )) + 
+ggplot(data = data, 
+       aes(x = reorder(naics_sector, avg_n_job), 
+           y=avg_n_job, 
+           fill =naics_sector )) + 
   geom_boxplot() + 
   xlab("NAICS Sector") +
   ylab("Job Counts") + 
@@ -278,7 +290,8 @@ Improve network viz.
 ```{r, class.source = "nocopy", message=FALSE, warning=FALSE, cache=FALSE}
 plot(network, vertex.size = 12, 
      edge.arrow.size = 0.5,
-     edge.width=E(network)$avg_n_job * 0.002, edge.curved = TRUE, main = "Job inflow to Colorado")
+     edge.width=E(network)$avg_n_job * 0.002, 
+     edge.curved = TRUE, main = "Job inflow to Colorado")
 ```
 
 ### 7.6 Viz: Mapping J2J Network
@@ -286,7 +299,8 @@ plot(network, vertex.size = 12,
 #### 7.6.1 Data Preparation
 ```{r, class.source = "nocopy", message=FALSE, warning=FALSE, cache=FALSE}
 #### project to sf_us_state to CRS NAD83 / Colorado North (ftUS)
-sf_us_state_j2j <- sf_us_state %>% filter(NAME %in% lt_state) %>% st_transform(., 2231)
+sf_us_state_j2j <- sf_us_state %>%
+  filter(NAME %in% lt_state) %>% st_transform(., 2231)
 ```
 
 
@@ -325,7 +339,7 @@ ggplot(sf_us_state_j2j) +
                    xend = long_end, yend = lat_end, 
                    size = avg_n_job, alpha = 0.5)) + 
   scale_size_continuous(range = c(0.1, 3)) + 
-  geom_point(data =df_node , aes(x = long, y = lat),           # draw nodes
+  geom_point(data =df_node , aes(x = long, y = lat), 
              shape = 18, fill = "white",
              color = 'black', stroke = 0.5) + 
   geom_text(data =df_node, 
@@ -343,7 +357,8 @@ map_j2j <- function(idx, full_data, state_boundary, state_point,
                     c_direction, c_sector, edge_color){
   data <- full_data %>% filter(direction == as.character(c_direction),
                                naics_sector == as.character(c_sector))
-  title <- paste("Job-to-job", as.character(c_direction), as.character(c_sector), sep=" ")
+  title <- paste("Job-to-job", as.character(c_direction), 
+                 as.character(c_sector), sep=" ")
   p <- ggplot(state_boundary) + 
     geom_sf() + 
     geom_segment(data = data,
@@ -381,8 +396,7 @@ for (i in 1:length(lt_sector)) {
   edge_color = col_random[[i]]
   sector_toviz <- lt_sector[[i]]
   
-  map_j2j(i, j2j_co_xy, sf_us_state_j2j, 
-          df_node, "outflow_from_co", 
+  map_j2j(i, j2j_co_xy, sf_us_state_j2j, df_node, "outflow_from_co", 
           sector_toviz, edge_color)
 }
 

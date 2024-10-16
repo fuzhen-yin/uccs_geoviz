@@ -527,22 +527,30 @@ str(j2j_from_co)</code></pre>
 <div id="tidy-data" class="section level5">
 <h5>7.4.2.1 Tidy Data</h5>
 <pre class="r nocopy"><code>### tidy the data 
-j2j_from_co_cln &lt;- j2j_from_co %&gt;% pivot_longer(cols = 2:ncol(j2j_from_co), names_to = &quot;to_state&quot;, values_to = &quot;avg_n_job&quot;)</code></pre>
+j2j_from_co_cln &lt;- j2j_from_co %&gt;% 
+  pivot_longer(cols = 2:ncol(j2j_from_co), 
+               names_to = &quot;to_state&quot;, values_to = &quot;avg_n_job&quot;)</code></pre>
 <pre class="r nocopy"><code>#### remove the record with &quot;.flag&quot;. &quot;!&quot;;    %like% operator.  find names containing the pattern &quot;.flag&quot;
-j2j_from_co_cln &lt;- j2j_from_co_cln %&gt;% filter(!to_state %like% &quot;.flag&quot;)
+j2j_from_co_cln &lt;- j2j_from_co_cln %&gt;% 
+  filter(!to_state %like% &quot;.flag&quot;)
+
 #### remove missing values (na - not available) 
 j2j_from_co_cln &lt;- j2j_from_co_cln %&gt;% na.omit()
+
 #### update first column name from &quot;X&quot; to &quot;naics_sector&quot;
 setnames(j2j_from_co_cln, old=&quot;X&quot;, new=&quot;naics_sector&quot;)
+
 #### add a new column indicating the origin state of job flow
 j2j_from_co_cln$from_state &lt;- &quot;Colorado&quot;
+
 #### add a new column showing flow director 
 j2j_from_co_cln$direction &lt;- &quot;outflow_from_co&quot;
 
 #### correct state names by replacing dot &quot;.&quot; with space &quot; &quot;
 j2j_from_co_cln$to_state &lt;- gsub(&quot;\\.&quot;, &quot; &quot; ,j2j_from_co_cln$to_state )</code></pre>
 <pre class="r nocopy"><code>#### re-order columns
-j2j_from_co_cln &lt;- j2j_from_co_cln[c(&quot;from_state&quot;, &quot;to_state&quot;, &quot;direction&quot;, &quot;naics_sector&quot;, &quot;avg_n_job&quot;)]</code></pre>
+j2j_from_co_cln &lt;- j2j_from_co_cln[c(&quot;from_state&quot;, &quot;to_state&quot;, 
+                                     &quot;direction&quot;, &quot;naics_sector&quot;, &quot;avg_n_job&quot;)]</code></pre>
 </div>
 <div id="quick-plot" class="section level5">
 <h5>7.4.2.2 Quick Plot</h5>
@@ -570,7 +578,8 @@ ggplot(data = data, aes(x = reorder(naics_sector, avg_n_job),
 together.</p>
 <pre class="r nocopy"><code>### tidy data; remove records with &quot;.flag&quot; suffix, remove na
 j2j_to_co_cln &lt;-  j2j_to_co %&gt;% 
-  pivot_longer(cols = 2:ncol(.), names_to = &quot;naics_sector&quot;, values_to = &quot;avg_n_job&quot; ) %&gt;% 
+  pivot_longer(cols = 2:ncol(.), 
+               names_to = &quot;naics_sector&quot;, values_to = &quot;avg_n_job&quot; ) %&gt;% 
   filter(!naics_sector %like% &quot;.flag&quot;) %&gt;% 
   na.omit() %&gt;% 
   setnames(old=&quot;X&quot;, new=&quot;from_state&quot;) %&gt;% 
@@ -591,7 +600,10 @@ j2j_to_co_cln &lt;-  j2j_to_co %&gt;%
 data &lt;- j2j_to_co_cln 
 
 #### box plot, reorder by median
-ggplot(data = data, aes(x = reorder(naics_sector, avg_n_job), y=avg_n_job, fill =naics_sector )) + 
+ggplot(data = data, 
+       aes(x = reorder(naics_sector, avg_n_job), 
+           y=avg_n_job, 
+           fill =naics_sector )) + 
   geom_boxplot() + 
   xlab(&quot;NAICS Sector&quot;) +
   ylab(&quot;Job Counts&quot;) + 
@@ -630,7 +642,7 @@ network &lt;- graph_from_data_frame(d=data, directed=F)
 
 # Network summary 
 summary(network)</code></pre>
-<pre><code>## IGRAPH 9532721 UN-- 47 46 -- 
+<pre><code>## IGRAPH 348a167 UN-- 47 46 -- 
 ## + attr: name (v/c), direction (e/c), avg_n_job (e/n), naics_sector
 ## | (e/c)</code></pre>
 </div>
@@ -642,7 +654,8 @@ summary(network)</code></pre>
 <p>Improve network viz. </p>
 <pre class="r nocopy"><code>plot(network, vertex.size = 12, 
      edge.arrow.size = 0.5,
-     edge.width=E(network)$avg_n_job * 0.002, edge.curved = TRUE, main = &quot;Job inflow to Colorado&quot;)</code></pre>
+     edge.width=E(network)$avg_n_job * 0.002, 
+     edge.curved = TRUE, main = &quot;Job inflow to Colorado&quot;)</code></pre>
 <p><img src="lab7_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
 </div>
@@ -651,7 +664,8 @@ summary(network)</code></pre>
 <div id="data-preparation-1" class="section level4">
 <h4>7.6.1 Data Preparation</h4>
 <pre class="r nocopy"><code>#### project to sf_us_state to CRS NAD83 / Colorado North (ftUS)
-sf_us_state_j2j &lt;- sf_us_state %&gt;% filter(NAME %in% lt_state) %&gt;% st_transform(., 2231)</code></pre>
+sf_us_state_j2j &lt;- sf_us_state %&gt;%
+  filter(NAME %in% lt_state) %&gt;% st_transform(., 2231)</code></pre>
 <pre class="r nocopy"><code>#### get state centroid  
 df_node &lt;- sf_us_state_j2j %&gt;% select(NAME) %&gt;% st_centroid()
 #### split point data into lat &amp; long 
@@ -679,7 +693,7 @@ ggplot(sf_us_state_j2j) +
                    xend = long_end, yend = lat_end, 
                    size = avg_n_job, alpha = 0.5)) + 
   scale_size_continuous(range = c(0.1, 3)) + 
-  geom_point(data =df_node , aes(x = long, y = lat),           # draw nodes
+  geom_point(data =df_node , aes(x = long, y = lat), 
              shape = 18, fill = &quot;white&quot;,
              color = &#39;black&#39;, stroke = 0.5) + 
   geom_text(data =df_node, 
@@ -697,7 +711,8 @@ map_j2j &lt;- function(idx, full_data, state_boundary, state_point,
                     c_direction, c_sector, edge_color){
   data &lt;- full_data %&gt;% filter(direction == as.character(c_direction),
                                naics_sector == as.character(c_sector))
-  title &lt;- paste(&quot;Job-to-job&quot;, as.character(c_direction), as.character(c_sector), sep=&quot; &quot;)
+  title &lt;- paste(&quot;Job-to-job&quot;, as.character(c_direction), 
+                 as.character(c_sector), sep=&quot; &quot;)
   p &lt;- ggplot(state_boundary) + 
     geom_sf() + 
     geom_segment(data = data,
@@ -732,8 +747,7 @@ for (i in 1:length(lt_sector)) {
   edge_color = col_random[[i]]
   sector_toviz &lt;- lt_sector[[i]]
   
-  map_j2j(i, j2j_co_xy, sf_us_state_j2j, 
-          df_node, &quot;outflow_from_co&quot;, 
+  map_j2j(i, j2j_co_xy, sf_us_state_j2j, df_node, &quot;outflow_from_co&quot;, 
           sector_toviz, edge_color)
 }</code></pre>
 </div>
