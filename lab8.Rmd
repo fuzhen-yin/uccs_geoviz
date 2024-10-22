@@ -1,0 +1,26 @@
+---
+title: "Chapter 8: Network Visualization (2) Network Visualization"
+output: 
+  html_document:
+    fig_caption: yes
+    theme: cosmo
+    toc: yes
+    toc_depth: 5
+    toc_float: 
+      collapsed: true
+css: website.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### 8.1 Lab Goals
+
+This chapter continues our conversation about [Network Visualization](https://fuzhen-yin.github.io/uccs_geoviz/lab7.html) by exploring:
+
+* How to **improve** network maps 
+* Combine spatial networks with **thematic maps** 
+* Build **interactive sankey chart** to visualize non-spatial networks
+* Produce **correlation** matrix

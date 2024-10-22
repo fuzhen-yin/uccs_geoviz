@@ -25,4 +25,4 @@ Labs - Instructions for labs.
 # Syllabus 
 
 
-![GES 4070/5070 Syllabus - Fall 2024](figs/GES4070_5070_Syllabus_0828.pdf){width=100%}
+![GES 4070/5070 Syllabus - Fall 2024](figs/GES4070_5070_Syllabus_1011.pdf){width=100%}
