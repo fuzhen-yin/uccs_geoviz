@@ -252,7 +252,7 @@ View(df_economic_meta)
 
 #### 8.5.1 Data Cleaning & Processing 
 Identify the variables to extract from the "df_economic" data table. The chunk of code below is **copyable**. 
-```{r, class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+```{r, message=FALSE, warning=FALSE, cache=FALSE}
 lt_ecnomic_index <- c(
   "DP03_0119PE", "DP03_0047PE", "DP03_0048PE", 
   "DP03_0049PE", "DP03_0050PE", "DP03_0062E",
@@ -284,8 +284,9 @@ Data processing by converting them to numeric.
 str(df_economic_cln)
 
 # convert columns to numeric 
-df_economic_cln[, 3:ncol(df_economic_cln)] <- sapply(df_economic_cln[, 3:ncol(df_economic_cln)], 
-                                                     as.numeric) %>% as.data.frame()
+df_economic_cln[, 3:ncol(df_economic_cln)] <- sapply(
+  df_economic_cln[, 3:ncol(df_economic_cln)], 
+  as.numeric) %>% as.data.frame()
 ```
 
 #### 8.5.2 Pearson Correlation Matrix
