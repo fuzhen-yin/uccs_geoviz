@@ -46,6 +46,23 @@ Here are some websites where you can find inspirations and codes for visualizati
 
 ### Opportunities 
 
+> [PhD Opportunity](https://geoai.geog.buffalo.edu/opportunities/) in [Dr. Yingjie Hu](https://www.acsu.buffalo.edu/~yhu42/)'s GeoAI Lab at University at Buffalo
+
+:::: {.blueborder data-latex=""}
+
+Dr. Yingjie Hu's research group currently has the following opening for Fall 2025 (application deadline is in **December 2024**).
+
+Fully-funded PhD student: We are looking for 1 PhD student who shares our passion for GIScience and GeoAI, and is interested in research on deep learning, spatial analysis, and disaster resilience. The successful applicant will be fully funded through a combination of scholarships as Research Assistantships (RA), Teaching Assistantships (TA), and/or Fellowships.
+If you are interested in this PhD student position, please contact Dr. Yingjie Hu by email (yhu42@buffalo.edu) and attach your CV. The department application page is at: http://www.buffalo.edu/cas/geography/about-us/admissions.html.
+
+::::
+
+
+<br> 
+<br> 
+
+
+
 > [Mountain Lion Research Day](https://surveyuccs.co1.qualtrics.com/jfe/form/SV_4OfwNbc5HzXFBiK) (Presentation on December 16th) 
 
 ![Mountain Lion Research Day](figs/r_mountain lion.png){width=70%} 
