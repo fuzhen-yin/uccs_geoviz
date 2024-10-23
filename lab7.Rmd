@@ -421,7 +421,7 @@ Congratulations!! You have completed the entire tutorial and learnt the intro to
 
 Please go "File"--> "Close Project" -- a pop window asking "Do you want to save these changes" --> "Yes".
 
-Don't forget to submit the **lab6 report**  and your **script**  to Canvas. 
+Don't forget to submit the **lab7 report**  and your **script**  to Canvas. 
 
 
 

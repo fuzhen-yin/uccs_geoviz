@@ -24,3 +24,53 @@ This chapter continues our conversation about [Network Visualization](https://fu
 * Combine spatial networks with **thematic maps** 
 * Build **interactive sankey chart** to visualize non-spatial networks
 * Produce **correlation** matrix
+
+### 8.2 Good Practice
+
+#### 8.2.1 Organizing Folders & Sub-folders
+Under the course folder, please create a folder called "**lab8**". Next, in the **lab8** folder, please create two [sub-folders]{.ul} that one is called "**data**" and another one is "**plot**". 
+
+#### 8.2.2 Data
+This chapter continues to explore [Job-to-Job Flows Explorer (J2J)](https://j2jexplorer.ces.census.gov/) by using Colorado as a case study. In addition to the job-to-job (j2j) flows between states, we also explore the j2j flows to 20 industries to 20 industries in Colorado. The filters used to download such data is shown in Figure 8.1. 
+
+![Figure 8.1: Filters used to download j2j flows between industries.](figs/lab8_industry_inflow.png){width=100%}
+
+<br>
+
+Furthermore, this lab also collects the [DP03 Economic Characteristics](https://data.census.gov/table/ACSDP1Y2023.DP03?t=Employment&g=010XX00US$0400000) within all US States using the American Community Survey (ACS) 1-year estimate from US Census. 
+
+
+Please follow the steps below to [download]{.ul} data, [unzip]{.ul} it and [move]{.ul} the data to the required folder. 
+
+* **Go** to https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab8_data.zip
+* **Download** the file _"lab8_data.zip"_
+* **Unzip** folder _"lab8_data.zip"_
+* **Move** all files from the "_lab8_data_" folder to the _"data"_ folder under "_lab8_" see [Step 8.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab7.html#721_Organizing_Folders__Sub-folders) 
+
+
+If there you have any questions about the above-mentioned steps, please refer to [Chapter 3.2.3](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#322_Data) for detailed instructions. 
+
+
+#### 8.2.3 Launching R Studio
+
+Again, we would like to start a **new project** from scratch with a **clean R Script**. Please do the following steps. If you have any questions about these steps, please refer to the relevant chapters for help. 
+
+* Step 1: Make sure all existing R projects are **properly closed**. 
+    + If *not*, please close it by going to *File* --> *Close Project* --> *Save* changes (see [Chapter 2.5](https://fuzhen-yin.github.io/uccs_geoviz/lab2.html#25_Close__Exit)). 
+* Step 2: Create a **New Project** using **Existing Directory**, navigate to **lab7**, click **open**, then **Create Project**. (see [Chapter 1.3](https://fuzhen-yin.github.io/uccs_geoviz/lab1.html#13_Launching_RStudio)). 
+* Step 3: Create a **New Script** by go to **File** --> **New File** --> **R Script**. **Save** the script by giving it a proper name.
+
+
+#### 8.2.4 Before Start 
+
+:::: {.bluebox data-latex=""}
+::: {.left data-latex=""}
+[**Heads-Up! **]{.ul}
+:::
+
+All scripts are **non-copyable**. 
+Lab questions are at the end of this tutorial. 
+
+::::
+
+<br>
