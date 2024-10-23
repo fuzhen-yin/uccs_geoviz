@@ -1,0 +1,31 @@
+Filters,
+Indicator,Job-to-Job Flows (J2J)
+Origin NAICS Sector,"Agriculture, Forestry, Fishing and Hunting; Mining, Quarrying, and Oil and Gas Extraction; Utilities; Construction; Manufacturing; Wholesale Trade; Retail Trade; Transportation and Warehousing; Information; Finance and Insurance; Real Estate and Rental and Leasing; Professional, Scientific, and Technical Services; Management of Companies and Enterprises; Administrative and Support and Waste Management and Remediation Services; Educational Services; Health Care and Social Assistance; Arts, Entertainment, and Recreation; Accommodation and Food Services; Other Services (except Public Administration); Public Administration"
+Destination NAICS Sector,"Agriculture, Forestry, Fishing and Hunting; Mining, Quarrying, and Oil and Gas Extraction; Utilities; Construction; Manufacturing; Wholesale Trade; Retail Trade; Transportation and Warehousing; Information; Finance and Insurance; Real Estate and Rental and Leasing; Professional, Scientific, and Technical Services; Management of Companies and Enterprises; Administrative and Support and Waste Management and Remediation Services; Educational Services; Health Care and Social Assistance; Arts, Entertainment, and Recreation; Accommodation and Food Services; Other Services (except Public Administration); Public Administration"
+Year/Quarter,2023 Q1; 2023 Q2; 2023 Q3
+Destination State,Colorado
+
+Grouped by,NAICS Sector; NAICS Sector
+,
+Ranking:,None
+,
+Normalization:,None
+
+Date Generated,21 October 2024
+
+Source,"Job-to-Job Flows Explorer, j2jexplorer.ces.census.gov"
+
+Version,J2JOD CO 08 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_co_20240922_0032
+,J2JOD US 00 2000:2-2023:3 V4.11.1 R2024Q3 j2jodpu_us_20240922_2114
+
+Flags,
+-2,No data available in this category for this quarter.
+-1,Data not available to compute this estimate.
+1,"OK, fuzzed value released."
+5,Value suppressed because it does not meet U.S. Census Bureau publication standards.
+6,"Value calculated from other released measures, no significant distortion."
+7,"Value calculated from other released measures, some of which have significantly distorted data."
+9,"Data significantly distorted, fuzzed value released."
+10,"Aggregate of cells, no significant distortion."
+11,Aggregate of cells not released because component cells do not meet U.S. Census Bureau publication standards.
+12,"Aggregate of cells, some of which have significantly distorted data."

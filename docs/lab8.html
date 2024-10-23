@@ -35,6 +35,11 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/d3-4.5.0/d3.min.js"></script>
+<script src="site_libs/sankey-1/sankey.js"></script>
+<script src="site_libs/sankeyNetwork-binding-0.4/sankeyNetwork.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -418,7 +423,7 @@ class="uri">https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab8_data.z
 <li><strong>Unzip</strong> folder <em>“lab8_data.zip”</em></li>
 <li><strong>Move</strong> all files from the “<em>lab8_data</em>” folder
 to the <em>“data”</em> folder under “<em>lab8</em>” see <a
-href="https://fuzhen-yin.github.io/uccs_geoviz/lab7.html#721_Organizing_Folders__Sub-folders">Step
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab8.html#821_Organizing_Folders__Sub-folders">Step
 8.2.1</a></li>
 </ul>
 <p>If there you have any questions about the above-mentioned steps,
@@ -458,12 +463,378 @@ name.</li>
 <div class="left">
 <p><u><strong>Heads-Up! </strong></u></p>
 </div>
-<p>All scripts are <strong>non-copyable</strong>. Lab questions are at
-the end of this tutorial and you would need to re-write some part of the
-script to complete the lab report.</p>
+<p>All scripts are <strong>non-copyable</strong>. Please
+<strong>read</strong> the tutorial <strong>carefully</strong> and try to
+<strong>understand</strong> the script as you would need to
+<strong>re-write</strong> some part of the script to complete the
+report.</p>
 </div>
 <p><br></p>
 </div>
+</div>
+<div id="libraries-data" class="section level3">
+<h3>8.3 Libraries &amp; Data</h3>
+<div id="load-libraries" class="section level4">
+<h4>8.3.1 Load Libraries</h4>
+<p>Please install necessary packages by yourself.</p>
+<pre class="r nocopy"><code># Library ----
+library(dplyr)
+library(data.table)
+library(sf)
+library(tidyverse)
+library(igraph)
+
+library(GGally)       # correlation diagram
+library(ggplot2)
+library(ggspatial)
+
+library(networkD3)  # sankey network </code></pre>
+</div>
+<div id="data-1" class="section level4">
+<h4>8.3.2 Data</h4>
+<p><strong>Work smarter, not harder</strong>.</p>
+<p>Instead of writing the path by yourself, please copy file name from
+file directories as shown in Figure 8.2.</p>
+<p><img src="figs/lab8_copy_file_name.png" style="width:60.0%"
+alt="Figure 8.2: Right-click to copy file name" /> <br></p>
+<pre class="r nocopy"><code># US Census CB (cartographic boundaries) by states (simple features) 
+# project it to &quot;CRS NAD83 / Colorado North (ftUS)&quot;
+sf_us_state &lt;- st_read(&quot;data/cb_2023_us_state/cb_2023_us_state_5m.shp&quot;) %&gt;% st_transform(., 2231)</code></pre>
+<pre><code>## Reading layer `cb_2023_us_state_5m&#39; from data source 
+##   `D:\OneDrive\UCCS\Teaching\GES4070\Labs\01_git_wk\uccs_geoviz\data\cb_2023_us_state\cb_2023_us_state_5m.shp&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 56 features and 9 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -179.1473 ymin: -14.55255 xmax: 179.7785 ymax: 71.35256
+## Geodetic CRS:  NAD83</code></pre>
+<pre class="r nocopy"><code># lab7 (Section 7.6) - j2j outflow and inflow for all NAICS sections 
+j2j_co_xy &lt;- read.csv(&quot;data/lab7_j2j_co_xy.csv&quot;)
+
+# j2j inflow to CO by industry 
+j2j_inflow_industry &lt;- read.csv(&quot;data/j2j_TO_Colorado_industries_2023Q1_Q2_Q3/table.csv&quot;)
+
+# ACS 2023 - all states within US - 1yr estimate 
+# Data (Table TP03): Selected Economic Characteristics
+df_economic &lt;- read.csv(&quot;data/ACSDP1Y2023.DP03_2024-10-14T182606/ACSDP1Y2023.DP03-Data.csv&quot;)
+# Metadata (Table TP03)
+df_economic_meta &lt;- read.csv(&quot;data/ACSDP1Y2023.DP03_2024-10-14T182606/ACSDP1Y2023.DP03-Column-Metadata.csv&quot;)
+
+# lists extracted from j2j data 
+# list of states in &quot;j2j_co_xy&quot; networks 
+lt_state &lt;- unique(c(j2j_co_xy$from_state, j2j_co_xy$to_state))
+# list of naics sectors in &quot;j2j_co_xy&quot; data 
+lt_sector &lt;- unique(c(j2j_co_xy$naics_sector))</code></pre>
+</div>
+</div>
+<div id="viz-improve-j2j-flows-network-from-lab-7"
+class="section level3">
+<h3>8.4 Viz: Improve J2J Flows Network from Lab 7</h3>
+<div id="data-preparation" class="section level4">
+<h4>8.4.1 Data Preparation</h4>
+<pre class="r nocopy"><code>## extract JOB OUTFLOW network
+# edges
+dt_edge &lt;- j2j_co_xy %&gt;% filter(direction == &quot;outflow_from_co&quot;,
+                             naics_sector == &quot;all_sectors&quot;)
+
+# node - states polygons
+dt_node &lt;- sf_us_state %&gt;% filter(NAME %in% unique(c(dt_edge$from_state, dt_edge$to_state)))
+# node - convert to centroid
+dt_node &lt;- st_centroid(dt_node)
+
+# spatial data: state boundaries
+# only states that is located in the continuous continental United States 
+sf_j2j_state &lt;- sf_us_state %&gt;% 
+  filter(GEOID &lt; &quot;60&quot;) %&gt;% 
+  filter(! NAME %in% c(&quot;Hawaii&quot;, &quot;Alaska&quot;))</code></pre>
+</div>
+<div id="improve-the-map-of-j2j-netowkrs" class="section level4">
+<h4>8.4.2 Improve the Map of j2j Netowkrs</h4>
+<p>At the end of previous lab <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab7.html#762_Function:_Job_Outflow_Network">Section
+7.6.2</a>, we have produced a map of job outflow network from Colorado
+to other states that is similar to the map below.</p>
+<pre class="r nocopy"><code>## Mapping network - from Lab 7
+c_edge &lt;- &quot;blue&quot;
+lbl_title &lt;- &quot;Job Outflow from Colorado, 2023 Q1-Q3&quot;
+
+ggplot(sf_j2j_state) + 
+  geom_sf() + 
+  geom_sf(data = dt_node) + 
+  geom_segment(data = dt_edge,
+               aes(x = long_start, y = lat_start, 
+                   xend = long_end, yend = lat_end, size = avg_n_job, alpha = 0.5), 
+               colour = c_edge) + 
+  scale_size_continuous(range = c(0.01, 4)) + 
+  ggtitle(lbl_title) + 
+  theme_bw() + 
+  ylab(&quot;Latitude&quot;) + 
+  xlab(&quot;Longitude&quot;)</code></pre>
+<p><img src="lab8_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
+<p>Here are some frequently mentioned comments from lab7 report about
+how to improve the maps:</p>
+<ul>
+<li>Make edge color scale to the strength of job flow;</li>
+<li>Use state abbreviation;</li>
+<li>Improve legend;</li>
+<li>Add North Arrow and Scale Bars</li>
+</ul>
+<p>Let’s do that!</p>
+<pre class="r nocopy"><code># Make edge color scale to the strength of job flow; use abbreviation
+p1 &lt;- ggplot(sf_j2j_state) + 
+  geom_sf(fill = &quot;white&quot;) + 
+  geom_segment(data = dt_edge,
+               aes(x = long_start, y = lat_start, 
+                   xend = long_end, yend = lat_end, size = avg_n_job, colour = avg_n_job),
+               alpha = 0.9) + 
+  scale_color_distiller(palette = &quot;Reds&quot;, trans = &quot;reverse&quot;) +
+  scale_size_continuous(range = c(0.001, 5)) +
+  geom_sf_text(data = dt_node, aes(label = STUSPS), size = 2) + 
+  ggtitle(lbl_title) + 
+  theme_bw() + 
+  ylab(&quot;Latitude&quot;) + 
+  xlab(&quot;Longitude&quot;)
+
+print(p1)</code></pre>
+<p><img src="lab8_files/figure-html/unnamed-chunk-5-1.png" width="960" /></p>
+<pre class="r nocopy"><code># improve legend 
+p2 &lt;- ggplot(sf_j2j_state) + 
+  geom_sf(fill = &quot;white&quot;) + 
+  geom_segment(data = dt_edge,
+               aes(x = long_start, y = lat_start, 
+                   xend = long_end, yend = lat_end, size = avg_n_job, colour = avg_n_job),
+               alpha = 0.9) + 
+  scale_color_distiller(palette = &quot;Reds&quot;, trans = &quot;reverse&quot;, name = &quot;Job flow strength&quot;) +
+  scale_size_continuous(range = c(0.001, 5), name = &quot;Job flow strength&quot;) +
+  geom_sf_text(data = dt_node, aes(label = STUSPS), size = 2) + 
+  ggtitle(lbl_title) + 
+  theme_bw() + 
+  ylab(&quot;Latitude&quot;) + 
+  xlab(&quot;Longitude&quot;)
+
+print(p2)</code></pre>
+<p><img src="lab8_files/figure-html/unnamed-chunk-6-1.png" width="960" /></p>
+<pre class="r nocopy"><code># by adding North Arrow and Scale Bars 
+p3 &lt;- p2 + 
+  annotation_scale(location = &quot;bl&quot;, width_hint = 0.1) + 
+  annotation_north_arrow(location = &quot;bl&quot;, 
+                         pad_x = unit(0.1, &quot;in&quot;), 
+                         pad_y = unit(0.3, &quot;in&quot;),
+                         height = unit(0.3, &quot;in&quot;),
+                         width = unit(0.3, &quot;in&quot;)) 
+
+print(p3)</code></pre>
+<p><img src="lab8_files/figure-html/unnamed-chunk-7-1.png" width="960" /></p>
+</div>
+</div>
+<div id="viz-j2j-network-vs-economic-characteristics"
+class="section level3">
+<h3>8.5 Viz: J2J Network VS Economic Characteristics</h3>
+<p>After mapping the j2j network, an intuitive question is <strong>what
+are the potential reasons behind job inflow/outflow</strong>. This
+section aims to explain the j2j patterns by linking them to states’
+economic characteristics.</p>
+<p>Check the <a
+href="https://data.census.gov/table/ACSDP1Y2023.DP03?t=Employment&amp;g=010XX00US$0400000">DP03
+Economic Characteristics</a> data.</p>
+<pre class="r nocopy"><code>#### Economic Characteristic by State 
+View(df_economic)
+View(df_economic_meta)</code></pre>
+<div id="data-cleaning-processing" class="section level4">
+<h4>8.5.1 Data Cleaning &amp; Processing</h4>
+<p>Identify the variables to extract from the “df_economic” data
+table.</p>
+<pre class="r nocopy"><code>lt_ecnomic_index &lt;- c(&quot;DP03_0119PE&quot;, &quot;DP03_0047PE&quot;, &quot;DP03_0048PE&quot;, 
+                      &quot;DP03_0049PE&quot;, &quot;DP03_0050PE&quot;, &quot;DP03_0062E&quot;,
+                      &quot;DP03_0009PE&quot;)
+lt_economic_var_name &lt;- c(&quot;pct_fam_below_poverty&quot;, &quot;pct_cvl_16plus_emp_priv&quot;, &quot;pct_cvl_16plus_emp_govr&quot;, 
+                          &quot;pct_cvl_16plus_emp_self&quot;, &quot;pct_cvl_16plus_emp_unpaid&quot;, &quot;median_hh_income&quot;,
+                          &quot;unemply_rate&quot;)</code></pre>
+<p>Data cleaning</p>
+<pre class="r nocopy"><code># clean the economic data table &quot;df_economic&quot; 
+df_economic_cln &lt;- df_economic %&gt;% select(GEO_ID, NAME, all_of(lt_ecnomic_index))
+
+# delete first row 
+df_economic_cln &lt;- df_economic_cln[-1, ]
+
+# update column names to meaningful names
+df_economic_cln &lt;- setnames(df_economic_cln, old = lt_ecnomic_index, new=lt_economic_var_name)</code></pre>
+<p>Data processing by converting them to numeric.</p>
+<pre class="r nocopy"><code># check column data type 
+str(df_economic_cln)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    52 obs. of  9 variables:
+##  $ GEO_ID                   : chr  &quot;0400000US01&quot; &quot;0400000US02&quot; &quot;0400000US04&quot; &quot;0400000US05&quot; ...
+##  $ NAME                     : chr  &quot;Alabama&quot; &quot;Alaska&quot; &quot;Arizona&quot; &quot;Arkansas&quot; ...
+##  $ pct_fam_below_poverty    : chr  &quot;11.3&quot; &quot;7.2&quot; &quot;8.7&quot; &quot;11.2&quot; ...
+##  $ pct_cvl_16plus_emp_priv  : chr  &quot;77.5&quot; &quot;69.9&quot; &quot;79.6&quot; &quot;78.8&quot; ...
+##  $ pct_cvl_16plus_emp_govr  : chr  &quot;16.8&quot; &quot;23.8&quot; &quot;14.0&quot; &quot;14.6&quot; ...
+##  $ pct_cvl_16plus_emp_self  : chr  &quot;5.5&quot; &quot;6.1&quot; &quot;6.2&quot; &quot;6.4&quot; ...
+##  $ pct_cvl_16plus_emp_unpaid: chr  &quot;0.2&quot; &quot;0.3&quot; &quot;0.2&quot; &quot;0.3&quot; ...
+##  $ median_hh_income         : chr  &quot;62212&quot; &quot;86631&quot; &quot;77315&quot; &quot;58700&quot; ...
+##  $ unemply_rate             : chr  &quot;4.0&quot; &quot;4.8&quot; &quot;4.3&quot; &quot;4.2&quot; ...</code></pre>
+<pre class="r nocopy"><code># convert columns to numeric 
+df_economic_cln[, 3:ncol(df_economic_cln)] &lt;- sapply(df_economic_cln[, 3:ncol(df_economic_cln)], 
+                                                     as.numeric) %&gt;% as.data.frame()</code></pre>
+</div>
+<div id="pearson-correlation-matrix" class="section level4">
+<h4>8.5.2 Pearson Correlation Matrix</h4>
+<p>Let’s use job flow from other states to Colorado as an example to
+examine how the strength of job flow is correlated to a state’s economic
+characteristics.</p>
+<p>Preparing job inflow data.</p>
+<pre class="r nocopy"><code># filter inflow to Colorado 
+data &lt;- j2j_co_xy %&gt;% filter(direction == &quot;inflow_to_co&quot;, 
+                             naics_sector==&quot;all_sectors&quot;) %&gt;% 
+  select(from_state, naics_sector, avg_n_job)
+
+# untidy the data by using &quot;pivot_wider&quot; 
+data &lt;- pivot_wider(data, names_from = &quot;naics_sector&quot;, values_from = &quot;avg_n_job&quot;)</code></pre>
+<p>Join the inflow data with states’ economic status.</p>
+<pre class="r nocopy"><code># left join economic data with the inflow data 
+data &lt;- left_join(df_economic_cln, data, by=c(&quot;NAME&quot; = &quot;from_state&quot;))
+# remove na 
+data &lt;- na.omit(data)</code></pre>
+<p><strong>[Q1]</strong> Please interpret the results from the
+correlation matrix.</p>
+<pre class="r nocopy"><code># Pearson correlation matrix 
+ggcorr(data, label = TRUE, hjust = 0.75)</code></pre>
+<p><img src="lab8_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="mapping-j2j-flow-network-with-economic-status"
+class="section level4">
+<h4>8.5.3 Mapping J2J Flow Network with Economic Status</h4>
+<pre class="r nocopy"><code># join state boundary with economic data 
+sf_j2j_state_econ &lt;- left_join(sf_j2j_state, df_economic_cln, by=c(&quot;GEOIDFQ&quot; = &quot;GEO_ID&quot;,
+                                                                   &quot;NAME&quot;=&quot;NAME&quot;))</code></pre>
+<pre class="r nocopy"><code># Inflow network edge &amp; node
+dt_edge &lt;- j2j_co_xy %&gt;% filter(direction == &quot;inflow_to_co&quot;,
+                                naics_sector == &quot;all_sectors&quot;)
+
+# node - states polygons
+dt_node &lt;- sf_us_state %&gt;% filter(NAME %in% unique(c(dt_edge$from_state, dt_edge$to_state)))
+# node - convert to centroid
+dt_node &lt;- st_centroid(dt_node)</code></pre>
+<pre class="r nocopy"><code>## mapping 
+lbl_title &lt;- &quot;2023 Job Inflow to Colorado (Q1-Q3) VS Unemployment Rate&quot;
+
+ggplot(sf_j2j_state_econ) + 
+  geom_sf(aes(fill = unemply_rate), colour = &quot;white&quot;, alpha = 0.7) + 
+  scale_fill_distiller(palette = &quot;Blues&quot;, trans = &quot;reverse&quot;, name = &quot;Unemployment Rate&quot;) +
+  geom_segment(data = dt_edge,
+               aes(x = long_start, y = lat_start, 
+                   xend = long_end, yend = lat_end, size = avg_n_job, colour = avg_n_job),
+               alpha = 0.9) + 
+  scale_color_distiller(palette = &quot;YlOrRd&quot;, trans = &quot;reverse&quot;, name = &quot;Job flow strength&quot;) +
+  scale_size_continuous(range = c(0.001, 5), name = &quot;Job flow strength&quot;) +
+  geom_sf_text(data = dt_node, aes(label = STUSPS), size = 2) + 
+  ggtitle(lbl_title) + 
+  theme_bw() + 
+  ylab(&quot;Latitude&quot;) + 
+  xlab(&quot;Longitude&quot;) + 
+  annotation_scale(location = &quot;bl&quot;, width_hint = 0.1) + 
+  annotation_north_arrow(location = &quot;bl&quot;, 
+                         pad_x = unit(0.1, &quot;in&quot;), 
+                         pad_y = unit(0.3, &quot;in&quot;),
+                         height = unit(0.3, &quot;in&quot;),
+                         width = unit(0.3, &quot;in&quot;)) </code></pre>
+<p><img src="lab8_files/figure-html/unnamed-chunk-17-1.png" width="960" /></p>
+<p><strong>[Q2]</strong> Please revise the code above to produce another
+j2j-network map that uses a different variable other than “unemployment
+rate”. Please update the map title and legend title accordingly. Figure
+8.3 shows the names of R color palettes. Please provide a screenshot of
+the new map and briefly explain the findings (2-3 sentences).</p>
+<div class="float">
+<img src="figs/lab8_r_color%20palette.png" style="width:30.0%"
+alt="Figure 8.3: R Color palette" />
+<div class="figcaption">Figure 8.3: R Color palette</div>
+</div>
+<p><br></p>
+</div>
+</div>
+<div id="viz-sankey-chart-of-flow-between-industries"
+class="section level3">
+<h3>8.6 Viz: Sankey Chart of Flow Between Industries</h3>
+<p>This section produces an <strong>interactive sankey chart</strong> to
+visualize j2j flows from top 10 industries to top 10 industries in
+Colorado. <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab8.html#822_Data">Section
+8.2.2</a> explains the filters used in <a
+href="https://j2jexplorer.ces.census.gov/">Job-to-Job Flows Explorer
+(J2J)</a> to download this data.</p>
+</div>
+<div id="data-cleaning" class="section level3">
+<h3>8.6.1 Data Cleaning</h3>
+<pre class="r nocopy"><code># tidy and clean the data 
+j2j_inflow_ind_cln &lt;- j2j_inflow_industry %&gt;% 
+  pivot_longer(cols = 2:ncol(.), names_to = &quot;to_co_sector&quot;, values_to = &quot;avg_n_job&quot; ) %&gt;% 
+  filter(!to_co_sector %like% &quot;.flag&quot;) %&gt;% 
+  na.omit() %&gt;% 
+  setnames(old=&quot;X&quot;, new=&quot;from_sector&quot;) %&gt;% 
+  select(from_sector, to_co_sector, avg_n_job)</code></pre>
+<p>This code below is <strong>copyable.</strong></p>
+<pre class="r"><code># clean sector names to make them consistent 
+j2j_inflow_ind_cln$to_co_sector &lt;- j2j_inflow_ind_cln$to_co_sector %&gt;% 
+  gsub(&quot;\\.\\.&quot;, &quot;, &quot;, .) %&gt;% 
+  gsub(&quot;\\.&quot;, &quot; &quot;, .) %&gt;% 
+  gsub(&quot;Other Services, except Public Administration&quot;, 
+       &quot;Other Services (except Public Administration)&quot;, .) %&gt;% 
+  gsub(&quot;^\\s+|\\s+$&quot;, &quot;&quot;, .)</code></pre>
+</div>
+<div id="network-data" class="section level3">
+<h3>8.6.2 Network Data</h3>
+<p>Prepare network data: edge &amp; node. <strong>!!!</strong> Please
+read carefully this section and try to understand scripts line by line.
+You would need to re-write this section to complete
+<strong>[Q3]</strong>.</p>
+<p><strong>Hint</strong> The function <code>slice_min()</code> could be
+used to subset the smallest values of a variable.</p>
+<pre class="r nocopy"><code># edges 
+dt_edge &lt;- j2j_inflow_ind_cln
+
+# top 10 industry with highest inflow to colorado
+dt_ten_industry &lt;- dt_edge %&gt;% select(to_co_sector, avg_n_job) %&gt;% 
+  group_by(to_co_sector) %&gt;% 
+  summarise(n_ttl = sum(avg_n_job)) %&gt;% 
+  slice_max(n_ttl, n=10)</code></pre>
+<pre class="r nocopy"><code># extract edges from and to the top ten industries 
+dt_edge &lt;- dt_edge %&gt;% 
+  filter(from_sector %in% dt_ten_industry$to_co_sector) %&gt;% 
+  filter(to_co_sector %in% dt_ten_industry$to_co_sector)
+# add space to &quot;to_co_sector&quot;
+dt_edge$to_co_sector &lt;- paste(dt_edge$to_co_sector, &quot; &quot;, sep=&quot;&quot;)</code></pre>
+<pre class="r nocopy"><code># nodes
+dt_node &lt;- data.frame(name = unique(c(dt_edge$from_sector,
+                                      dt_edge$to_co_sector)))</code></pre>
+<pre class="r nocopy"><code># edges add id for nodes 
+dt_edge$id_from &lt;- match(dt_edge$from_sector, dt_node$name) - 1
+dt_edge$id_to &lt;- match(dt_edge$to_co_sector, dt_node$name) - 1 </code></pre>
+<pre class="r nocopy"><code># interactive sankey chart - network
+sankeyNetwork(Links = dt_edge, Nodes = dt_node,
+              Source = &quot;id_from&quot;, Target = &quot;id_to&quot;,
+              Value = &quot;avg_n_job&quot;, NodeID = &quot;name&quot;,
+              sinksRight=FALSE, nodeWidth=15, fontSize=10, nodePadding=10)</code></pre>
+<div class="sankeyNetwork html-widget html-fill-item" id="htmlwidget-e4dcc7a9a8ad1fb24e39" style="width:960px;height:768px;"></div>
+<script type="application/json" data-for="htmlwidget-e4dcc7a9a8ad1fb24e39">{"x":{"links":{"source":[0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9],"target":[10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19],"value":[5511,382,336,431,301,468,987,114,197,365,536,1488,576,478,335,806,793,144,266,558,366,431,1204,418,335,534,463,82,186,229,816,604,653,6005,1017,681,1356,519,1568,2678,404,303,438,772,2618,239,826,120,374,592,401,475,524,437,192,6158,845,354,539,366,1146,1130,663,958,746,1097,4074,354,1704,1080,97,102,93,291,166,411,274,2675,775,371,239,196,202,800,297,592,1059,844,10267,923,691,593,341,2808,770,534,1327,517,1548,11150]},"nodes":{"name":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "],"group":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":10,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":false}},"evals":[],"jsHooks":[]}</script>
+<p>The sankey chart above shows the number of jobs from the <strong>top
+10</strong> largest industries have been moved to the top 10 largest
+industries in Colorado.</p>
+<p><strong>[Q3]</strong> Please re-write the script to produce a sankey
+chart presenting the job flows from the <strong>BOTTOM 10</strong>
+industries to the bottom 10 industries in Colorado. Paste a screenshot
+of your sankey chart to the report.</p>
+<p><strong>[Q4]</strong> Please list <strong>3-5 functions</strong> that
+you have learnt from this tutorial and explain when and how to use
+them.</p>
+</div>
+<div id="close-exit" class="section level3">
+<h3>7.7 Close &amp; Exit</h3>
+<p>Congratulations!! You have completed the entire tutorial and learnt
+the intro to network visualization!! ** Please submit your report on
+time. A late penalty (5 pts / day) will be applied **.</p>
+<p>Please go “File”–&gt; “Close Project” – a pop window asking “Do you
+want to save these changes” –&gt; “Yes”.</p>
+<p>Don’t forget to submit the <strong>lab8 report</strong> and your
+<strong>script</strong> to Canvas.</p>
 </div>
 
 
