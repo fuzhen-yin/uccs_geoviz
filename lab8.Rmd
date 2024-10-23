@@ -377,7 +377,7 @@ ggplot(sf_j2j_state_econ) +
 
 This section produces an **interactive sankey chart** to visualize j2j flows from top 10 industries to top 10 industries in Colorado. [Section 8.2.2](https://fuzhen-yin.github.io/uccs_geoviz/lab8.html#822_Data) explains the filters used in [Job-to-Job Flows Explorer (J2J)](https://j2jexplorer.ces.census.gov/) to download this data. 
 
-### 8.6.1 Data Cleaning
+#### 8.6.1 Data Cleaning
 ```{r, class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
 # tidy and clean the data 
 j2j_inflow_ind_cln <- j2j_inflow_industry %>% 
@@ -399,7 +399,7 @@ j2j_inflow_ind_cln$to_co_sector <- j2j_inflow_ind_cln$to_co_sector %>%
   gsub("^\\s+|\\s+$", "", .)
 ```
 
-### 8.6.2 Network Data 
+#### 8.6.2 Network Data & Sankey Chart
 Prepare network data: edge & node. 
 **!!!** Please read carefully this section and try to understand scripts line by line. You would need to re-write this section to complete **[Q3]**. 
 

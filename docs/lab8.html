@@ -768,9 +768,8 @@ href="https://fuzhen-yin.github.io/uccs_geoviz/lab8.html#822_Data">Section
 8.2.2</a> explains the filters used in <a
 href="https://j2jexplorer.ces.census.gov/">Job-to-Job Flows Explorer
 (J2J)</a> to download this data.</p>
-</div>
-<div id="data-cleaning" class="section level3">
-<h3>8.6.1 Data Cleaning</h3>
+<div id="data-cleaning" class="section level4">
+<h4>8.6.1 Data Cleaning</h4>
 <pre class="r nocopy"><code># tidy and clean the data 
 j2j_inflow_ind_cln &lt;- j2j_inflow_industry %&gt;% 
   pivot_longer(cols = 2:ncol(.), names_to = &quot;to_co_sector&quot;, values_to = &quot;avg_n_job&quot; ) %&gt;% 
@@ -787,8 +786,8 @@ j2j_inflow_ind_cln$to_co_sector &lt;- j2j_inflow_ind_cln$to_co_sector %&gt;%
        &quot;Other Services (except Public Administration)&quot;, .) %&gt;% 
   gsub(&quot;^\\s+|\\s+$&quot;, &quot;&quot;, .)</code></pre>
 </div>
-<div id="network-data" class="section level3">
-<h3>8.6.2 Network Data</h3>
+<div id="network-data-sankey-chart" class="section level4">
+<h4>8.6.2 Network Data &amp; Sankey Chart</h4>
 <p>Prepare network data: edge &amp; node. <strong>!!!</strong> Please
 read carefully this section and try to understand scripts line by line.
 You would need to re-write this section to complete
@@ -820,8 +819,8 @@ sankeyNetwork(Links = dt_edge, Nodes = dt_node,
               Source = &quot;id_from&quot;, Target = &quot;id_to&quot;,
               Value = &quot;avg_n_job&quot;, NodeID = &quot;name&quot;,
               sinksRight=FALSE, nodeWidth=15, fontSize=10, nodePadding=10)</code></pre>
-<div class="sankeyNetwork html-widget html-fill-item" id="htmlwidget-4721f413d925b049e4bf" style="width:960px;height:768px;"></div>
-<script type="application/json" data-for="htmlwidget-4721f413d925b049e4bf">{"x":{"links":{"source":[0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9],"target":[10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19],"value":[5511,382,336,431,301,468,987,114,197,365,536,1488,576,478,335,806,793,144,266,558,366,431,1204,418,335,534,463,82,186,229,816,604,653,6005,1017,681,1356,519,1568,2678,404,303,438,772,2618,239,826,120,374,592,401,475,524,437,192,6158,845,354,539,366,1146,1130,663,958,746,1097,4074,354,1704,1080,97,102,93,291,166,411,274,2675,775,371,239,196,202,800,297,592,1059,844,10267,923,691,593,341,2808,770,534,1327,517,1548,11150]},"nodes":{"name":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "],"group":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":10,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":false}},"evals":[],"jsHooks":[]}</script>
+<div class="sankeyNetwork html-widget html-fill-item" id="htmlwidget-a5012c5a8cc7aeebf952" style="width:960px;height:768px;"></div>
+<script type="application/json" data-for="htmlwidget-a5012c5a8cc7aeebf952">{"x":{"links":{"source":[0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9],"target":[10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19],"value":[5511,382,336,431,301,468,987,114,197,365,536,1488,576,478,335,806,793,144,266,558,366,431,1204,418,335,534,463,82,186,229,816,604,653,6005,1017,681,1356,519,1568,2678,404,303,438,772,2618,239,826,120,374,592,401,475,524,437,192,6158,845,354,539,366,1146,1130,663,958,746,1097,4074,354,1704,1080,97,102,93,291,166,411,274,2675,775,371,239,196,202,800,297,592,1059,844,10267,923,691,593,341,2808,770,534,1327,517,1548,11150]},"nodes":{"name":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "],"group":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":10,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":false}},"evals":[],"jsHooks":[]}</script>
 <p>The sankey chart above shows the number of jobs from the <strong>top
 10</strong> largest industries have been moved to the top 10 largest
 industries in Colorado.</p>
@@ -832,6 +831,7 @@ of your sankey chart to the report.</p>
 <p><strong>[Q4]</strong> Please list <strong>3-5 functions</strong> that
 you have learnt from this tutorial and explain when and how to use
 them.</p>
+</div>
 </div>
 <div id="close-exit" class="section level3">
 <h3>8.7 Close &amp; Exit</h3>
