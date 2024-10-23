@@ -109,7 +109,8 @@ Instead of writing the path by yourself, please copy file name from file directo
 ```{r, class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
 # US Census CB (cartographic boundaries) by states (simple features) 
 # project it to "CRS NAD83 / Colorado North (ftUS)"
-sf_us_state <- st_read("data/cb_2023_us_state/cb_2023_us_state_5m.shp") %>% st_transform(., 2231)
+sf_us_state <- st_read("data/cb_2023_us_state/cb_2023_us_state_5m.shp") %>% 
+  st_transform(., 2231)
 
 # lab7 (Section 7.6) - j2j outflow and inflow for all NAICS sections 
 j2j_co_xy <- read.csv("data/lab7_j2j_co_xy.csv")
@@ -141,7 +142,8 @@ dt_edge <- j2j_co_xy %>% filter(direction == "outflow_from_co",
                              naics_sector == "all_sectors")
 
 # node - states polygons
-dt_node <- sf_us_state %>% filter(NAME %in% unique(c(dt_edge$from_state, dt_edge$to_state)))
+dt_node <- sf_us_state %>% 
+  filter(NAME %in% unique(c(dt_edge$from_state, dt_edge$to_state)))
 # node - convert to centroid
 dt_node <- st_centroid(dt_node)
 
@@ -249,14 +251,16 @@ View(df_economic_meta)
 
 
 #### 8.5.1 Data Cleaning & Processing 
-Identify the variables to extract from the "df_economic" data table. 
+Identify the variables to extract from the "df_economic" data table. The chunk of code below is **copyable**. 
 ```{r, class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
-lt_ecnomic_index <- c("DP03_0119PE", "DP03_0047PE", "DP03_0048PE", 
-                      "DP03_0049PE", "DP03_0050PE", "DP03_0062E",
-                      "DP03_0009PE")
-lt_economic_var_name <- c("pct_fam_below_poverty", "pct_cvl_16plus_emp_priv", "pct_cvl_16plus_emp_govr", 
-                          "pct_cvl_16plus_emp_self", "pct_cvl_16plus_emp_unpaid", "median_hh_income",
-                          "unemply_rate")
+lt_ecnomic_index <- c(
+  "DP03_0119PE", "DP03_0047PE", "DP03_0048PE", 
+  "DP03_0049PE", "DP03_0050PE", "DP03_0062E",
+  "DP03_0009PE")
+lt_economic_var_name <- c(
+  "pct_fam_below_poverty", "pct_cvl_16plus_emp_priv", "pct_cvl_16plus_emp_govr", 
+  "pct_cvl_16plus_emp_self", "pct_cvl_16plus_emp_unpaid", "median_hh_income",
+  "unemply_rate")
 ```
 
 Data cleaning
@@ -268,7 +272,9 @@ df_economic_cln <- df_economic %>% select(GEO_ID, NAME, all_of(lt_ecnomic_index)
 df_economic_cln <- df_economic_cln[-1, ]
 
 # update column names to meaningful names
-df_economic_cln <- setnames(df_economic_cln, old = lt_ecnomic_index, new=lt_economic_var_name)
+df_economic_cln <- setnames(df_economic_cln, 
+                            old = lt_ecnomic_index, 
+                            new=lt_economic_var_name)
 ```
 
 
@@ -453,10 +459,11 @@ The sankey chart above shows the number of jobs from the **top 10** largest indu
 **[Q4]** Please list **3-5 functions** that you have learnt from this tutorial and explain when and how to use them. 
 
 
-### 7.7 Close & Exit
+### 8.7 Close & Exit
 
 Congratulations!! You have completed the entire tutorial and learnt the intro to network visualization!! 
-** Please submit your report on time. A late penalty (5 pts / day) will be applied **. 
+
+**Please submit your report on time, otherwise, a late penalty (5 pts / day) will be applied**. 
 
 Please go "File"--> "Close Project" -- a pop window asking "Do you want to save these changes" --> "Yes".
 

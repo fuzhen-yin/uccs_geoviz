@@ -499,7 +499,8 @@ file directories as shown in Figure 8.2.</p>
 alt="Figure 8.2: Right-click to copy file name" /> <br></p>
 <pre class="r nocopy"><code># US Census CB (cartographic boundaries) by states (simple features) 
 # project it to &quot;CRS NAD83 / Colorado North (ftUS)&quot;
-sf_us_state &lt;- st_read(&quot;data/cb_2023_us_state/cb_2023_us_state_5m.shp&quot;) %&gt;% st_transform(., 2231)</code></pre>
+sf_us_state &lt;- st_read(&quot;data/cb_2023_us_state/cb_2023_us_state_5m.shp&quot;) %&gt;% 
+  st_transform(., 2231)</code></pre>
 <pre><code>## Reading layer `cb_2023_us_state_5m&#39; from data source 
 ##   `D:\OneDrive\UCCS\Teaching\GES4070\Labs\01_git_wk\uccs_geoviz\data\cb_2023_us_state\cb_2023_us_state_5m.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
@@ -538,7 +539,8 @@ dt_edge &lt;- j2j_co_xy %&gt;% filter(direction == &quot;outflow_from_co&quot;,
                              naics_sector == &quot;all_sectors&quot;)
 
 # node - states polygons
-dt_node &lt;- sf_us_state %&gt;% filter(NAME %in% unique(c(dt_edge$from_state, dt_edge$to_state)))
+dt_node &lt;- sf_us_state %&gt;% 
+  filter(NAME %in% unique(c(dt_edge$from_state, dt_edge$to_state)))
 # node - convert to centroid
 dt_node &lt;- st_centroid(dt_node)
 
@@ -642,14 +644,16 @@ View(df_economic)
 View(df_economic_meta)</code></pre>
 <div id="data-cleaning-processing" class="section level4">
 <h4>8.5.1 Data Cleaning &amp; Processing</h4>
-<p>Identify the variables to extract from the “df_economic” data
-table.</p>
-<pre class="r nocopy"><code>lt_ecnomic_index &lt;- c(&quot;DP03_0119PE&quot;, &quot;DP03_0047PE&quot;, &quot;DP03_0048PE&quot;, 
-                      &quot;DP03_0049PE&quot;, &quot;DP03_0050PE&quot;, &quot;DP03_0062E&quot;,
-                      &quot;DP03_0009PE&quot;)
-lt_economic_var_name &lt;- c(&quot;pct_fam_below_poverty&quot;, &quot;pct_cvl_16plus_emp_priv&quot;, &quot;pct_cvl_16plus_emp_govr&quot;, 
-                          &quot;pct_cvl_16plus_emp_self&quot;, &quot;pct_cvl_16plus_emp_unpaid&quot;, &quot;median_hh_income&quot;,
-                          &quot;unemply_rate&quot;)</code></pre>
+<p>Identify the variables to extract from the “df_economic” data table.
+The chunk of code below is <strong>copyable</strong>.</p>
+<pre class="r nocopy"><code>lt_ecnomic_index &lt;- c(
+  &quot;DP03_0119PE&quot;, &quot;DP03_0047PE&quot;, &quot;DP03_0048PE&quot;, 
+  &quot;DP03_0049PE&quot;, &quot;DP03_0050PE&quot;, &quot;DP03_0062E&quot;,
+  &quot;DP03_0009PE&quot;)
+lt_economic_var_name &lt;- c(
+  &quot;pct_fam_below_poverty&quot;, &quot;pct_cvl_16plus_emp_priv&quot;, &quot;pct_cvl_16plus_emp_govr&quot;, 
+  &quot;pct_cvl_16plus_emp_self&quot;, &quot;pct_cvl_16plus_emp_unpaid&quot;, &quot;median_hh_income&quot;,
+  &quot;unemply_rate&quot;)</code></pre>
 <p>Data cleaning</p>
 <pre class="r nocopy"><code># clean the economic data table &quot;df_economic&quot; 
 df_economic_cln &lt;- df_economic %&gt;% select(GEO_ID, NAME, all_of(lt_ecnomic_index))
@@ -658,7 +662,9 @@ df_economic_cln &lt;- df_economic %&gt;% select(GEO_ID, NAME, all_of(lt_ecnomic_
 df_economic_cln &lt;- df_economic_cln[-1, ]
 
 # update column names to meaningful names
-df_economic_cln &lt;- setnames(df_economic_cln, old = lt_ecnomic_index, new=lt_economic_var_name)</code></pre>
+df_economic_cln &lt;- setnames(df_economic_cln, 
+                            old = lt_ecnomic_index, 
+                            new=lt_economic_var_name)</code></pre>
 <p>Data processing by converting them to numeric.</p>
 <pre class="r nocopy"><code># check column data type 
 str(df_economic_cln)</code></pre>
@@ -813,8 +819,8 @@ sankeyNetwork(Links = dt_edge, Nodes = dt_node,
               Source = &quot;id_from&quot;, Target = &quot;id_to&quot;,
               Value = &quot;avg_n_job&quot;, NodeID = &quot;name&quot;,
               sinksRight=FALSE, nodeWidth=15, fontSize=10, nodePadding=10)</code></pre>
-<div class="sankeyNetwork html-widget html-fill-item" id="htmlwidget-e4dcc7a9a8ad1fb24e39" style="width:960px;height:768px;"></div>
-<script type="application/json" data-for="htmlwidget-e4dcc7a9a8ad1fb24e39">{"x":{"links":{"source":[0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9],"target":[10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19],"value":[5511,382,336,431,301,468,987,114,197,365,536,1488,576,478,335,806,793,144,266,558,366,431,1204,418,335,534,463,82,186,229,816,604,653,6005,1017,681,1356,519,1568,2678,404,303,438,772,2618,239,826,120,374,592,401,475,524,437,192,6158,845,354,539,366,1146,1130,663,958,746,1097,4074,354,1704,1080,97,102,93,291,166,411,274,2675,775,371,239,196,202,800,297,592,1059,844,10267,923,691,593,341,2808,770,534,1327,517,1548,11150]},"nodes":{"name":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "],"group":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":10,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":false}},"evals":[],"jsHooks":[]}</script>
+<div class="sankeyNetwork html-widget html-fill-item" id="htmlwidget-ccf28f5146b54e6d1370" style="width:960px;height:768px;"></div>
+<script type="application/json" data-for="htmlwidget-ccf28f5146b54e6d1370">{"x":{"links":{"source":[0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9],"target":[10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19],"value":[5511,382,336,431,301,468,987,114,197,365,536,1488,576,478,335,806,793,144,266,558,366,431,1204,418,335,534,463,82,186,229,816,604,653,6005,1017,681,1356,519,1568,2678,404,303,438,772,2618,239,826,120,374,592,401,475,524,437,192,6158,845,354,539,366,1146,1130,663,958,746,1097,4074,354,1704,1080,97,102,93,291,166,411,274,2675,775,371,239,196,202,800,297,592,1059,844,10267,923,691,593,341,2808,770,534,1327,517,1548,11150]},"nodes":{"name":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "],"group":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":10,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":false}},"evals":[],"jsHooks":[]}</script>
 <p>The sankey chart above shows the number of jobs from the <strong>top
 10</strong> largest industries have been moved to the top 10 largest
 industries in Colorado.</p>
@@ -827,10 +833,11 @@ you have learnt from this tutorial and explain when and how to use
 them.</p>
 </div>
 <div id="close-exit" class="section level3">
-<h3>7.7 Close &amp; Exit</h3>
+<h3>8.7 Close &amp; Exit</h3>
 <p>Congratulations!! You have completed the entire tutorial and learnt
-the intro to network visualization!! ** Please submit your report on
-time. A late penalty (5 pts / day) will be applied **.</p>
+the intro to network visualization!!</p>
+<p><strong>Please submit your report on time, otherwise, a late penalty
+(5 pts / day) will be applied</strong>.</p>
 <p>Please go “File”–&gt; “Close Project” – a pop window asking “Do you
 want to save these changes” –&gt; “Yes”.</p>
 <p>Don’t forget to submit the <strong>lab8 report</strong> and your
