@@ -1,0 +1,50 @@
+---
+title: "Chapter 9: Mapping Point PatternS"
+output: 
+  html_document:
+    fig_caption: yes
+    theme: cosmo
+    toc: yes
+    toc_depth: 5
+    toc_float: 
+      collapsed: true
+css: website.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### 9.1 Lab Goals
+
+This chapter explores mapping of point patterns:
+
+* Crating **grids** covering study area 
+* **Point pattern** visualization 
+* **Kernel Density Estimation** Mapping
+
+
+### 9.2 Good Practice
+
+#### 9.2.1 Organizing Folders & Sub-folders
+Under the course folder, please create a folder called "**lab9**". Next, in the **lab9** folder, please create two [sub-folders]{.ul} that one is called "**data**" and another one is "**plot**". 
+
+#### 9.2.2 Data
+This chapter uses:
+
+* [Crash data](https://policedata.coloradosprings.gov/Traffic-Crashes/Crash-Data/bjpt-tkzq/about_data) reported to CSPD in 2024.
+* 2023 [Tiger Line Road Data](https://www.census.gov/cgi-bin/geo/shapefiles/index.php?year=2023&layergroup=Roads) from US Census Bureau
+* 2023 Cartographic Boundary [County Subdivision](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html) from US Census Bureau
+
+
+Download the lab's data: 
+
+* **Go** to https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab9_data.zip
+* **Download** the file _"lab9_data.zip"_
+* **Unzip** folder _"lab9_data.zip"_
+* **Move** all files from the "_lab9_data_" folder to the _"data"_ folder under "_lab9_" see [Step 9.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab9.html#821_Organizing_Folders__Sub-folders) 
+
+
+If there you have any questions about the above-mentioned steps, please refer to [Chapter 3.2.3](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#322_Data) for detailed instructions. 
+
