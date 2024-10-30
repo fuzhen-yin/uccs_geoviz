@@ -248,7 +248,7 @@ tm_shape(sf_grid_cos) + tm_polygons(col = "motor", border.alpha = 0.2, palette =
 ::: {.left data-latex=""}
 [**Q1 **]{.ul}
 :::
-Please adapte the code chunk above to produce the following maps: 
+Please adapt the code chunk above to produce the following maps, and paste the screenshots to the report. 
 
  * crash involving automobiles using the color palette "PuBuGn"
  * crash involving trailors using the color palette "YlOrRd"
@@ -262,7 +262,7 @@ Please adapte the code chunk above to produce the following maps:
 
 **Hint** You would need to re-write this section (9.6) to answer **Q2**. 
 
-**Q2**: Please produce a kernel density map for crash involving trucks. 
+**Q2**: Please produce a kernel density map for crash involving trucks, and paste the screenshot to the report.
 
 #### 9.6.1 Data Preparation
 ```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
