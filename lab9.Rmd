@@ -43,7 +43,7 @@ Download the lab's data:
 * **Go** to https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab9_data.zip
 * **Download** the file _"lab9_data.zip"_
 * **Unzip** folder _"lab9_data.zip"_
-* **Move** all files from the "_lab9_data_" folder to the _"data"_ folder under "_lab9_" see [Step 9.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab9.html#821_Organizing_Folders__Sub-folders) 
+* **Move** all files from the "_lab9_data_" folder to the _"data"_ folder under "_lab9_" see [Step 9.2.1](https://fuzhen-yin.github.io/uccs_geoviz/lab9.html#921_Organizing_Folders__Sub-folders) 
 
 
 If there you have any questions about the above-mentioned steps, please refer to [Chapter 3.2.3](https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#322_Data) for detailed instructions. 
@@ -55,8 +55,329 @@ Again, we would like to start a **new project** from scratch with a **clean R Sc
 
 * Step 1: Make sure all existing R projects are **properly closed**. 
     + If *not*, please close it by going to *File* --> *Close Project* --> *Save* changes (see [Chapter 2.5](https://fuzhen-yin.github.io/uccs_geoviz/lab2.html#25_Close__Exit)). 
-* Step 2: Create a **New Project** using **Existing Directory**, navigate to **lab8**, click **open**, then **Create Project**. (see [Chapter 1.3](https://fuzhen-yin.github.io/uccs_geoviz/lab1.html#13_Launching_RStudio)). 
+* Step 2: Create a **New Project** using **Existing Directory**, navigate to **lab9**, click **open**, then **Create Project**. (see [Chapter 1.3](https://fuzhen-yin.github.io/uccs_geoviz/lab1.html#13_Launching_RStudio)). 
 * Step 3: Create a **New Script** by go to **File** --> **New File** --> **R Script**. **Save** the script by giving it a proper name.
+
+
+### 9.3 Libraries & Data 
+
+#### 9.3.1 Load Libraries
+Please install necessary packages as needed.  
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+library(dplyr)    # mutate, left_join
+library(sf)
+library(geojsonio)  ## import geojson
+library(tmap)       ## mapping
+library(spatstat)   ## kernel density map
+```
+
+#### 9.3.2 Data
+Simple Features (sf) - spatial data 
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# colorado state: county subdivision (cartographic boundary)
+sf_co_cousub <- st_read("data/cb_2023_us_cousub/cb_2023_us_cousub_500k.shp") %>% 
+  filter(STATE_NAME == "Colorado")
+
+# crash data
+sf_crash <- st_read("data/crash_data/cos_crash_2024.shp")
+
+# road data 
+sf_road <- st_read("data/tl_2023_08041_roads/tl_2023_08041_roads.shp")
+```
+
+### 9.4 Data Processing 
+#### 9.4.1 Spatial Boundaries
+
+Project to CRS NAD83 / Colorado North (ftUS). [CRS code: 2231](https://epsg.io/2231)
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# project to CRS NAD83 / Colorado North (ftUS) 
+sf_co_cousub <- st_transform(sf_co_cousub, 2231)
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# el paso county: county subdivision 
+sf_ep_cousub <- sf_co_cousub %>% filter(NAMELSADCO == "El Paso County")
+# olorado springs 
+sf_cos_cousub <- sf_ep_cousub %>% filter(NAME == "Colorado Springs")
+```
+
+#### 9.4.2 Crash Data
+
+Examine the crash data. 
+```{r, eval=FALSE, class.source = "nocopy"}
+# top 5 rows 
+head(sf_crash, 5)
+# data type 
+str(sf_crash)
+```
+
+Filter data 
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# extract records with non-empty geometry 
+sf_crash_24 <- sf_crash[!st_is_empty(sf_crash),]
+
+# project to CRS NAD83 / Colorado North (ftUS)
+sf_crash_24 <- st_transform(sf_crash_24, 2231)
+```
+
+#### 9.4.3 Exploring Analysis
+
+Visualization: quick interactive map.
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# set tmap mode for interactive mapping 
+tmap_mode("view")
+
+# plot crash data and cos county subdivision
+tm_shape(sf_cos_cousub) + tm_polygons(alpha = 0, lwd = 5, border.col = "blue") + 
+  tm_shape(sf_crash_24) + tm_dots(alpha = 0.5)
+```
+
+Here are some issues with the crash data, (1) many dots overlap with each other; (2) there are crash dots outside of cos city boundary. Let's extract only crash within OS city boundary
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# extract only crash within OS city boundary 
+sf_crash_24_cos <- sf_crash_24[lengths(st_intersects(sf_crash_24, sf_cos_cousub))>0, ]
+```
+
+
+### 9.5 Viz: Grid Point Pattern
+
+#### 9.5.1 Grids 
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# create a grid cover the entire city by defining the cell size (each grid will be 2000 ft * 2000 ft * )
+sf_grid_cos <- st_make_grid(sf_cos_cousub, cellsize =  2000, square = TRUE ) %>% st_as_sf() 
+
+# visualize the grid 
+tm_shape(sf_grid_cos) + tm_polygons() + 
+  tm_shape(sf_cos_cousub) + tm_polygons(alpha = 0, border.col = "red")
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# remove grid outside of COS boundary 
+sf_grid_cos <- sf_grid_cos[lengths(st_intersects(sf_grid_cos, sf_cos_cousub)) > 0, ]
+
+# view 
+tm_shape(sf_grid_cos) + tm_polygons() + 
+  tm_shape(sf_cos_cousub) + tm_polygons(alpha = 0, border.col = "red")
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# count crashes in each grid 
+sf_grid_cos$n_crash <- lengths(st_intersects(sf_grid_cos, sf_crash_24_cos))
+
+# view 
+tm_shape(sf_grid_cos) + tm_polygons(col = "n_crash", border.alpha = 0.2) + 
+  tm_shape(sf_cos_cousub) + tm_polygons(alpha = 0, border.col = "red") 
+```
+
+#### 9.5.2 Roads
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# projection 
+sf_road <- st_transform(sf_road, 2231)
+
+# extract main roads
+# MTFCC code: https://www2.census.gov/geo/pdfs/reference/mtfccs2022.pdf
+sf_r_main <- sf_road %>% filter(MTFCC %in% c("S1100", "S1200")) 
+sf_r_main <- sf_r_main[lengths(st_intersects(sf_r_main, sf_grid_cos)) > 0, ]
+
+# prepare labels 
+sf_r_main_lbl <- sf_r_main[!duplicated(sf_r_main$FULLNAME),]
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+## Add main roads to the grid point map
+tm_shape(sf_grid_cos) + tm_polygons(col = "n_crash", border.alpha = 0.2) + 
+  tm_shape(sf_cos_cousub) + tm_polygons(alpha = 0, border.col = "red") + 
+  tm_shape(sf_r_main) + tm_lines() + 
+  tm_shape(sf_r_main_lbl) + tm_text(text = "FULLNAME", size = 0.7, remove.overlap = T)
+```
+
+#### 9.5.3 Crash Points by Vehicle Types 
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# vehicle types 
+lt_v_type <- unique(sf_crash_24_cos$vehicletyp) 
+
+# remove NA
+lt_v_type <- lt_v_type[!is.na(lt_v_type)]
+
+# lbl 
+lt_v_type_lbl <- c("auto", "motor", "truck", "bus", "bike", "trailor")
+
+print(lt_v_type)
+print(lt_v_type_lbl)
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# county the number of crash by vehicle types in each grid  
+for (i in 1:length(lt_v_type)){
+  print(i)
+  print(lt_v_type[[i]])
+  
+  data <- sf_crash_24_cos %>% filter(vehicletyp == lt_v_type[[i]] )
+  sf_grid_cos[as.character(lt_v_type_lbl[[i]])] <- lengths(st_intersects(sf_grid_cos, 
+                                                                         data))
+}
+
+# check the output data 
+head(sf_grid_cos, 10)
+```
+
+Map crash involving motors. 
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+tmap_mode("plot")
+
+tm_shape(sf_grid_cos) + tm_polygons(col = "motor", border.alpha = 0.2, palette = "Blues") + 
+  tm_shape(sf_cos_cousub) + tm_polygons(alpha = 0, border.col = "red") + 
+  tm_shape(sf_r_main) + tm_lines() + 
+  tm_shape(sf_r_main_lbl) + tm_text(text = "FULLNAME", size = 0.5, remove.overlap = T) + 
+  tm_compass(north = 0, size = 1, position = c("right", "top")) + 
+  tm_scale_bar(position = c("right", "bottom"), width = 0.15)  + 
+  tm_layout(legend.outside = T)
+```
+
+
+:::: {.bluebox data-latex=""}
+::: {.left data-latex=""}
+[**Q1 **]{.ul}
+:::
+Please adapte the code chunk above to produce the following maps: 
+
+ * crash involving automobiles using the color palette "PuBuGn"
+ * crash involving trailors using the color palette "YlOrRd"
+ * crash involving buses using the color palette "Greens"
+
+::::
+
+
+
+### 9.6 Kernel Density Map
+
+**Hint** You would need to re-write this section (9.6) to answer **Q2**. 
+
+**Q2**: Please produce a kernel density map for crash involving trucks. 
+
+#### 9.6.1 Data Preparation
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# data
+# spatial polygon of city boundary: sf_cos_cousub 
+# spatial point of crash data: sf_crash_24_cos
+
+## check different vehicle types 
+print(lt_v_type)
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+## filter crash of automobile 
+data <- sf_crash_24_cos %>% filter(vehicletyp == "Automobile")
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# check the class of "data"
+class(data)
+
+# convert from simple features to spatial point 
+sp_data <- as(data, "Spatial")
+
+# check class "sp_data"
+class(sp_data)
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# coordinates top 10 rows 
+head(sp_data@coords, 10)
+```
+
+#### 9.6.2 KDE Mapping
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# create observation window (owin)
+wndw_cos <- as.owin(sf_cos_cousub)
+plot(wndw_cos)
+
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+#create a ppp (point pattern) object
+ppp_crash_auto_24_cos <- ppp(x=sp_data@coords[,1],
+                        y=sp_data@coords[,2],
+                        window=wndw_cos)
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# kernel density map
+ppp_crash_auto_24_cos %>%
+  density(., sigma=500) %>%
+  plot()
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+# play with sigma 
+ppp_crash_auto_24_cos %>%
+  density(., sigma=2000) %>%
+  plot()
+```
+
+### 9.7 Close & Exit
+
+Congratulations!! You have completed the entire tutorial and learnt the intro to network visualization!! 
+
+**Please submit your report on time, otherwise, a late penalty (5 pts / day) will be applied**. 
+
+Please go "File"--> "Close Project" -- a pop window asking "Do you want to save these changes" --> "Yes".
+
+Don't forget to submit the **lab9 report**  and your **script**  to Canvas. 
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+
+```
+
+
+```{r class.source = "nocopy",  message=FALSE, warning=FALSE, cache=FALSE}
+
+```
 
 
 
