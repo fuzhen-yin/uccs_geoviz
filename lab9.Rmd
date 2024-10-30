@@ -250,9 +250,9 @@ tm_shape(sf_grid_cos) + tm_polygons(col = "motor", border.alpha = 0.2, palette =
 :::
 Please adapt the code chunk above to produce the following maps, and paste the screenshots to the report. 
 
- * crash involving automobiles using the color palette "PuBuGn"
- * crash involving trailors using the color palette "YlOrRd"
- * crash involving buses using the color palette "Greens"
+ * crashes involving automobiles using the color palette "PuBuGn"
+ * crashes involving trailers using the color palette "YlOrRd"
+ * crashes involving buses using the color palette "Greens"
 
 ::::
 
