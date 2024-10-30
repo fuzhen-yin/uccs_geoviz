@@ -258,7 +258,7 @@ Please adapt the code chunk above to produce the following maps, and paste the s
 
 
 
-### 9.6 Kernel Density Map
+### 9.6 Viz: Kernel Density Map
 
 **Hint** You would need to re-write this section (9.6) to answer **Q2**. 
 
