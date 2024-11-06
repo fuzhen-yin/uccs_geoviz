@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Colorado Springs 3D Map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+	<script src="https://api.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js"></script>
+	<link href="https://api.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css" rel="stylesheet" />
+    <style>
+body { margin:0; padding:0; }
+#map { position:absolute; top:0; bottom:0; width:100%; }
+
+.map-overlay {
+    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    position: absolute;
+    width: 17%;
+    top: 0;
+    left: 0;
+    padding: 10px;
+}
+
+.map-overlay .map-overlay-inner {
+    background-color: #fff;
+    box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.map-overlay table {
+    border: none;
+    width: 100%;
+}
+
+.map-overlay h2 {
+    line-height: 24px;
+    display: block;
+    margin: 0 0 10px;
+}
+
+.map-overlay label {
+    font: 16px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    vertical-align: bottom;
+    margin: 0;
+    padding: 0;
+}
+
+.map-overlay .legend .bar {
+    height: 10px;
+    width: 100%;
+    background: linear-gradient(to right, #FCA107, #7F3121);
+}
+
+.map-overlay input {
+    display: inline;
+    vertical-align: middle;
+    margin: 5px;
+    padding: 0;
+}
+
+.map-overlay p.credit {
+   margin: 5px 0 0 0;
+   padding: 0;
+}
+
+    </style>
+</head>
+<body>
+
+
+<div id='map'></div>
+
+<div class='map-overlay top'>
+    <div class='map-overlay-inner'>
+        <h2>Colorado Springs Crashes in 2024</h2>
+		<table><tr><td>
+  		<input type="radio" name="layers" id="layer1" value="Employment" checked><label>Total Crashes &nbsp; &nbsp;</label>
+  		<input type="radio" name="layers" id="layer2" value="Residents"><label>Automobile </label>
+         </td>
+         </tr>
+         
+         </table>
+         <p class="credit">Data: Census 2011, Office for Nat. Statistics. Cartography: <a href="https://policedata.coloradosprings.gov/Traffic-Crashes/Crash-Data/bjpt-tkzq/about_data">Colorado Springs Crash Data</a>.</p>
+</div>
+</div>
+</div>
+
+
+
+
+    <script>
+
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZnppbmciLCJhIjoiY2s5eHE0NW4wMDV6aDNnbjFrYWpyNmE1eSJ9.PQHJ-2XYEas7K6CpTJHf0A'; // Put your Mapbox Public Access token here
+
+    // Load a new map in the 'map' HTML div
+    var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/fzing/cm3580j40016e01padoxj31nc', // map background layer location
+    center: [-104.798631, 38.927610], // starting position [lng, lat]
+    zoom: 10.75, // starting zoom
+    pitch: 72,  // tilt of the viewpoint in degrees
+    bearing: -28.83
+    });
+
+
+    map.on('load', function() {
+      // Set global light properties which influence 3D layer shadows
+      map.setLight({color: "#fff", intensity: 0.15, position: [1.15, 210, 30]});
+      // Add standard navigation control
+      map.addControl(new mapboxgl.NavigationControl());
+
+    // Load the 3D employment hexagon layer as a fill-extrusion type
+      map.addLayer({
+        id: 'cos_crash_grid',
+        type: 'fill-extrusion',
+        source: {
+          type: 'vector',
+          url: 'mapbox://fzing.3lg0lgau' // Your Mapbox tileset Map ID
+        },
+        'source-layer': 'lab10_crash_grid_2024_cos-72zss5', // name of tileset
+        paint: {
+            'fill-extrusion-color': {
+                property: 'n_crash',
+                type: 'exponential',
+                stops: [
+                    [0, '#d6f5ff'],
+                    [30, '#69cbf5'],
+                    [50, '#2e96dc'],
+                    [100, '#00479e']]
+            },
+            'fill-extrusion-height': ['/', ['number', ['get', 'n_crash'], 2], 0.05],  //expression that controls the extrusion height based on employment attribute n_crash
+            'fill-extrusion-opacity': 0.95,
+            'fill-extrusion-opacity-transition': {  //Opacity transition adds a delay when changing the opacity for a smooth layer change effect
+                 duration: 1000,
+                 delay: 0
+             }
+            }
+      });
+
+    // Load the second 3D population hexagon layer. This layer has its opacity set to zero.
+      map.addLayer({
+        id: 'cos_crash_grid_auto',
+        type: 'fill-extrusion',
+        source: {
+          type: 'vector',
+          url: 'mapbox://fzing.3lg0lgau' // Your Mapbox tileset Map ID
+        },
+        'source-layer': 'lab10_crash_grid_2024_cos-72zss5', // name of tileset
+        paint: {
+            'fill-extrusion-color': {
+                property: 'auto',
+                type: 'exponential',
+                stops: [
+                    [0, '#fff2f2'],
+                    [30, '#f59c8e'],
+                    [50, '#e54545'],
+                    [100, '#730b0b']]
+            },
+            'fill-extrusion-height': ['/', ['number', ['get', 'auto'], 2], 0.1],
+            'fill-extrusion-opacity': 0,  //Opacity set to zero
+            'fill-extrusion-opacity-transition': {
+                 duration: 1000,
+                 delay: 0
+             }
+            }
+      });
+
+
+
+
+//Event listener for layer switch
+document.getElementById("layer1").addEventListener("click", function(){
+map.setPaintProperty('cos_crash_grid','fill-extrusion-opacity',0.95);
+map.setPaintProperty('cos_crash_grid_auto','fill-extrusion-opacity',0);
+});
+
+document.getElementById("layer2").addEventListener("click", function(){
+map.setPaintProperty('cos_crash_grid','fill-extrusion-opacity',0);
+map.setPaintProperty('cos_crash_grid_auto','fill-extrusion-opacity',0.95);
+});
+
+
+//Event listener for the zoom to buttons created using a for loop and switch case statement to set lat and long
+var x = document.getElementsByClassName('citylink');
+var i;
+		for (i = 0; i < x.length; i++) {
+			x[i].addEventListener('click', function(e) {
+
+				var lat,long;
+
+				switch(e.target.id) {
+					case "birm": long=-1.8904; lat=52.4862; break;
+					case "bris": long=-2.5879; lat=51.4545; break;
+					case "leed": long=-1.5491; lat=53.8008; break;
+					case "lond": long=-0.1278; lat=51.5074; break;
+					case "manc": long=-2.2426; lat=53.4808; break;
+					case "newc": long=-1.6178; lat=54.9783; break;
+				}
+
+				map.flyTo({
+					center: [long,lat],
+					zoom: 9,
+					speed: 0.3,
+					pitch: 50
+					});
+			});
+		}
+
+});
+
+</script>
+
+</body>
+</html>
