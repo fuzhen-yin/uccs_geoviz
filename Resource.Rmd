@@ -46,6 +46,32 @@ Here are some websites where you can find inspirations and codes for visualizati
 
 ### Opportunities 
 
+> GISalon webinar: Exploring Career Paths in GIS
+
+:::: {.blueborder data-latex=""}
+
+
+Dear colleagues,
+
+GISphere, a non-profit organization dedicated to promoting GIScience, is excited to invite you to our 6th GISalon webinar, titled "**Exploring Career Paths in GIS: Local Government and Public Sectors**."
+
+This webinar will feature GIS professionals from local, national, and international agencies. The panelists will discuss their experiences using GIS in solving real-world challenges across fields such as city planning, public health, climate science, and forestry and share valuable advice for current students on securing a job and thriving in the GIS profession.
+
+The webinar is scheduled for **Friday, November 15, 2024, at 10:00 AM EST** via Zoom: https://zoom.us/my/gisalon. Please see the attached posters for more details.
+
+It would be wonderful if you could help us circulate the event information and attached posters with students in your department, both undergraduate and graduate, and invite them to join– especially those interested in GIS careers in the public sector.
+
+Best,
+
+GISphere team
+
+::::
+
+
+<br> 
+<br>
+
+
 > [PhD Opportunity](https://geoai.geog.buffalo.edu/opportunities/) in [Dr. Yingjie Hu](https://www.acsu.buffalo.edu/~yhu42/)'s GeoAI Lab at University at Buffalo
 
 :::: {.blueborder data-latex=""}
