@@ -28,3 +28,8 @@ Labs - Instructions for labs.
 ![GES 4070/5070 Syllabus - Fall 2024](figs/GES4070_5070_Syllabus_1011.pdf){width=100%}
 
 
+# Student Works 
+
+```{r, echo=FALSE}
+htmltools::includeHTML("fall24_student.html")
+```
