@@ -10,6 +10,7 @@ output:
     toc_depth: 3
     toc_float: 
       collapsed: true
+css: website.css
 
 header-includes:
   - \usepackage{pdfpages}
@@ -27,10 +28,28 @@ Labs - Instructions for labs.
 
 ![GES 4070/5070 Syllabus - Fall 2024](figs/GES4070_5070_Syllabus_1011.pdf){width=100%}
 
+<br>
 
 # Student Works 
 
 
-```{r, echo=FALSE}
-htmltools::includeHTML("docs/fall24_student.html")
-```
+:::: {.bluebox data-latex=""}
+::: {.left data-latex=""}
+[**Fall 2024**]{.ul}
+:::
+
+* [Logan Cole](https://sites.google.com/view/logancole/home)
+* [Sadie Crow](https://sites.google.com/view/sadie-crow-professional-portfo/home)
+* [Patricia Favila](https://explorewithfavila.blogspot.com/2024/11/professional-bio.html )
+* [Nicole Jackson](https://sites.google.com/view/colies-carto/home)
+* [Asia Kennebrew](https://asiakennebrew.carrd.co/ )
+* [Heron Lenz](https://sites.google.com/view/heron-lenz/)
+* [Dailyn McAdoo](https://dmcadoogeovisport.blogspot.com/)
+* [Henry Pullen ](https://sites.google.com/view/henrypullenportfolio/biography)
+* [Mackenzie Pylate](https://sites.google.com/view/geolens/home )
+* [Kyle Schneider ](https://sites.google.com/view/kyle-schneider )
+* [Isabelle Schuster](https://sites.google.com/quietpond.com/geovisportfolio/home ) 
+
+::::
+
+<br>
