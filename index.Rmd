@@ -30,6 +30,7 @@ Labs - Instructions for labs.
 
 # Student Works 
 
+
 ```{r, echo=FALSE}
-htmltools::includeHTML("fall24_student.html")
+htmltools::includeHTML("docs/fall24_student.html")
 ```
