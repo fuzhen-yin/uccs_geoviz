@@ -30,26 +30,34 @@ Labs - Instructions for labs.
 
 <br>
 
-# Student Works 
+
+<!-- https://www.geeksforgeeks.org/create-a-tiles-layout-template-using-html-and-css/  -->
 
 
-:::: {.bluebox data-latex=""}
-::: {.left data-latex=""}
-[**Fall 2024**]{.ul}
-:::
+```{r, echo=FALSE}
+htmltools::includeHTML("docs/fall24_student.html")
 
-* [Logan Cole](https://sites.google.com/view/logancole/home)
-* [Sadie Crow](https://sites.google.com/view/sadie-crow-professional-portfo/home)
-* [Patricia Favila](https://explorewithfavila.blogspot.com/2024/11/professional-bio.html )
-* [Nicole Jackson](https://sites.google.com/view/colies-carto/home)
-* [Asia Kennebrew](https://asiakennebrew.carrd.co/ )
-* [Heron Lenz](https://sites.google.com/view/heron-lenz/)
-* [Dailyn McAdoo](https://dmcadoogeovisport.blogspot.com/)
-* [Henry Pullen ](https://sites.google.com/view/henrypullenportfolio/biography)
-* [Mackenzie Pylate](https://sites.google.com/view/geolens/home )
-* [Kyle Schneider ](https://sites.google.com/view/kyle-schneider )
-* [Isabelle Schuster](https://sites.google.com/quietpond.com/geovisportfolio/home ) 
+```
 
-::::
 
-<br>
+
+<!-- :::: {.bluebox data-latex=""} -->
+<!-- ::: {.left data-latex=""} -->
+<!-- [**Fall 2024**]{.ul} -->
+<!-- ::: -->
+
+<!-- * [Logan Cole](https://sites.google.com/view/logancole/home) -->
+<!-- * [Sadie Crow](https://sites.google.com/view/sadie-crow-professional-portfo/home) -->
+<!-- * [Patricia Favila](https://explorewithfavila.blogspot.com/2024/11/professional-bio.html ) -->
+<!-- * [Nicole Jackson](https://sites.google.com/view/colies-carto/home) -->
+<!-- * [Asia Kennebrew](https://asiakennebrew.carrd.co/ ) -->
+<!-- * [Heron Lenz](https://sites.google.com/view/heron-lenz/) -->
+<!-- * [Dailyn McAdoo](https://dmcadoogeovisport.blogspot.com/) -->
+<!-- * [Henry Pullen ](https://sites.google.com/view/henrypullenportfolio/biography) -->
+<!-- * [Mackenzie Pylate](https://sites.google.com/view/geolens/home ) -->
+<!-- * [Kyle Schneider ](https://sites.google.com/view/kyle-schneider ) -->
+<!-- * [Isabelle Schuster](https://sites.google.com/quietpond.com/geovisportfolio/home )  -->
+
+<!-- :::: -->
+
+<!-- <br> -->
