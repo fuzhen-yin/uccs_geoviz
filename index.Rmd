@@ -16,8 +16,8 @@ header-includes:
   - \usepackage{pdfpages}
 ---
 
-# Welcome to GES4070/5070 Labs
-This is the main website where you can find all lab related materials. 
+# Welcome to GeoViz Labs
+This is the main website where you can find all lab related materials. This website is developed and maintained by [Dr. Fuzhen Yin](https://www.gis-social.org/) from the department of [Geography & Environmental Studies](https://ges.uccs.edu/) at [UCCS](https://www.uccs.edu/). 
 
 # Outlines 
 Resource - find information related to readings & online repositories. 
