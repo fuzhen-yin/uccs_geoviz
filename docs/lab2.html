@@ -511,6 +511,25 @@ more readable.<br />
 <pre class="r"><code># Let&#39;s create floats by using the coordinates of UCCS as an example
 var_long &lt;- -104.801     
 var_lat &lt;- 38.892    </code></pre>
+<p>A common type of float data is <strong>Population growth
+rate</strong> calculated over a period of time (Year Start - Year End).
+It is calculated using the equation below:</p>
+<p><span class="math display">\[ Growth Rate = 100 * \frac
+{Population_{start} - Population_{end}} {Population_{start}}
+\]</span></p>
+<p>Assuming we know that the city “X” has 4,000 people in 2010, and
+4,123 people in 2022, the <strong>population growth rate (%)</strong>
+can be calculated using the following lines of code. It shows that the
+population in city “X” has increased 3.075% between 2010 and 2022.</p>
+<p><strong>Hint</strong>: the cell below can help you to calculate the
+population growth rates for Assignment 2.</p>
+<pre class="r"><code># populations in years 2010, 2022 
+pop_x_2010 &lt;- 4000
+pop_x_2022 &lt;- 4123
+
+# population growth rate 
+pop_g_rate &lt;-  100 * (pop_x_2022 - pop_x_2010) / pop_x_2010
+pop_g_rate</code></pre>
 <ol start="3" style="list-style-type: lower-alpha">
 <li><strong>Characters</strong> are used to store text (also called
 “strings”). To indicate something is a character, we put <em>quotation
@@ -713,7 +732,7 @@ total population are associated with the numbers of their total housing
 units.</p>
 <pre class="r"><code>ggplot(co_data, aes(x=total_pop, y =total_housing_unit )) + 
   geom_point()</code></pre>
-<p><img src="lab2_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="lab2_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p><br></p>
 <div class="blueborder">
 <p>We can improve the design of this scatter plot by using different
