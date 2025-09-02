@@ -374,10 +374,9 @@ Calculator</h1>
 <h3>2.1 Lab Goals</h3>
 <p>After completing this chapter, you should be able to:</p>
 <ul>
-<li>Assign a variable and view its<br />
+<li>Understand what is ‘variable’ in R and how to create it.<br />
 </li>
-<li>Understand what are different data types and how they are used in
-the context of geo-visualization</li>
+<li>Know different data types and distinguish them</li>
 <li>Clean, calculate and manipulate different data types</li>
 </ul>
 </div>
@@ -385,19 +384,25 @@ the context of geo-visualization</li>
 <h3>2.2 Good Practice</h3>
 <div id="organizing-folders" class="section level4">
 <h4>2.2.1 Organizing Folders</h4>
-<p>Let’s first navigate to the course folder that we have created for
-the previous lab (see <a
-href="https://fuzhen-yin.github.io/uccs_geoviz/lab1.html#12_Good_Practice_-_Organizing_Folders">Chapter
-1.2</a>), and create a folder called <strong>lab2</strong>.</p>
+<p>After creating and organizing your folders in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab1.html#12_Good_Practice_-_Organizing_Folders">Lab
+1.2</a>, you should have a dedicated folder for this course, and also a
+series of folders of labs and assignment.</p>
+<p>If you have not yet done so, please complete the steps in <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab1.html#12_Good_Practice_-_Organizing_Folders">Lab
+1.2</a>.</p>
+<p>Please go to your <strong>lab2</strong> folder. Download the ‘Lab 2
+report template’ file to this folder.</p>
 </div>
 <div id="housekeeping" class="section level4">
 <h4>2.2.2 Housekeeping</h4>
-<p>We’ll use RStudio again for this chapter. Please open RStudio as we
-have explained in <a
+<p>We’ll use RStudio again for this chapter. Please <strong>launch
+RStudio</strong> as we have explained in <a
 href="https://fuzhen-yin.github.io/uccs_geoviz/lab1.html#13_Launching_RStudio">Chapter
 1.3</a>.</p>
-<p>(<em>Note: all computers in COH 329 should have an updated RStudio
-already</em>).</p>
+<p>(<em>Note: if you are using computers in COH 329 and having troubles,
+please let me know which computer it is. With Mr. Matthew Gottfried, we
+will work on resolving the issue.</em>).</p>
 <p>Before starting any works, please make sure you are in fresh
 <strong>new project</strong> with a <strong>blank script</strong>.
 Please follow the action checklist below:</p>
@@ -407,13 +412,18 @@ Please follow the action checklist below:</p>
 <li>If <em>not</em>, please close it by going to <em>File</em> –&gt;
 <em>Close Project</em> –&gt; <em>Save</em> changes.</li>
 </ul></li>
-<li>Step 2: Create a <strong>New Project</strong> using <strong>Existing
-Directory</strong>, navigate to <strong>lab2</strong>, click
-<strong>open</strong>, then <strong>Create Project</strong>.</li>
+<li>Step 2: After properly closing “Lab 1”, let’s create a <strong>new
+project</strong> for <strong>Lab 2</strong>. Specifically, go to
+<strong>File</strong> –&gt; <strong>New Project</strong> using
+<strong>Existing Directory</strong>, navigate to <strong>lab2</strong>,
+click <strong>open</strong>, then <strong>Create Project</strong>.</li>
 <li>Step 3: Create a <strong>New Script</strong> by go to
 <strong>File</strong> –&gt; <strong>New File</strong> –&gt; <strong>R
-Script</strong>. <strong>Save</strong> the script by giving it a proper
-name.</li>
+Script</strong>.</li>
+<li>Let’s <strong>Save</strong> the script first before writing any
+codes. To save it, go to <strong>File</strong> –&gt;
+<strong>Save</strong> –&gt; give it a proper name, e.g.,
+<em>lab_2_script</em></li>
 </ul>
 <p>At this step, you should see something similar to Figure 2.1. If you
 have any questions about the above steps, please refer to <a
@@ -452,15 +462,23 @@ treat them like any other variable and call them recursively.</p>
 </blockquote>
 <div id="variables-data-types" class="section level4">
 <h4>2.3.1 Variables &amp; Data Types</h4>
-<p>Let’s create some variables. <em>Note: the codes below are pretty
-simple. Please try to re-write them by yourself and understand the
-purpose of each line.</em></p>
+<p><em>Note: the codes below are pretty simple. Please try to re-write
+them by yourself and understand the purpose of each line.</em></p>
+<div class="blueborder">
+<p>In R, when creating variables, we use the <strong>Assignment
+Operator</strong>: <strong><code>&lt;-</code></strong></p>
+<p>The shortcut to write <strong>&lt;-</strong> is to press
+<code>Ctrl</code> and <code>-</code> together .</p>
+</div>
+<p>Let’s create some variables.</p>
 <ol style="list-style-type: lower-alpha">
 <li><strong>Integers (int)</strong> are whole numbers, e.g., 1, 10, -10.
-Run the code below and observe what do you see in the
-<strong>Environment</strong> panel on the top-right corner (see Figure
-2.2). Do you see a new variable <em>“var_int”</em>?</li>
+The code below create a new variable <em>var_int</em>, and we set
+<em>var_int</em> to <em>10</em>.</li>
 </ol>
+<p>Run the code below and observe what do you see in the
+<strong>Environment</strong> panel on the top-right corner (see Figure
+2.2). Do you see a new variable <em>“var_int”</em>?</p>
 <pre class="r"><code>var_int &lt;- 99</code></pre>
 <div class="float">
 <img src="figs/lab2_environment_new_var.png"
@@ -468,22 +486,23 @@ alt="Figure 2.2: Monitoring the environment panel." />
 <div class="figcaption">Figure 2.2: Monitoring the environment
 panel.</div>
 </div>
-<p><br> We can also create consecutive integers by using the symbol
-<code>:</code></p>
+<p><br></p>
+<p>We can also create consecutive integers by using the symbol
+<strong><code>:</code></strong></p>
 <pre class="r"><code># create consecutive integers 
-var_ints &lt;- -5:5
+var_ints &lt;- 1:5
 
 # let&#39;s check this variable
 print(var_ints)</code></pre>
-<p><strong>Note:</strong></p>
+<div class="blueborder">
+<p><strong>Commenting using hash tag #</strong></p>
 <ul>
-<li>The symbol <code>#</code> is used to write comments. Comments are
-completed ignored by R and just there to make the code more
-readable.<br />
+<li>The symbol <code>#</code> is used to write comments.</li>
+<li>Comments are completed ignored by R and just there to make the code
+more readable.<br />
 </li>
-<li>The shortcut to write <code>&lt;-</code> is <code>Ctrl</code> +
-<code>-</code> .</li>
 </ul>
+</div>
 <ol start="2" style="list-style-type: lower-alpha">
 <li><strong>Other numerics</strong> such as the floating-point number
 (float) often includes a decimal point, e.g., 3,14, -99,99, 5.0.</li>
@@ -509,7 +528,7 @@ class(var_char)</code></pre>
 Logicals are useful to evaluate logical statements.</li>
 </ol>
 <pre class="r"><code># We can ask the machine to compare numbers. For example, we assign values to &quot;a&quot; and &quot;b&quot;.
-a &lt;- -5
+a &lt;- 0
 b &lt;- 5
 
 # Then, we ask the machine to compare the two values. 
@@ -539,36 +558,57 @@ var_vec_mix</code></pre>
 </div>
 <div id="data-frame-basics" class="section level4">
 <h4>2.3.2 Data frame Basics</h4>
-<p><strong>Data frames</strong> are used to store spreadsheet-like data.
-It provides a <em>table-like</em> way to organize multiple vectors into
-one object. Data frames are also the most widely used format to
-<em>clean, manipulate and analyze</em> data. In this lab, we only learn
-the very basics of creating a simple data frame. We will learn more
-about it in future chapters.<br />
-</p>
+<div class="blueborder">
+<p><strong>Data frames</strong> are the most fundamental data structure
+in R.</p>
+<ul>
+<li>They are used to store spreadsheet-like data.</li>
+<li>They are also the most widely used format to <em>clean, manipulate
+and analyze</em> data.</li>
+<li>It provides a <em>table-like</em> way to organize multiple vectors
+into one object.</li>
+<li>We can use the function <code>data.frame()</code> to create data
+frames. Read the <a
+href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/data.frame">documentation</a>
+of the function <code>data.frame()</code></li>
+</ul>
+</div>
 <p>Let’s use the function <code>data.frame()</code> to create a data
 frame called “<em>df_city_pop</em>” to record the number of population
 in four cities in Colorado.</p>
-<pre class="r"><code># We create a table with two columns (&quot;city&quot; and &quot;population&quot;) and four rows
-# Hint: to make this code work, you need to select all four lines and run them together. 
+<p>In previous step, we have created two vectors
+<strong>var_vec_char</strong> and <strong>var_vec_num1</strong>. While
+the former one includes the names of four cities in Colorado, the later
+one denotes their population counts.</p>
+<p>Let’s combine the two vectors together into a table with two columns:
+“city” and “population” by using the function <code>data.frame()</code>.
+Then, we save this table under the variable name
+<em>df_city_pop</em>.</p>
+<p><strong>Hint</strong>: to make this code work, you need to <u>select
+all four lines and run them together</u>.</p>
+<pre class="r"><code># Create a table with two columns (&quot;city&quot; and &quot;population&quot;) and four rows
+
 df_city_pop &lt;- data.frame(
   city = var_vec_char, 
   population = var_vec_num1
 )</code></pre>
 <p>After ruining the code above, do you see a new variable
 <em>df_city_pop</em> in the Environment panel? Try to click on that
-variable and see what happens. Do you see the table? Please do a
-screenshot of the table and paste it to your “<strong>Lab2
-Report</strong>”.</p>
+variable and see what happens. Do you see the table?</p>
+<p><strong>[Q]</strong> Please capture a screenshot of the table and
+paste it to your “<strong>Lab2 Report</strong>”.</p>
 </div>
 <div id="scientific-calculators" class="section level4">
 <h4>2.3.3 Scientific Calculators</h4>
-<p>Next, we calculate some statistics for the four cities in the data
-frame <em>df_city_pop</em>. Please close the table and go back to your
-script.<br />
-To exact a particular column from a data frame, we use the symbol
-<code>$</code>.</p>
-<pre class="r"><code># Let&#39;s examine the values in the &quot;population&quot; column 
+<p>Please close the table <strong>df_city_pop</strong> and go back to
+your script.</p>
+<div class="bluebox">
+<p>The symbol <code>$</code> allows us to extract a particular column
+“B” from a data frame “A” by using the. Its syntax is A$B.</p>
+</div>
+<p><br> Next, we calculate some statistics for the four cities in the
+data frame <em>df_city_pop</em>.</p>
+<pre class="r"><code># Let&#39;s print all the values in the &quot;population&quot; column 
 print(df_city_pop$population)
 
 # Calculate the total number of population 
@@ -586,21 +626,27 @@ median(df_city_pop$population)</code></pre>
 <div id="reading-an-external-.csv-file-as-a-data-frame."
 class="section level4">
 <h4>2.4.1 Reading an External .csv File as a Data Frame.</h4>
-<p>Let’s play with some external data! I have used <a
-href="https://data.census.gov/">US Census Bureau</a> to collect the
-total population and total housing unit in cities and towns in Colorado.
-This data was collected by <strong>US Census Bureau</strong> on 2022
-through the <strong>5-year American Community Survey (ACS)</strong>
-survey. <strong>US Census Bureau</strong> contains a lot of good
-dataset. We will explore that later.  </p>
-<p>Let’s pull the data in straight from the web using the function
-<code>read.csv()</code> and save it into a new variable “CoData”.</p>
-<pre class="r"><code>CoData &lt;- read.csv(url(&quot;https://raw.githubusercontent.com/fuzhen-yin/uccs_geoviz/main/data/00_ACS_5yrs_estimate_2022_places_colorado_population_housing.csv&quot;))</code></pre>
-<p>Click “CoData” in the Environment panel and examine the table a
-little bit. Report the following information to your “<strong>Lab2
-Report</strong>”. In the table, by clicking a particular column name,
-you can <strong>order</strong> the table based the column’s value (see
-Figure 2.3).</p>
+<p>In this section, we will play with an external dataset about
+population and housing units in cities and towns in Colorado!</p>
+<p>I have used <a href="https://data.census.gov/">US Census Bureau</a>
+to collect this data, and then cleaned and reorganized it. This original
+data was collected by <strong>US Census Bureau</strong> on 2022 through
+the <strong>5-year American Community Survey (ACS)</strong> survey.
+<strong>US Census Bureau</strong> contains a lot of good datasets. You
+will need to use it to collect data for your Assignment 2, but that’s
+another story.</p>
+<p>Let’s pull the data in straight from this <a
+href="https://raw.githubusercontent.com/fuzhen-yin/uccs_geoviz/refs/heads/main/docs/data/00_ACS_5yrs_estimate_2022_places_colorado_population_housing.csv">link</a>.</p>
+<p>We will use the function <code>url()</code> to specify the link to
+extract data, then use the function <code>read.csv()</code> to load it
+as a data frame, and save it into a new variable “co_data”.</p>
+<pre class="r"><code>co_data &lt;- read.csv(url(&quot;https://raw.githubusercontent.com/fuzhen-yin/uccs_geoviz/refs/heads/main/docs/data/00_ACS_5yrs_estimate_2022_places_colorado_population_housing.csv&quot;))</code></pre>
+<p>Click on <strong>co_data</strong> in the Environment panel and
+examine the table a little bit.</p>
+<p><strong>[Q]</strong> Report the following information to your
+“<strong>Lab2 Report</strong>”. In the table, by clicking a particular
+column name, you can <strong>order</strong> the table based the column’s
+value (see Figure 2.3).</p>
 <ul>
 <li>How many rows or records in this table?</li>
 <li>How many columns and what are their names?</li>
@@ -609,82 +655,119 @@ and housing units?</li>
 </ul>
 <div class="float">
 <img src="figs/lab2_CoData_click.png" style="width:50.0%"
-alt="Figure 2.3: CoData data frame." />
-<div class="figcaption">Figure 2.3: CoData data frame.</div>
+alt="Figure 2.3: co_data data frame." />
+<div class="figcaption">Figure 2.3: co_data data frame.</div>
 </div>
 <p><br></p>
 </div>
 <div id="descriptive-statistics" class="section level4">
 <h4>2.4.2 Descriptive Statistics</h4>
-<p>Let’s examine the “CoData” column by column. Let’s check What are the
-columns in the “CoData” data frame using <code>names()</code>.</p>
-<pre class="r"><code>names(CoData)</code></pre>
-<p>Next, we check their data types using <code>str()</code>.</p>
-<pre class="r"><code>str(CoData)</code></pre>
-<p>The column “name” is <strong>characters</strong>, while the other two
-columns “total_pop” and “total_housing_unit” are
-<strong>integers.</strong> For these two numerical columns, we calculate
-some basic statistics for them. Remember the symbol <code>$</code>, we
-will use it again to pull out a particular column.</p>
-<pre class="r"><code># First, let&#39;s calculate the statistics of &quot;total_pop&quot; 
-summary(CoData$total_pop)</code></pre>
+<p>In this section, we will examine the table “co_data” by columns.</p>
+<p>The function <code>names()</code> can list all column names in a
+particular data frame, in our example, “co_data”.</p>
+<pre class="r"><code>names(co_data)</code></pre>
+<p>Next, we check their data types using <code>str()</code>. While
+“name” is <strong>chr (characters)</strong>, the other two columns
+“total_pop” and “total_housing_unit” are <strong>int
+(integers)</strong>.</p>
+<pre class="r"><code>str(co_data)</code></pre>
+<p>For these two numerical columns: “total_pop” and
+“total_housing_unit”, we calculate their basic statistics by using the
+function <code>summary</code>.</p>
+<div class="bluebox">
 <p>The <code>summary()</code> function gives us the <em>(1) minimum, (2)
 1st quartile, (3) median, (4) mean, (5) 3rd quartile and (6)
 maximum</em>.</p>
-<p>Please write the code by yourself to calculate the above statistics
-for the column “total_housing_unit” and paste the outputs to
-“<strong>Lab2 Report</strong>”.</p>
+</div>
+<p>Remember the symbol <code>$</code>, we will use it again to pull out
+a particular column from the table “co_data”.</p>
+<pre class="r"><code># First, let&#39;s calculate the statistics of &quot;total_pop&quot; 
+summary(co_data$total_pop)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##       0     228     820   10406    4770  710800</code></pre>
+<p><strong>[Q]</strong> Please use the <code>summary</code> function to
+calculate the descriptive statistics for the column “total_housing_unit”
+and paste the outputs to “<strong>Lab2 Report</strong>”.</p>
 </div>
 <div id="visualization" class="section level4">
 <h4>2.4.3 Visualization</h4>
 <p>We are going to use the library <code>ggplot2</code> visualization.
 <code>ggplot2</code> is a very popular open-source data visualization
-package. Let’s install this package and launch it.</p>
+package. Let’s install the package first using the function
+<code>install.packages()</code>.</p>
+<p>Normally for a specific computer, we only need to install a package
+once. Then it will be attached with the R environment.</p>
 <pre class="r"><code># install packages (only need to install once)
-install.packages(&quot;ggplot2&quot;)
-
-# launch it (have to launch it everytime we open RStudio). 
+install.packages(&quot;ggplot2&quot;)</code></pre>
+<p>After installation, let’s call the package in our current script.
+Evertime we reo-pen an R project, We need load the library using the
+function <code>library()</code>.</p>
+<pre class="r"><code># launch it (have to launch it everytime we open RStudio). 
 library(ggplot2)</code></pre>
 <p>This chapter is already pretty lengthy. Let’s just do some basic
 visualization stuff and we will go back to this package for much cooler
 visualization later this semester.</p>
-<p>We create a scatter plot to explore how cities’ total population are
-associated with the numbers of their total housing units.</p>
-<pre class="r"><code>ggplot(CoData, aes(x=total_pop, y =total_housing_unit )) + 
+<p>We create a <strong>scatter plot</strong> to explore how cities’
+total population are associated with the numbers of their total housing
+units.</p>
+<pre class="r"><code>ggplot(co_data, aes(x=total_pop, y =total_housing_unit )) + 
   geom_point()</code></pre>
+<p><img src="lab2_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><br></p>
+<div class="blueborder">
 <p>We can improve the design of this scatter plot by using different
 color palette, background color, transparency etc.</p>
 <ul>
 <li><code>color =</code>: shape outline color;</li>
 <li><code>fill =</code> : shape fill color;</li>
-<li><code>shape =</code>: shape. Please google <em>ggplot2 shape
-code</em> for more information;</li>
-<li><code>alpha =</code>: shape transparency;</li>
+<li><code>shape =</code>: shape. Please see Figure 2.4 for shape
+codes.<br />
+</li>
+<li><code>alpha =</code>: shape transparency where 1 means
+non-transparent, and 0.5 means 50% of transparent.</li>
 <li><code>size =</code>: shape size;</li>
 <li><code>stroke =</code>: stroke.</li>
 </ul>
-<pre class="r"><code>ggplot(CoData, aes(x=total_pop, y =total_housing_unit )) + 
+<p>Here are some color palette inspirations in <a
+href="https://www.canva.com/colors/color-palette-generator/">Canva
+Color</a>. We can use the <strong>Hex Color Code</strong> (a six-digit
+number, preceded by a hash symbol “#”, e.g., #fb8500),to specify a
+particular color.</p>
+<div class="float">
+<img src="figs/lab2_ggplot_points-symbols.png" style="width:40.0%"
+alt="Figure 2.4: ggplot2 - symbols for point data shape" />
+<div class="figcaption">Figure 2.4: ggplot2 - symbols for point data
+shape</div>
+</div>
+</div>
+<p><br></p>
+<pre class="r"><code>ggplot(co_data, aes(x=total_pop, y =total_housing_unit )) + 
   geom_point(
     color=&quot;black&quot;,
     fill=&quot;#fb8500&quot;,
-    shape=22,
+    shape=25,
     alpha=0.5,
     size=4,
     stroke = 1
   ) + 
   theme_bw()</code></pre>
-<p>Based on the code above, please <strong>make some changes</strong> to
-the plot and paste the final scatter plot to your “<strong>Lab2
-Report</strong>”.</p>
+<p><img src="figs/lab2_example_draft_scatter_plot.png"
+style="width:70.0%" /></p>
+<p><br> <strong>[Q]</strong> Based on the code above, please
+<strong>make some changes</strong> to the plot and paste the final
+scatter plot to your “<strong>Lab2 Report</strong>”.</p>
 </div>
 </div>
 <div id="close-exit" class="section level3">
 <h3>2.5. Close &amp; Exit</h3>
-<p>To close an R project, please go “File”–&gt; “Close Project” – a pop
-window asking “Do you want to save these changes” –&gt; “Yes”.</p>
-<p><img src="figs/lab1_closeproject.png" style="width:30.0%" /> <img
+<p>To <strong>close</strong> an R project, please go
+“<strong>File</strong>”–&gt; “<strong>Close Project</strong>” – a pop
+window asking “<strong>Do you want to save these changes</strong>” –&gt;
+“<strong>Yes</strong>”.</p>
+<p><img src="figs/lab1_closeproject.png" style="width:30.0%"
+alt="Figure 2.5: Close &amp; Save an R Project" /> <img
 src="figs/lab1_closeproject_save.png" style="width:50.0%"
-alt="Figure 2.4: Close &amp; Save an R Project" /></p>
+alt="Figure 2.6: Close &amp; Save an R Project" /></p>
 </div>
 <div id="references" class="section level3">
 <h3>References</h3>
