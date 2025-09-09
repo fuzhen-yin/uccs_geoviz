@@ -376,38 +376,41 @@ Visualization Workflow</h1>
 and visualization using R. After reading it, you should be able to:</p>
 <ul>
 <li><strong>import</strong> data from local files</li>
-<li><strong>clean</strong> and <strong>transforming</strong> data, such
-as:
+<li><strong>query</strong> and <strong>clean</strong> data, such as:
 <ul>
 <li>extract data corpus</li>
-<li>join rows of different data frames into one</li>
-<li>understand sorting and ordering</li>
+<li>combine rows of different data frames into one</li>
+<li>create new columns from existing data</li>
+<li>sort and order data</li>
 </ul></li>
-<li><strong>draw</strong> standard plots for <em>exploratory</em> and
-<em>visualization</em> purpose by producing:
+<li><strong>generate</strong> standard plots for <em>exploratory</em>
+and <em>visualization</em> purpose by producing:
 <ul>
 <li>bar charts</li>
 <li>line plots</li>
 <li>pie charts</li>
-<li>waffle charts</li>
 </ul></li>
 <li><strong>export</strong> plots as local files</li>
 </ul>
 </div>
 <div id="good-practice" class="section level3">
 <h3>3.2 Good Practice</h3>
-<p>Okay, I guess you already know what I am going to repeat. However,
-there are something <u>new</u> for this lab. I will try to be brief
+<p>Okay, I guess you already know what I am going to repeat about
+organizing folder. However, there are something <u>new</u> for this lab
 :)</p>
 <div id="organizing-folders-sub-folders" class="section level4">
 <h4>3.2.1 Organizing Folders &amp; Sub-folders</h4>
 <p>Similar to what we have done in previous labs, under the course
-folder, please create a folder called “<strong>lab3</strong>”. Next, in
-the <strong>lab3</strong> folder, please create two <u>sub-folders</u>
-that one is called “<strong>data</strong>” and another one is
-“<strong>plot</strong>”. We’ll use the “<strong>data</strong>” folder to
-store data collected from the internet. The “<strong>plot</strong>” will
-be used to export plots generated from R.</p>
+folder, please create a folder called “<strong>lab3</strong>”.</p>
+<ul>
+<li>Next, in the <strong>lab3</strong> folder, please create two
+<u>sub-folders</u>:
+<ul>
+<li>one is called “<strong>data</strong>” to store data files</li>
+<li>another one is “<strong>plot</strong>” to save plots exported from
+R.</li>
+</ul></li>
+</ul>
 <p>After created these folders, your folders should look similar to
 Figure 3.1.</p>
 <p><img src="figs/lab3_folder_structure.png" style="width:70.0%"
@@ -426,8 +429,8 @@ Community Survey</a>’s 5-year estimates.</p>
 <p>Please follow the steps below:</p>
 <ul>
 <li><p><strong>Go</strong> to <a
-href="https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab3_data.zip"
-class="uri">https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab3_data.zip</a></p></li>
+href="https://github.com/fuzhen-yin/uccs_geoviz/blob/main/archive/data/lab3_data.zip"
+class="uri">https://github.com/fuzhen-yin/uccs_geoviz/blob/main/archive/data/lab3_data.zip</a></p></li>
 <li><p><strong>Download</strong> the file <em>“lab3_data.zip”</em> (see
 Figure 3.2)</p>
 <div class="float">
@@ -448,20 +451,19 @@ alt="Figure 3.3: Extract files from “lab3_data.zip” ." />
 just created in <a
 href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#32_Good_Practice">Step
 3.2.1</a> (see Figure 3.4)</p>
-<div class="float">
-<img src="figs/lab3_move_tables_to_datafolder.png" style="width:60.0%"
+<p><img src="figs/lab3_move_tables_to_datafolder.png"
+style="width:60.0%"
 alt="Figure 3.4: Move files to “data” folder under “lab3”." />
-<div class="figcaption">Figure 3.4: Move files to <em>“data”</em> folder
-under <em>“lab3”</em>.</div>
-</div></li>
+<br></p></li>
 </ul>
 </div>
 <div id="housekeeping-launching-rstudio" class="section level4">
 <h4>3.2.3 Housekeeping &amp; Launching RStudio</h4>
 <p>Again, we would like to start a <strong>new project</strong> from
 scratch with a <strong>clean R Script</strong>. Please do the following
-steps. If you have any questions about these steps, please refer to the
-previous chapters for help.</p>
+steps. If you have any questions about these steps, please refer to <a
+href="https://fuzhen-yin.github.io/uccs_geoviz/lab1.html#13_Launching_RStudio">Chapter
+1.3 Launching RStudio</a> for help.</p>
 <ul>
 <li>Step 1: Make sure all existing R projects are <strong>properly
 closed</strong>.
@@ -495,22 +497,25 @@ can imagine, this will be a steep learning curve. Please take
 <p>This tutorial covers most of the techniques for <strong>Assignment
 2</strong>. Please try to:</p>
 <ul>
-<li>Re-write the script by yourself.</li>
-<li>Read through the text carefully and try to understand what bits of
-code are doing as you go.</li>
+<li><strong>Re-write</strong> the script by yourself.</li>
+<li><strong>Read</strong> through the text carefully and try to
+<strong>understand</strong> what bits of code are doing as you go.</li>
+<li><strong>Revisit</strong> this week’s lecture slides on “Data
+Analysis Workflow”</li>
 <li>It’s okay that you don’t fully understand some codes. Don’t worry as
 the key is to revisit later and try to work out what is going on.
 Learning is a iterative process.</li>
-<li>Start to think about how you can adapt a particular line of code or
-functions to your own project.</li>
+<li>Start to <strong>think</strong> about how you can
+<strong>adapt</strong> a particular line of code or functions <strong>to
+your own project</strong>.</li>
 <li>Be CURIOUS!! Ask QUESTIONS!!</li>
 </ul>
 </div>
 <p><br></p>
 <div class="purple_border">
 <div class="left">
-<p><u><strong>Only Read This If You Plan to Take
-Breaks!</strong></u></p>
+<p><u><strong>Tips on properly closing a project and reopen it later -
+If You Plan to Take Breaks!</strong></u></p>
 </div>
 <p>If you plan to work on this lab later, please remember to
 <strong>save your script</strong>, and <strong>properly close</strong>
@@ -546,27 +551,24 @@ purpose of these graphics is to understand their different
 plot <u>comparing the population growth between two cities</u>.</p>
 <p>Let’s <strong>install</strong> &amp; <strong>call</strong> some
 libraries first. Last time, we have used <code>ggplot2</code>. This
-time, we will learn another library <code>dplyr</code> and
-<code>waffle</code>.</p>
+time, we will learn another library <code>dplyr</code>.</p>
 <blockquote>
 <p><code>dplyr</code> is a very commonly used package for <strong>data
 frame manipulation</strong> (<a href="https://dplyr.tidyverse.org/">read
-more</a>). <code>waffle</code> is a package to produce waffle chart.</p>
+more</a>).</p>
 </blockquote>
 <pre class="r"><code>## Install libraries
 install.packages(&quot;dplyr&quot;)
-install.packages(&quot;waffle&quot;)
 
 ## If you don&#39;t have the package &quot;ggplot2&quot; installed
 ## please (1) un-comment the code below by deleting the hash tag; (2) run it
 # install.packages(&quot;ggplot2&quot;)</code></pre>
-<p>After installing packages, we call the three libraries. <em>Hint:
+<p>After installing packages, we call the two libraries. <em>Hint:
 Everytime you open or restart an R project/script, you would need to
 call libraries. But you don’t need to install them every time</em></p>
 <pre class="r"><code>## Library 
 library(ggplot2)  # plot
-library(dplyr)    # data manipulation
-library(waffle)   # waffle chart</code></pre>
+library(dplyr)    # data manipulation</code></pre>
 <div id="create-population-data-2010-2022" class="section level4">
 <h4>3.3.1 Create Population Data 2010-2022</h4>
 <p>Data is the fundamentals of visualization. Here, we create a data
@@ -612,27 +614,36 @@ pop_buf &lt;- data.frame(
 <h4>3.3.2 Data Query &amp; Analysis</h4>
 <p>Let’s explore these two data frames <em>“pop_cos”</em> and
 <em>“pop_buf”</em> a little bit. Remember the <code>$</code> symbol? It
-can be used to select a particular column from a data frame. Let’s check
-the summary statistics of population in the two cities by using
+can be used to select a particular column from a data frame and return
+the output as a <strong>VECTOR</strong>. Let’s check the summary
+statistics of population in the two cities by using
 <code>summary()</code>.</p>
-<pre class="r"><code># What are the column names? 
-names(pop_cos)
-names(pop_buf)
-
-# Summary statistics of the population column - COS? 
-summary(pop_cos$population)
-
-# Summary statistics of the population column - BUF? 
+<pre class="r"><code># What columns are in the two dataframes: &quot;pop_cos&quot; and &quot;pop_buf&quot;? 
+names(pop_cos)</code></pre>
+<pre><code>## [1] &quot;year&quot;       &quot;population&quot; &quot;city&quot;</code></pre>
+<pre class="r"><code>names(pop_buf)</code></pre>
+<pre><code>## [1] &quot;year&quot;       &quot;population&quot; &quot;city&quot;</code></pre>
+<pre class="r"><code># Summary statistics of the population column - COS? 
+summary(pop_cos$population)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  403983  425805  448759  444716  464871  479612</code></pre>
+<pre class="r"><code># Summary statistics of the population column - BUF? 
 summary(pop_buf$population)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  255805  258989  259959  262538  263914  276688</code></pre>
 <p>The summary statistic suggests that Colorado Springs has more
 population than BUF. Next, let’s look at the data frame more carefully
 by sub-setting particular records based some conditions.</p>
 <ul>
-<li>Extract a particular column within the data frame by calling the
-column name.</li>
+<li>Extract a particular column and return it as a DATAFRAME</li>
 </ul>
-<pre class="r"><code># subset the &quot;population&quot; column from the &quot;pop_cos&quot; data frame
+<pre class="r"><code># return as DATAFRAME: subset the &quot;population&quot; column from the &quot;pop_cos&quot; data frame
 pop_cos[&#39;population&#39;]</code></pre>
+<ul>
+<li>Extract a particular column and return it as a VECTOR</li>
+</ul>
+<pre class="r"><code># return as VECTOR: subset the &quot;population&quot; column from the &quot;pop_cos&quot; data frame
+pop_cos$population</code></pre>
 <ul>
 <li>Exacting two or more column by calling column names. The
 <code>c()</code> function combines two elements <code>"year"</code> and
@@ -674,14 +685,15 @@ pop_cos_2022 &lt;- pop_cos[pop_cos$year == &quot;2022&quot;, &quot;population&qu
 # Colorado Springs&#39; population in 2010
 pop_cos_2010 &lt;- pop_cos[pop_cos$year == &quot;2010&quot;, &quot;population&quot;]</code></pre>
 <p>After extracting the population values for 2010 and 2022, let’s
-calculate the growth rate using Eq. 3.1. Please report the value of
+calculate the growth rate using Eq. 3.1.</p>
+<p><strong>[Q]</strong> Please report the value of
 <code>pop_change_cos</code> to the <strong>lab3 report</strong>.</p>
 <pre class="r"><code># population growth rate - COS
 pop_change_cos &lt;- 100 * (pop_cos_2022 - pop_cos_2010) / pop_cos_2010
 pop_change_cos</code></pre>
-<p>Next, we calculate the population growth rate for Buffalo. Please
-report the value of <code>pop_change_buf</code> to the <strong>lab3
-report</strong>.</p>
+<p>Next, we calculate the population growth rate for Buffalo.
+<strong>[Q]</strong> Please report the value of
+<code>pop_change_buf</code> to the <strong>lab3 report</strong>.</p>
 <pre class="r"><code># Buffalo&#39; population in 2022
 pop_buf_2022 &lt;- pop_buf[pop_buf$year == &quot;2022&quot;, &quot;population&quot;]
 # COS&#39; population in 2010
@@ -709,9 +721,8 @@ href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#332_Data_Query__Analysi
 3.3.2.</a> One condition to combine rows together is that they need to
 have the same column names.</p>
 <pre class="r"><code>## Combine two data frames together by rows. This requires two data frames have the same column names 
-pop_cos_buf &lt;- rbind(pop_cos, pop_buf)
-
-## Have a look at the table 
+pop_cos_buf &lt;- rbind(pop_cos, pop_buf)</code></pre>
+<pre class="r"><code>## Have a look at the table 
 View(pop_cos_buf)</code></pre>
 <p>Then, we produce a simple line chart of population growth for two
 cities by using the <code>ggplot()</code> function. The code below asks
@@ -727,6 +738,7 @@ visual properties;</li>
 ggplot(data = pop_cos_buf, 
        aes(x=year, y=population, group=city, color=city)) + 
   geom_line()</code></pre>
+<p><img src="lab3_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>Well, it produces a plot showing the population trend in two cities.
 It’s good and fast to explore the data. But, I am not satisfied with how
 it looks. For example:</p>
@@ -737,8 +749,9 @@ years.</li>
 <li>The lines seem not thick enough.</li>
 </ul>
 <p>Let’s improve the plot by giving more instructions in terms of how we
-want the plot illustrates the data. Please run the code blow and observe
-how this plot is different from the previous one. In <strong>lab3
+want the plot illustrates the data.</p>
+<p><strong>[Q]</strong> Please run the code blow and observe how this
+plot is different from the previous one. In <strong>lab3
 report</strong>, please report what are the purpose of these codes:</p>
 <ul>
 <li><code>scale_x_continuous(breaks =c(2010,2012,2014,2016,2018,2020,2022))</code></li>
@@ -753,6 +766,7 @@ ggplot(data = pop_cos_buf, aes(x=year, y=population, group=city, color=city)) +
   ggtitle(&quot;Population Changes in Two Cities&quot;) + 
   xlab(&quot;Year&quot;) + 
   ylab(&quot;Population&quot;)</code></pre>
+<p><img src="lab3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Let’s continue to improve the plot by:</p>
 <ul>
 <li>adding data points to the plot using <code>geom_point()</code></li>
@@ -767,7 +781,7 @@ the variable <code>plot1_growth</code> and plot it later by calling this
 variable.</p>
 <pre class="r"><code># improve the plot
 plot1_growth &lt;- ggplot(data = pop_cos_buf, aes(x=year, y=population, group=city, color=city)) + 
-  geom_line(linewidth  = 0.5) + 
+  geom_line(linewidth = 0.5) + 
   geom_point(size = 0.7) + 
   scale_x_continuous(breaks =c(2010,2012,2014,2016,2018,2020,2022)) + 
   scale_color_manual(values = c(&quot;purple&quot;,&quot;orange&quot;)) + 
@@ -778,6 +792,8 @@ plot1_growth &lt;- ggplot(data = pop_cos_buf, aes(x=year, y=population, group=ci
 
 # view the plot 
 plot1_growth</code></pre>
+<p><img src="figs/lab3_pop_growth.png" style="width:80.0%"
+alt="Figure 3.X: Population Growth Line Chart" /> <br></p>
 </div>
 <div id="export-plots" class="section level4">
 <h4>3.3.4 Export Plots</h4>
@@ -797,9 +813,10 @@ use a different name.</p>
 <pre class="r"><code>pdf(&quot;plot/plot1_population_growth_two_cities.pdf&quot;, width = 6, height =3 )
 print(plot1_growth)
 dev.off()</code></pre>
-<p>After running the code above, please go to <strong>lab3</strong>
-folder –&gt; <strong>plot</strong> folder. Do you see a pdf there? Open
-it and do a screenshot for <strong>lab3 report</strong>.</p>
+<p><strong>[Q]</strong> After running the code above, please go to
+<strong>lab3</strong> folder –&gt; <strong>plot</strong> folder. Do you
+see a pdf there? Open it and do a screenshot for <strong>lab3
+report</strong>.</p>
 <p><br></p>
 </div>
 </div>
@@ -869,6 +886,7 @@ Springs.</p>
 <pre class="r"><code># basic version. Plot two cities separately. 
 ggplot(edu_cos, aes(x=Education_Level, y=Percentage)) + 
   geom_bar(stat = &quot;identity&quot;)</code></pre>
+<p><img src="lab3_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>Hmmm, the plot really doesn’t look great. The x-axis texts stick
 together and hard to read. It will be better if we can rotate the x-axis
 a little bit. Let’s rotate it by 45 degree.</p>
@@ -876,6 +894,7 @@ a little bit. Let’s rotate it by 45 degree.</p>
 ggplot(edu_cos, aes(x=Education_Level, y=Percentage)) + 
   geom_bar(stat = &quot;identity&quot;) + 
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))</code></pre>
+<p><img src="lab3_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p>It is much better. But it seems the x-axis does follow the order as
 the data frame. Let’s check how the education level is ordered in the
 table <code>edu_cos</code>.</p>
@@ -890,6 +909,7 @@ edu_cos$Education_Level &lt;- factor(edu_cos$Education_Level, levels=unique(edu_
 ggplot(edu_cos, aes(x=Education_Level, y=Percentage)) + 
   geom_bar(stat = &quot;identity&quot;) + 
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))</code></pre>
+<p><img src="lab3_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>Let’s combine Buffalo and Colorado Springs together and make a bar
 plot for comparison.</p>
 <pre class="r"><code># combine the rows from the two data frames &quot;edu_cos&quot;, &quot;edu_buf&quot; 
@@ -900,6 +920,7 @@ edu_cos_buf$Education_Level &lt;- factor(edu_cos_buf$Education_Level, levels=uni
 ggplot(edu_cos_buf, aes(x=Education_Level, y=Percentage, fill = NAME)) + 
   geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) + 
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))</code></pre>
+<p><img src="lab3_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>Improve the plot a little bit by:</p>
 <ul>
 <li>using different colors: <code>scale_fill_manual()</code></li>
@@ -921,6 +942,12 @@ plot1_education &lt;- ggplot(edu_cos_buf, aes(x=Education_Level, y=Percentage, f
 plot1_education</code></pre>
 <p>Have a look at the plot and observes how the two cities are different
 from each other in terms of education attainment.</p>
+<div class="float">
+<img src="figs/lab3_education.png" style="width:80.0%"
+alt="Figure 3.X: Education Attainment Bart Plot" />
+<div class="figcaption">Figure 3.X: Education Attainment Bart Plot</div>
+</div>
+<p><br></p>
 </div>
 <div id="export" class="section level4">
 <h4>3.4.4 Export</h4>
@@ -928,9 +955,10 @@ from each other in terms of education attainment.</p>
 pdf(&quot;plot/plot2_education_attainment_percentage_two_cities.pdf&quot;, width = 8, height =5 )
 print(plot1_education)
 dev.off()</code></pre>
-<p>After running the code above, please go to <strong>lab3</strong>
-folder –&gt; <strong>plot</strong> folder. Do you see a new pdf there?
-Open it and do a screenshot for <strong>lab3 report</strong>.</p>
+<p><strong>[Q]</strong> After running the code above, please go to
+<strong>lab3</strong> folder –&gt; <strong>plot</strong> folder. Do you
+see a new pdf there? Open it and do a screenshot for <strong>lab3
+report</strong>.</p>
 </div>
 </div>
 <div id="viz-racial-diversity" class="section level3">
@@ -977,75 +1005,81 @@ race_buf[&#39;Percentage&#39;] &lt;- round(race_buf[&#39;Percentage&#39;], 2)</c
 </div>
 <div id="pie-charts" class="section level4">
 <h4>3.5.3 Pie Charts</h4>
-<p>Create a basic pie chart representing racial composition for Colorado
-Springs and save it to the <em>“plot”</em> folder.</p>
+<p>Let’s first create a stacked bar plot to explore the dataset a little
+bit.</p>
+<pre class="r"><code>ggplot(race_cos, aes(x=&quot;&quot;, y=Percentage, fill=Race)) +
+  geom_bar(stat=&quot;identity&quot;, width=1) </code></pre>
+<p><img src="lab3_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<p>Next, we will build upon the code above to convert it into a pie
+chart by adding another function <code>coord_polar()</code>.</p>
 <blockquote>
-<p>In the <code>scale_fill_brewer(palette="Set3")</code>, we ask the
-machine to apply a color palette called <code>Set3</code>.</p>
+<p><code>coord_polar()</code> applies the polar coordinate system that
+is most commonly used for pie charts. It is a stacked bar chart in polar
+coordinates</p>
 </blockquote>
-<p>You can try other color palette by checking the <a
+<pre class="r"><code>ggplot(race_cos, aes(x=&quot;&quot;, y=Percentage, fill=Race)) +
+  geom_bar(stat=&quot;identity&quot;, width=1) +
+  coord_polar(&quot;y&quot;, start=0)</code></pre>
+<p><img src="lab3_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p>Finally, we will improve the pie chart by:</p>
+<ul>
+<li><code>theme_minimal()</code> : apply a minimalist style</li>
+<li><code>element_blank()</code> : remove x and y axis labels</li>
+<li><code>scale_fill_brewer(palette="Set2")</code> apply the ‘Set2’
+color palette.</li>
+<li><code>ggtitle()</code> add a title to the plot.</li>
+</ul>
+<p>Here are the codes for other color palettes. Or you can find more
+here: <a
 href="https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf">R
 Color Cheatsheet</a>.</p>
+<div class="float">
+<img src="figs/lab3_color_palette.png" style="width:80.0%"
+alt="Figure 3.X: Color Palette" />
+<div class="figcaption">Figure 3.X: Color Palette</div>
+</div>
+<p>Let’s save the final pie chart as “plot3_race_cos” and export it to
+the <em>“plot”</em> folder.</p>
+<p><br></p>
 <pre class="r"><code># Basic pie chart - Colorado Springs
 plot3_race_cos &lt;- ggplot(race_cos, aes(x=&quot;&quot;, y=Percentage, fill=Race)) +
   geom_bar(stat=&quot;identity&quot;, width=1) +
   coord_polar(&quot;y&quot;, start=0) + 
-  theme_void() + 
-  scale_fill_brewer(palette=&quot;Set3&quot;) +
+  theme_minimal() + 
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank())  +
+  scale_fill_brewer(palette=&quot;Set2&quot;) +
   ggtitle(&quot;Colorado Springs&quot;)
 
 # export 
 pdf(&quot;plot/plot3_race_cos.pdf&quot;)
 print(plot3_race_cos)
 dev.off()</code></pre>
-<p>Create a basic pie chart for Buffalo.</p>
+<div class="float">
+<img src="figs/lab3_race_pie.png" style="width:80.0%"
+alt="Figure 3.X: Racial Composition Pie Chart" />
+<div class="figcaption">Figure 3.X: Racial Composition Pie Chart</div>
+</div>
+<p><br></p>
+<p>Create a pie chart for Buffalo and export it to the folder
+‘plot’.</p>
 <pre class="r"><code># Basic pie chart - Buffalo 
 plot3_race_buf &lt;- ggplot(race_buf, aes(x=&quot;&quot;, y=Percentage, fill=Race)) +
   geom_bar(stat=&quot;identity&quot;, width=1) +
   coord_polar(&quot;y&quot;, start=0) + 
-  theme_void() + 
-  scale_fill_brewer(palette=&quot;Set3&quot;) + 
+  theme_minimal() + 
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank())  +
+  scale_fill_brewer(palette=&quot;Pastel1&quot;) + 
   ggtitle(&quot;Buffalo&quot;)
   
 pdf(&quot;plot/plot3_race_buff.pdf&quot;)
 print(plot3_race_buf)
 dev.off()</code></pre>
-</div>
-<div id="waffle-charts" class="section level4">
-<h4>3.5.4 Waffle Charts</h4>
-<p>It almost the end. Let’s have some fun to conclude this practical by
-creating a waffle chart for the two cities. First, we combine the two
-data frame <code>race_cos</code> and <code>race_buf</code> and save it
-as a new variable <code>race_cos_buf</code>.</p>
-<pre class="r"><code>## Combine rows
-race_cos_buf &lt;- rbind(race_cos, race_buf)</code></pre>
-<p>Ready for something exciting? Run the code below.</p>
-<pre class="r"><code># waffle chart 
-ggplot(data = race_cos_buf, aes(fill=Race, values=Percentage)) +
-  geom_waffle(color = &quot;white&quot;, size = 1.125, n_rows = 6) +
-  facet_wrap(~City, ncol=1) +
-  theme_void()</code></pre>
-<p>Let’s try a different color palette <code>Set2</code> and save the
-plot as a new variable.</p>
-<pre class="r"><code># Try a different color palette
-plot4_race_waffle &lt;- ggplot(data = race_cos_buf, aes(fill=Race, values=Percentage)) +
-  geom_waffle(color = &quot;white&quot;, size = 1.125, n_rows = 6) +
-  facet_wrap(~City, ncol=1) + 
-  scale_fill_brewer(palette=&quot;Set2&quot;) +
-  theme_void()
-
-# call the plot 
-plot4_race_waffle</code></pre>
-</div>
-<div id="export-1" class="section level4">
-<h4>3.5.5 Export</h4>
-<pre class="r"><code># Export as a pdf
-pdf(&quot;plot/plot4_race_waffle_cos_buf.pdf&quot;)
-print(plot4_race_waffle)
-dev.off()</code></pre>
-<p>After running the code above, please go to <strong>lab3</strong>
-folder –&gt; <strong>plot</strong> folder. Do you see a new pdf there?
-Open it and do a screenshot for <strong>lab3 report</strong>.</p>
+<p><strong>[Q]</strong> After running the code above, please go to
+<strong>lab3</strong> folder –&gt; <strong>plot</strong> folder. Do you
+see pdfs for two pie charts there? Open them and do screenshots for
+<strong>lab3 report</strong>.</p>
 </div>
 </div>
 <div id="close-exit" class="section level3">
@@ -1054,6 +1088,39 @@ Open it and do a screenshot for <strong>lab3 report</strong>.</p>
 project.</p>
 <p>Please go “File”–&gt; “Close Project” – a pop window asking “Do you
 want to save these changes” –&gt; “Yes”.</p>
+<!-- ## back up  -->
+<!-- #### 3.5.4 Waffle Charts -->
+<!-- It almost the end. Let's have some fun to conclude this practical by creating a waffle chart for the two cities. First, we combine the two data frame ``` race_cos ``` and ``` race_buf ``` and save it as a new variable ``` race_cos_buf ```.  -->
+<!-- ```{r, eval=FALSE} -->
+<!-- ## Combine rows -->
+<!-- race_cos_buf <- rbind(race_cos, race_buf) -->
+<!-- ``` -->
+<!-- Ready for something exciting? Run the code below.  -->
+<!-- ```{r, eval=FALSE} -->
+<!-- # waffle chart  -->
+<!-- ggplot(data = race_cos_buf, aes(fill=Race, values=Percentage)) + -->
+<!--   geom_waffle(color = "white", size = 1.125, n_rows = 6) + -->
+<!--   facet_wrap(~City, ncol=1) + -->
+<!--   theme_void() -->
+<!-- ``` -->
+<!-- Let's try a different color palette ``` Set2 ``` and save the plot as a new variable.  -->
+<!-- ```{r, eval=FALSE} -->
+<!-- # Try a different color palette -->
+<!-- plot4_race_waffle <- ggplot(data = race_cos_buf, aes(fill=Race, values=Percentage)) + -->
+<!--   geom_waffle(color = "white", size = 1.125, n_rows = 6) + -->
+<!--   facet_wrap(~City, ncol=1) +  -->
+<!--   scale_fill_brewer(palette="Set2") + -->
+<!--   theme_void() -->
+<!-- # call the plot  -->
+<!-- plot4_race_waffle -->
+<!-- ``` -->
+<!-- #### 3.5.5 Export  -->
+<!-- ```{r, eval=FALSE} -->
+<!-- # Export as a pdf -->
+<!-- pdf("plot/plot4_race_waffle_cos_buf.pdf") -->
+<!-- print(plot4_race_waffle) -->
+<!-- dev.off() -->
+<!-- ``` -->
 </div>
 
 
