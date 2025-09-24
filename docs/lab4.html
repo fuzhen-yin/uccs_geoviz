@@ -13,7 +13,7 @@
 
 <title>Chapter 4: Map Making (1) Intro</title>
 
-<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -403,16 +403,14 @@ static maps;
 folder, please create a folder called “<strong>lab4</strong>”. Next, in
 the <strong>lab4</strong> folder, please create two <u>sub-folders</u>
 that one is called “<strong>data</strong>” and another one is
-“<strong>plot</strong>”. We’ll use the “data” folder to store data
-collected from the internet. The “plot” will be used to export plots
-generated from R.</p>
+“<strong>plot</strong>”. We’ll use the “data” folder to store data and
+export figures to “plot”.</p>
 </div>
 <div id="data" class="section level4">
 <h4>4.2.2 Data</h4>
 <p>In this lab, we continue to explore <strong>US Census Bureau</strong>
-as a potential data source for administrative boundaries, and
-demographic, economic and population data. Specifically, we can
-collect:</p>
+as a potential data source for spatial boundaries, socio-economic and
+demographic variables. This lab uses data collected from:</p>
 <blockquote>
 <p><a
 href="https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html">Cartographic
@@ -423,15 +421,14 @@ block groups) or by scale. And</p>
 <p><a href="https://data.census.gov/">Census Tables</a> summarizing the
 socio-economic and demographic characteristics of particular areas.</p>
 </blockquote>
-<p>This practical will use <strong>El Paso</strong> county (where UCCS
-is located) as a case study to explore its <strong>poverty
-level</strong> through map making. Please follow the steps below to
-<u>download</u> data, <u>unzip</u> it and <u>move</u> the data to the
-required folder.</p>
+<p>This practical will use <strong>El Paso</strong> county (CO) as a
+case study to explore its <strong>poverty level</strong> through map
+making. Please follow the steps below to <u>download</u> data,
+<u>unzip</u> it and <u>move</u> the data to the required folder.</p>
 <ul>
 <li><strong>Go</strong> to <a
-href="https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab4_data.zip"
-class="uri">https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab4_data.zip</a></li>
+href="https://github.com/fuzhen-yin/uccs_geoviz/blob/main/docs/data/lab4_data.zip"
+class="uri">https://github.com/fuzhen-yin/uccs_geoviz/blob/main/docs/data/lab4_data.zip</a></li>
 <li><strong>Download</strong> the file <em>“lab4_data.zip”</em></li>
 <li><strong>Unzip</strong> folder <em>“lab4_data.zip”</em></li>
 <li><strong>Move</strong> all files from the “<em>lab4_data</em>” folder
@@ -482,7 +479,9 @@ Please try to:</p>
 <li>Re-write the script by yourself.
 <ul>
 <li>R is case-sensitive</li>
-<li>organize &amp; structure &amp; annotate your script.</li>
+<li>organize scripts using line breaks<br />
+</li>
+<li>annotate and comment the code using <strong>#</strong></li>
 </ul></li>
 <li>Read through the text carefully and try to understand what bits of
 code are doing as you go.</li>
@@ -509,8 +508,8 @@ as records in a data.frame or tibble with a geometry list-column. * <a
 href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html">data.table</a>:
 data manipulation such as renaming.</p>
 <p>You should have the libraries <code>tmap</code> and
-<code>dplyr</code> installed from previous labs. But in case you don’t,
-please uncomment the bottom two lines and run.</p>
+<code>dplyr</code> installed from previous labs. If not, please
+uncomment and run the bottom two lines.</p>
 <pre class="r nocopy"><code>#### install library
 install.packages(&quot;sf&quot;)
 install.packages(&quot;data.table&quot;)
@@ -518,7 +517,7 @@ install.packages(&quot;data.table&quot;)
 #### If you don&#39;t have &quot;tmap&quot; and &quot;dplyr&quot; installed, please uncomment these two lines and run. 
 # install.packages(&quot;tmap&quot;)
 # install.packages(&quot;dplyr&quot;)</code></pre>
-<p>Next, let’s load some packages.</p>
+<p>Next, let’s load the libraries.</p>
 <pre class="r nocopy"><code># load library
 library(dplyr)
 library(tmap)
@@ -533,6 +532,15 @@ href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#423_Launching_R_Studio"
 4.2.3</a> to re-launch RStudio.</p>
 <pre class="r nocopy"><code># working directory
 getwd()</code></pre>
+<pre><code>## [1] &quot;D:/OneDrive/UCCS/Teaching/GES4070_5070_GeoViz/Labs/01_git_wk/00_code_uccs_geoviz&quot;</code></pre>
+<p>On the bottom right window, clicking on the <strong>Files</strong>
+tab, you should see something similar to the screenshot below.</p>
+<div class="float">
+<img src="figs/lab4_file_tab.png" style="width:70.0%"
+alt="Figure 4.0: Project directory" />
+<div class="figcaption">Figure 4.0: Project directory</div>
+</div>
+<p><br></p>
 <p>We will read the data from the “<em>data</em>” folder. Please make
 sure you can see <strong>four</strong> folders in your
 <strong>data</strong> folder as shown in Figure 4.1. If not, please go
@@ -590,8 +598,11 @@ state of Colorado. Let’s use the function <code>filter()</code> to
 <code>sf_us_county</code> based on their values in the
 <code>STATE_NAME</code> column, and save it as a new object
 <code>sf_co_county</code>.</p>
-<pre class="r nocopy"><code># extract CO counties
-sf_co_county &lt;- sf_us_county %&gt;% filter(STATE_NAME == &quot;Colorado&quot;)</code></pre>
+<blockquote>
+<p>Use <code>filter()</code> find rows/cases where conditions are true
+(<a
+href="https://www.rdocumentation.org/packages/dplyr/versions/0.7.8/topics/filter">doc</a>).</p>
+</blockquote>
 <blockquote>
 <p>The <code>%&gt;%</code> symbol is used to build
 <strong>pipes</strong> that chains multiple operations together. It
@@ -601,6 +612,8 @@ first argument to the function on its right. The shortcut of
 <code>M</code>] (Windows) or [<code>Cmd</code> + <code>Shift</code> +
 <code>M</code>] (Mac).</p>
 </blockquote>
+<pre class="r nocopy"><code># extract CO counties
+sf_co_county &lt;- sf_us_county %&gt;% filter(STATE_NAME == &quot;Colorado&quot;)</code></pre>
 <p>Have a look at the data <code>sf_co_county</code>. Please write to
 your <strong><em>lab4 report</em></strong>:</p>
 <p><strong>[Q1]</strong> How many counties in Colorado based on the data
@@ -615,19 +628,22 @@ record of El Paso county, what is its <code>GEOID</code>?</p>
 sf_ep_county &lt;- sf_co_county %&gt;% filter(NAME == &quot;El Paso&quot;)</code></pre>
 <p>In addition to use the <code>NAME</code> column to extract <u>El Paso
 county</u> from <code>sf_co_county</code>. We can also use other columns
-such as <code>GEOID</code> and <code>NAMELSAD</code>.
-<strong>[Q3]</strong> Please fill and run the commands below, and type
-your answers to <strong><em>lab4 report</em></strong>.</p>
-<p><strong>Hint</strong>: Have a look at the code above and also have a
+such as <code>GEOID</code> and <code>NAMELSAD</code>.</p>
+<p><strong>[Q3]</strong> Please fill and run the commands below, and
+type your answers to <strong><em>lab4 report</em></strong>.
+<strong>Hint</strong>: Have a look at the code above and also have a
 look at the data <code>sf_co_county</code>.</p>
 <pre class="r nocopy"><code>sf_ep_county &lt;- sf_co_county %&gt;% filter(GEOID == &quot;TYPE_ANSWER&quot;)
 sf_ep_county &lt;- sf_co_county %&gt;% filter(NAMELSAD == &quot;TYPE_ANSWER&quot;)</code></pre>
 </div>
 <div id="map-making" class="section level4">
 <h4>4.3.3 Map making</h4>
-<p>Okay, after data extraction, we have two new datasets representing
-counties in Colorado and also the county of El Paso. Let’s do some
-mapping using the <code>tmap</code> package.</p>
+<p>Okay, after data extraction, we have two new datasets:</p>
+<ul>
+<li><code>sf_co_county</code> shows counties in Colorado and</li>
+<li><code>sf_ep_county</code> the county of El Paso.</li>
+</ul>
+<p>Let’s do some mapping using the <code>tmap</code> package.</p>
 <p>First, we set the <code>tmap_mode()</code> to <code>plot</code> for
 static maps.</p>
 <pre class="r nocopy"><code># static map
@@ -645,12 +661,12 @@ tm_shape(sf_co_county) + tm_polygons()</code></pre>
 This time, we specify the fill color and also the border color. Feel
 free to try other colors.</p>
 <pre class="r nocopy"><code># MAP2
-tm_shape(sf_ep_county) + tm_polygons(col = &quot;orange&quot;, border.col = &quot;blue&quot;)</code></pre>
+tm_shape(sf_ep_county) + tm_polygons(fill = &quot;orange&quot;, col = &quot;blue&quot;)</code></pre>
 <p>Overlap MAP1 and MAP2 to produce another map that highlights the El
 Paso county (<strong>MAP3</strong>).</p>
 <pre class="r nocopy"><code># MAP3
 tm_shape(sf_co_county) + tm_polygons() +
-  tm_shape(sf_ep_county) + tm_polygons(col = &quot;orange&quot;, border.col = &quot;blue&quot;)</code></pre>
+  tm_shape(sf_ep_county) + tm_polygons(fill = &quot;orange&quot;, col = &quot;blue&quot;)</code></pre>
 <p>Improve <strong>MAP3</strong> by using the following functions and
 save the plot as a new variable <code>map_ep_county</code>.</p>
 <ul>
@@ -661,10 +677,13 @@ save the plot as a new variable <code>map_ep_county</code>.</p>
 bottom-right.</li>
 </ul>
 <pre class="r nocopy"><code># improve MAP3
-map_ep_county &lt;- tm_shape(sf_co_county) + tm_polygons(alpha = 0) +
-  tm_shape(sf_ep_county) + tm_polygons(col = &quot;orange&quot;, border.col = &quot;black&quot;, lwd = 2) + 
+map_ep_county &lt;- tm_shape(sf_co_county) + tm_polygons(fill_alpha = 0) +
+  tm_shape(sf_ep_county) + tm_polygons(fill = &quot;orange&quot;, col = &quot;black&quot;, lwd = 2) + 
   tm_shape(sf_co_county) + tm_text(text = &quot;NAME&quot;, size = 0.3) + 
-  tm_compass(north = 0, size = 1) + tm_scale_bar(position = c(&quot;right&quot;, &quot;bottom&quot;), width = 0.15) </code></pre>
+  tm_compass(north = 0, size = 1) + tm_scalebar(position = c(&quot;right&quot;, &quot;bottom&quot;), width = 9)  
+
+map_ep_county</code></pre>
+<p><img src="lab4_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>Export the improved <strong>MAP3</strong> to the “<em>plot</em>”
 folder we have created in <a
 href="https://fuzhen-yin.github.io/uccs_geoviz/lab4.html#421_Organizing_Folders__Sub-folders">Step
@@ -716,9 +735,8 @@ string). But it also has two columns <code>ALAND</code> (land area) and
 El Paso County using the function <code>filter()</code>. (I know, the
 chunk of code below reveals the answer of Q6 :)</p>
 <pre class="r nocopy"><code># El Paso census tracts 
-sf_ep_tract &lt;- sf_co_tract %&gt;% filter(NAMELSADCO == &quot;El Paso County&quot;)
-
-# open data
+sf_ep_tract &lt;- sf_co_tract %&gt;% filter(NAMELSADCO == &quot;El Paso County&quot;)</code></pre>
+<pre class="r nocopy"><code># open data
 View(sf_ep_tract)</code></pre>
 </div>
 <div id="map-making-1" class="section level4">
@@ -726,25 +744,31 @@ View(sf_ep_tract)</code></pre>
 <p>Make a map showing census tracts in El Paso County
 (<strong>MAP4</strong>).</p>
 <pre class="r nocopy"><code>## MAP4
-tm_shape(sf_ep_tract) + tm_polygons() </code></pre>
+tm_shape(sf_ep_tract) + tm_polygons(fill = &#39;white&#39;) </code></pre>
+<pre class="r nocopy"><code>## map the COUNTY border with transparent color and solid border line 
+tm_shape(sf_ep_county) + tm_polygons(fill_alpha = 0, lwd = 3)</code></pre>
 <p>Highlight the border of El Paso County in <strong>MAP4</strong>
 (through overlapping the census tracts map with El Paso county map).</p>
 <blockquote>
-<p><code>alpha=</code> represents the transparency of used colors.</p>
+<p><code>fill_alpha=</code> represents the transparency of used
+colors.</p>
 </blockquote>
-<pre class="r nocopy"><code>## highlight county boundary in MAP4 
-tm_shape(sf_ep_tract) + tm_polygons() +
-  tm_shape(sf_ep_county) + tm_polygons(alpha = 0, lwd = 3)</code></pre>
+<pre class="r nocopy"><code>## combine the map of census tract and the map of county border together  
+## highlight county boundary in MAP4 
+tm_shape(sf_ep_tract) + tm_polygons(fill = &#39;white&#39;) +
+  tm_shape(sf_ep_county) + tm_polygons(fill_alpha = 0, lwd = 3)</code></pre>
 <p>Continue to improve <strong>MAP4</strong> by adding a north arrow, a
 scale bar, and removing frame using <code>tm_layout()</code>.</p>
 <pre class="r nocopy"><code>## improve MAP4 
-map_ep_tract &lt;- tm_shape(sf_ep_tract) + tm_polygons(col=&quot;white&quot;) +
-  tm_shape(sf_ep_county) + tm_polygons(alpha = 0, lwd = 3) + 
+map_ep_tract &lt;- tm_shape(sf_ep_tract) + tm_polygons(fill=&quot;white&quot;) +
+  tm_shape(sf_ep_county) + tm_polygons(fill_alpha = 0, lwd = 3) + 
   tm_compass(north = 0, size = 1.5) + 
-  tm_scale_bar(position = c(&quot;right&quot;, &quot;bottom&quot;), width = 0.15) + 
+  tm_scalebar(position = c(&quot;right&quot;, &quot;bottom&quot;), width = 10) + 
   tm_layout(frame = F)
 
-## Export
+map_ep_tract</code></pre>
+<p><img src="lab4_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<pre class="r nocopy"><code>## Export
 pdf(&quot;plot/map4_elpaso_tracts.pdf&quot;)
 map_ep_tract
 dev.off()</code></pre>
@@ -837,18 +861,20 @@ nrow(df_ep_poverty)
 ncol(df_ep_poverty)</code></pre>
 <p>While the <code>df_ep_poverty</code> has 603 columns. But we only
 need some of them. Let’s create a list storing the column names that we
-are interested in including (the list below is copyable):</p>
-<p><code>"GEO_ID", "NAME", "S1702_C01_001E", "S1702_C01_041E", "S1702_C01_042E", "S1702_C01_043E", "S1702_C01_044E"</code>.</p>
-<pre class="r nocopy"><code># list of column names
-lt_poverty_col &lt;- c(&quot;GEO_ID&quot;, &quot;NAME&quot;, &quot;S1702_C01_001E&quot;, &quot;S1702_C01_041E&quot;, &quot;S1702_C01_042E&quot;, &quot;S1702_C01_043E&quot;, &quot;S1702_C01_044E&quot;)</code></pre>
+are interested in including (the chunk of CODE below is copyable):</p>
+<pre class="r"><code># list of OLD column names
+lt_poverty_col &lt;- c(&quot;GEO_ID&quot;, &quot;NAME&quot;, &quot;S1702_C01_001E&quot;, &quot;S1702_C01_041E&quot;, &quot;S1702_C01_042E&quot;, &quot;S1702_C01_043E&quot;, &quot;S1702_C01_044E&quot;)
+
+# list of NEW names to change 
+lt_poverty_new &lt;- c(&quot;GEO_ID&quot;, &quot;NAME&quot;, &quot;ttl_famly&quot;, &quot;famly_owner&quot;, &quot;famly_renter&quot;, &quot;famly_50pct_poverty&quot;, &quot;famly_125pct_poverty&quot;)</code></pre>
 <p>Then, we create a dataframe that explains the above mentioned column
 names.</p>
-<pre class="r nocopy"><code>df_poverty_cols &lt;- data.frame(
+<pre class="r nocopy"><code>## create a new data frame with two columns: &quot;old_col_name&quot; and &quot;new_col_name&quot;
+df_poverty_cols &lt;- data.frame(
   old_col_name = lt_poverty_col, 
-  new_col_name = c(&quot;GEO_ID&quot;, &quot;NAME&quot;, &quot;ttl_famly&quot;, &quot;famly_owner&quot;, &quot;famly_renter&quot;, &quot;famly_50pct_poverty&quot;, &quot;famly_125pct_poverty&quot;)
-)
-
-View(df_poverty_cols)</code></pre>
+  new_col_name = lt_poverty_new )</code></pre>
+<p>Have a look at the dataframe <code>df_poverty_cols</code></p>
+<pre class="r nocopy"><code>View(df_poverty_cols)</code></pre>
 <p><strong>[Q10]</strong> Open <code>df_poverty_cols</code> and paste a
 screenshot of it to <strong><em>lab4 report</em></strong></p>
 <p>Based on the column names in the list <code>lt_poverty_col</code>, we
@@ -859,10 +885,7 @@ df_ep_poverty_cln &lt;- df_ep_poverty[lt_poverty_col]</code></pre>
 <p>Replace column names in <code>df_ep_poverty_cln</code> based on table
 <code>df_poverty_cols</code>.</p>
 <pre class="r nocopy"><code># update column names 
-setnames(df_ep_poverty_cln, old=df_poverty_cols$old_col_name, new=df_poverty_cols$new_col_name)
-
-# view data 
-View(df_ep_poverty_cln)</code></pre>
+setnames(df_ep_poverty_cln, old=df_poverty_cols$old_col_name, new=df_poverty_cols$new_col_name)</code></pre>
 <p>Delete the first row <code>df_ep_poverty_cln</code> and reset the row
 index. Do you know why?</p>
 <pre class="r nocopy"><code># delete the first row 
@@ -871,7 +894,10 @@ df_ep_poverty_cln &lt;- df_ep_poverty_cln[-1, ]
 # reset row index 
 rownames(df_ep_poverty_cln) &lt;- NULL</code></pre>
 <p>Check data types in <code>df_ep_poverty_cln</code>.</p>
-<pre class="r nocopy"><code># check the data 
+<pre class="r nocopy"><code># view data 
+View(df_ep_poverty_cln)
+
+# check the data 
 str(df_ep_poverty_cln)</code></pre>
 <p>While the columns
 <code>"ttl_famly", "famly_owner", "famly_renter", "famly_50pct_poverty", "famly_125pct_poverty"</code>
@@ -880,12 +906,19 @@ them numeric.</p>
 <pre class="r nocopy"><code># convert one column from string to numeric 
 df_ep_poverty_cln$ttl_famly &lt;- as.numeric(df_ep_poverty_cln$ttl_famly)
 
-
 # convert multiple columns from string to numeric
 df_ep_poverty_cln[,3:7] &lt;- sapply(df_ep_poverty_cln[,3:7], as.numeric) %&gt;% as.data.frame()
 
 # check the data type again 
 str(df_ep_poverty_cln)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    167 obs. of  7 variables:
+##  $ GEO_ID              : chr  &quot;1400000US08041000102&quot; &quot;1400000US08041000103&quot; &quot;1400000US08041000104&quot; &quot;1400000US08041000202&quot; ...
+##  $ NAME                : chr  &quot;Census Tract 1.02; El Paso County; Colorado&quot; &quot;Census Tract 1.03; El Paso County; Colorado&quot; &quot;Census Tract 1.04; El Paso County; Colorado&quot; &quot;Census Tract 2.02; El Paso County; Colorado&quot; ...
+##  $ ttl_famly           : num  1018 620 673 1099 713 ...
+##  $ famly_owner         : num  915 144 392 800 445 481 471 492 435 700 ...
+##  $ famly_renter        : num  103 476 281 299 268 269 351 121 137 131 ...
+##  $ famly_50pct_poverty : num  0 0 21 34 49 18 116 9 2 126 ...
+##  $ famly_125pct_poverty: num  65 57 129 64 106 157 140 9 10 152 ...</code></pre>
 <p>Calculate percentage by using the column <code>famly_renter</code>
 (renter occupied family) as an example.</p>
 <p><span class="math display">\[ \% \ of \ renter \ occupied \ family =
@@ -925,6 +958,7 @@ poverty level;</li>
 hist(df_ep_poverty_cln$pct_fam_renter, col=&#39;orange&#39;)
 hist(df_ep_poverty_cln$pct_fam_pov_125pct, col=&#39;blue&#39;, add= T)
 hist(df_ep_poverty_cln$pct_fam_pov_50pct, col=&#39;green&#39;, add= T)</code></pre>
+<p><img src="lab4_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
 </div>
 <div id="joining" class="section level4">
 <h4>4.5.4 Joining</h4>
@@ -945,7 +979,7 @@ tmap_mode(&quot;plot&quot;)</code></pre>
 lt_map_col &lt;- c(&quot;ttl_famly&quot;, &quot;pct_fam_renter&quot;, &quot;pct_fam_pov_50pct&quot;, &quot;pct_fam_pov_125pct&quot;)
 for (column in lt_map_col){
   print(column)
-  print(tm_shape(sf_ep_tract_pov) + tm_polygons(col = as.character(column)))
+  print(tm_shape(sf_ep_tract_pov) + tm_polygons(fill = as.character(column)))
 }</code></pre>
 <p>Please use the arrows in the <em>Plot</em> panels to see all maps (as
 shown in Figure 4.3).</p>
@@ -962,46 +996,63 @@ one by one and:</p>
 <li>export as a pdf</li>
 </ul>
 <pre class="r nocopy"><code># MAP5 - # of families in each census tract 
-map_ep_tract_family &lt;- tm_shape(sf_ep_tract_pov) + tm_polygons(col = &quot;ttl_famly&quot;, title = &quot;# of family&quot;, palette = &quot;YlGnBu&quot;) + 
+map_ep_tract_family &lt;- tm_shape(sf_ep_tract_pov) + 
+  tm_polygons(fill = &quot;ttl_famly&quot;,  
+              fill.scale = tm_scale_intervals(values = &quot;brewer.yl_gn_bu&quot;),
+              fill.legend = tm_legend(&quot;# of family&quot;)) + 
   tm_layout(legend.outside = T)
-
-# export 
+# plot map
+map_ep_tract_family</code></pre>
+<p><img src="lab4_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<pre class="r nocopy"><code># export 
 pdf(&quot;plot/map5_elpaso_tracts_family_counts.pdf&quot;)
 map_ep_tract_family
 dev.off()</code></pre>
 <pre class="r nocopy"><code># MAP6 - % of renter-occupied families in each census tract 
 map_ep_tract_renter &lt;- tm_shape(sf_ep_tract_pov) + 
-  tm_polygons(col = &quot;pct_fam_renter&quot;, title = &quot;renter-occupied family (%)&quot;, palette = &quot;Purples&quot;) + 
+  tm_polygons(fill = &quot;pct_fam_renter&quot;, 
+              fill.scale = tm_scale_continuous(values = &quot;brewer.purples&quot;),
+              fill.legend = tm_legend(&quot;renter-occupied family (%)&quot;)) + 
   tm_layout(legend.outside = T)
-
-# export 
+# plot map
+map_ep_tract_renter</code></pre>
+<p><img src="lab4_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<pre class="r nocopy"><code># export 
 pdf(&quot;plot/map6_elpaso_tracts_renter_occupied_family_pct.pdf&quot;)
 map_ep_tract_renter
 dev.off()</code></pre>
 <pre class="r nocopy"><code># MAP7 - % of families below 50% of poverty in each census tract 
 map_ep_tract_50pct_pov &lt;- tm_shape(sf_ep_tract_pov) + 
-  tm_polygons(col = &quot;pct_fam_pov_50pct&quot;, title = &quot;below 50% poverty (%)&quot;, palette = &quot;Greens&quot;) + 
+  tm_polygons(fill = &quot;pct_fam_pov_50pct&quot;, 
+              fill.scale = tm_scale_continuous(values = &quot;brewer.greens&quot;),
+              fill.legend = tm_legend(&quot;below 50% poverty (%)&quot;)) + 
   tm_layout(legend.outside = T)
-
-# export 
+# plot map
+map_ep_tract_50pct_pov</code></pre>
+<p><img src="lab4_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+<pre class="r nocopy"><code># export 
 pdf(&quot;plot/map7_elpaso_tracts_family_below_50pct_poverty.pdf&quot;)
 map_ep_tract_50pct_pov
 dev.off()</code></pre>
 <pre class="r nocopy"><code># MAP8 - % of families below 125% of poverty in each census tract 
 map_ep_tract_125pct_pov &lt;- tm_shape(sf_ep_tract_pov) + 
-  tm_polygons(col = &quot;pct_fam_pov_125pct&quot;, title = &quot;below 125% poverty (%)&quot;, palette = &quot;Blues&quot;) + 
+  tm_polygons(fill = &quot;pct_fam_pov_125pct&quot;, 
+              fill.scale = tm_scale_continuous(values = &quot;brewer.blues&quot;),
+              fill.legend = tm_legend(&quot;below 125% poverty (%)&quot;)) + 
   tm_layout(legend.outside = T)
-
-# export 
+# plot map
+map_ep_tract_125pct_pov</code></pre>
+<p><img src="lab4_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<pre class="r nocopy"><code># export 
 pdf(&quot;plot/map8_elpaso_tracts_family_below_125pct_poverty.pdf&quot;)
 map_ep_tract_125pct_pov
 dev.off()</code></pre>
 <p>At the end, we combine all maps together into a single plot.</p>
 <pre class="r nocopy"><code># organize all maps together 
-t=tmap_arrange(map_ep_tract_family, 
-               map_ep_tract_renter, 
-               map_ep_tract_50pct_pov, 
-               map_ep_tract_125pct_pov, ncol=2)
+t &lt;- tmap_arrange(map_ep_tract_family, 
+                  map_ep_tract_renter, 
+                  map_ep_tract_50pct_pov, 
+                  map_ep_tract_125pct_pov, ncol=2)
 
 
 pdf(&quot;plot/map9_elpaso_tracts_analysis.pdf&quot;, width = 12, height = 8)
@@ -1010,6 +1061,31 @@ dev.off()</code></pre>
 <p><strong>[Q11]</strong> Please go to your <em>“plot”</em> folder, open
 the pdf <em>“map9_elpaso_tracts_analysis.pdf”</em>, and paste the
 screenshot to your <strong><em>lab4 report</em></strong>.</p>
+<p>If you want to explore more color palette, we can use the package
+<code>cols4all</code>. The following chunk of code, install
+<code>cols4all</code>, launch it, and open an interactive window for a
+wide range of color palette choices.</p>
+<blockquote>
+<p>to use a particular color palette by calling its
+<strong><em>series</em></strong> + <strong><em>.</em></strong> +
+<strong><em>name</em></strong>. For instance, the code
+<code>brewer.blues</code> represents the palette “blues” from the
+“brewer” series.</p>
+</blockquote>
+<p>Don’t forget to <strong>CLOSE</strong> this interactive color palette
+to <strong>RETURN</strong> to your script.</p>
+<pre class="r"><code>## install package
+install.packages(cols4all)
+
+## call the library 
+library(cols4all) # color palette 
+## open an interactive color palette 
+c4a_gui()</code></pre>
+<div class="float">
+<img src="figs/lab4_color_palette.png" style="width:100.0%"
+alt="Figure 4.4: Interactive Color Palette" />
+<div class="figcaption">Figure 4.4: Interactive Color Palette</div>
+</div>
 </div>
 </div>
 <div id="close-exit" class="section level3">
