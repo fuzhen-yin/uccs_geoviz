@@ -13,7 +13,7 @@
 
 <title>Chapter 5: Map Making (2) Spatial Data Manipulation</title>
 
-<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -382,7 +382,7 @@ example to learn more advanced spatial analysis skills including:</p>
 <ul>
 <li><strong>Converting</strong> .csv file to spatial data</li>
 <li><strong>Spatial joining</strong></li>
-<li>Mapping and analyzing <strong>point</strong> data</li>
+<li>Mapping and aggregating <strong>point</strong> data</li>
 <li>Using <strong>functions</strong> in R</li>
 </ul>
 </div>
@@ -414,8 +414,8 @@ href="https://insideairbnb.com/get-the-data/">Airbnb data</a>.</p>
 it and <u>move</u> the data to the required folder.</p>
 <ul>
 <li><strong>Go</strong> to <a
-href="https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab5_data.zip"
-class="uri">https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab5_data.zip</a></li>
+href="https://github.com/fuzhen-yin/uccs_geoviz/blob/main/archive/data/lab5_data.zip"
+class="uri">https://github.com/fuzhen-yin/uccs_geoviz/blob/main/archive/data/lab5_data.zip</a></li>
 <li><strong>Download</strong> the file <em>“lab5_data.zip”</em></li>
 <li><strong>Unzip</strong> folder <em>“lab5_data.zip”</em></li>
 <li><strong>Move</strong> all files from the “<em>lab5_data</em>” folder
@@ -495,13 +495,14 @@ class="uri">https://insideairbnb.com/denver/</a>}.</p>
 <pre class="r nocopy"><code>## install packages
 install.packages(&quot;geojsonsf&quot;)
 install.packages(&quot;reshape2&quot;)
-
-# library 
+install.packages(&quot;corrplot&quot;)</code></pre>
+<pre class="r nocopy"><code># library 
 library(sf)         # simple features 
 library(tmap)       # mapping
 library(ggplot2)    # plot
 library(dplyr)      # data manipulation
 library(geojsonsf)  # geojson
+library(corrplot)   # correlation matrix 
 library(reshape2)   # one-hot encoding </code></pre>
 <p>Read data</p>
 <pre class="r nocopy"><code># US Cartographic Boundaries: Cities &amp; towns in Colorado 
@@ -527,63 +528,196 @@ View(ab_listing)</code></pre>
 <p>Check columns information in “ab_nghbr”</p>
 <pre class="r nocopy"><code># column info
 str(ab_listing)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    5016 obs. of  16 variables:
+##  $ id                            : num  360 364 590 592 1940 ...
+##  $ name                          : chr  &quot;Sit in the Peaceful Garden of the Chickadee Cottage in LoHi&quot; &quot;Lodo / RiNo LOFT  via airport train&quot; &quot;Comfortable  - and a great value!&quot; &quot;private&quot; ...
+##  $ host_id                       : int  666 783 933 933 2150 990 135298 666 745200 923646 ...
+##  $ host_name                     : chr  &quot;Jennifer &amp; Giovanni&quot; &quot;Jason&quot; &quot;Jill&quot; &quot;Jill&quot; ...
+##  $ latitude                      : num  39.8 39.8 39.8 39.8 39.7 ...
+##  $ longitude                     : num  -105 -105 -105 -105 -105 ...
+##  $ room_type                     : chr  &quot;Entire home/apt&quot; &quot;Entire home/apt&quot; &quot;Private room&quot; &quot;Private room&quot; ...
+##  $ price                         : int  161 179 70 64 88 43 108 137 169 36 ...
+##  $ minimum_nights                : int  30 185 1 15 1 30 4 3 29 29 ...
+##  $ number_of_reviews             : int  181 87 726 175 183 236 169 699 11 133 ...
+##  $ last_review                   : chr  &quot;2024-03-02&quot; &quot;2016-04-26&quot; &quot;2024-05-22&quot; &quot;2024-06-02&quot; ...
+##  $ reviews_per_month             : num  2.53 0.47 3.91 0.94 2.02 1.36 1.01 4.13 0.07 0.85 ...
+##  $ calculated_host_listings_count: int  2 1 2 2 1 1 1 2 4 1 ...
+##  $ availability_365              : int  110 358 236 219 231 320 318 65 302 150 ...
+##  $ number_of_reviews_ltm         : int  3 0 24 7 51 2 19 42 0 4 ...
+##  $ license                       : chr  &quot;2017-BFN-0002177&quot; &quot;&quot; &quot;2021-BFN-0000578&quot; &quot;2021-BFN-0000578&quot; ...</code></pre>
 <p>For all listings in Denver, count different <u>room types</u>. The
 function <code>table()</code> builds a contingency table.</p>
 <p><strong>[Q5]</strong>: Report the number of listings of different
-room types. <br> <strong>[Q6]</strong>: Provide a screenshot of
-“plot1_airbnb_den_listing_room_type.pdf”.</p>
+room types. <br></p>
 <pre class="r nocopy"><code># count room types
-table(ab_listing$room_type)
-
-# quick plot of room types 
-pdf(&quot;plot/plot1_airbnb_den_listing_room_type.pdf&quot;)
-table(ab_listing$room_type) %&gt;% barplot()
-dev.off()</code></pre>
+table(ab_listing$room_type)</code></pre>
+<p>Create a barplot to show the number of different room types.</p>
+<pre class="r nocopy"><code># quick plot of room types 
+table(ab_listing$room_type) %&gt;% barplot()</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Descriptive statistics listings’ prices.</p>
 <pre class="r nocopy"><code># statistics
 summary(ab_listing$price)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##    17.0    95.0   138.0   382.7   219.0 99713.0     378</code></pre>
+<p>There are 378 NA (missing values) Let’s remove all rows with NA
+values</p>
+<pre class="r nocopy"><code># remove NA values in the column &quot;price&quot;
+ab_listing_cln &lt;- ab_listing[!is.na(ab_listing$price),]</code></pre>
+<p>Extract two columns <strong>room_type</strong>,
+<strong>price</strong> and save them as a new dataframe called
+<strong>data_price</strong></p>
+<pre class="r nocopy"><code>data_price &lt;- ab_listing_cln[c(&#39;room_type&#39;, &#39;price&#39;)]
+
+head(data_price)</code></pre>
+<pre><code>##         room_type price
+## 1 Entire home/apt   161
+## 2 Entire home/apt   179
+## 3    Private room    70
+## 4    Private room    64
+## 5 Entire home/apt    88
+## 6    Private room    43</code></pre>
+<p>Boxplot to explore the distribution of prices based on room type</p>
+<pre class="r nocopy"><code>ggplot(data_price, aes(x=as.factor(room_type), y=price)) + 
+  stat_boxplot(fill=&quot;slateblue&quot;, alpha=0.2) + 
+  xlab(&quot;price&quot;)</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Zoom in to the price range [0, 1500].</p>
+<p><strong>[Q6]</strong>: You will see a <em><strong>Warning
+Message</strong>: Removed 25 rows containing non-finite outside the
+scale range</em>. What does this mean?</p>
+<pre class="r nocopy"><code>ggplot(data_price, aes(x=as.factor(room_type), y=price)) + 
+  stat_boxplot(fill=&quot;slateblue&quot;, alpha=0.2) + 
+  xlab(&quot;listing room type&quot;) + 
+  scale_y_continuous(limits = c(0, 1500))</code></pre>
+<pre><code>## Warning: Removed 25 rows containing non-finite outside the scale range
+## (`stat_boxplot()`).</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="correlation-matrix" class="section level4">
+<h4>5.3.3 Correlation Matrix</h4>
+<p>Correlations between numeric variables<br />
+<strong>[Q7]</strong>: What columns in <strong>ab_listing_cln</strong>
+have numeric values (e.g., integers, floats)?</p>
+<pre class="r nocopy"><code># check columns in &quot;ab_listing_cln&quot; and identify numeric columns 
+str(ab_listing_cln)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    4638 obs. of  16 variables:
+##  $ id                            : num  360 364 590 592 1940 ...
+##  $ name                          : chr  &quot;Sit in the Peaceful Garden of the Chickadee Cottage in LoHi&quot; &quot;Lodo / RiNo LOFT  via airport train&quot; &quot;Comfortable  - and a great value!&quot; &quot;private&quot; ...
+##  $ host_id                       : int  666 783 933 933 2150 990 135298 666 745200 923646 ...
+##  $ host_name                     : chr  &quot;Jennifer &amp; Giovanni&quot; &quot;Jason&quot; &quot;Jill&quot; &quot;Jill&quot; ...
+##  $ latitude                      : num  39.8 39.8 39.8 39.8 39.7 ...
+##  $ longitude                     : num  -105 -105 -105 -105 -105 ...
+##  $ room_type                     : chr  &quot;Entire home/apt&quot; &quot;Entire home/apt&quot; &quot;Private room&quot; &quot;Private room&quot; ...
+##  $ price                         : int  161 179 70 64 88 43 108 137 169 36 ...
+##  $ minimum_nights                : int  30 185 1 15 1 30 4 3 29 29 ...
+##  $ number_of_reviews             : int  181 87 726 175 183 236 169 699 11 133 ...
+##  $ last_review                   : chr  &quot;2024-03-02&quot; &quot;2016-04-26&quot; &quot;2024-05-22&quot; &quot;2024-06-02&quot; ...
+##  $ reviews_per_month             : num  2.53 0.47 3.91 0.94 2.02 1.36 1.01 4.13 0.07 0.85 ...
+##  $ calculated_host_listings_count: int  2 1 2 2 1 1 1 2 4 1 ...
+##  $ availability_365              : int  110 358 236 219 231 320 318 65 302 150 ...
+##  $ number_of_reviews_ltm         : int  3 0 24 7 51 2 19 42 0 4 ...
+##  $ license                       : chr  &quot;2017-BFN-0002177&quot; &quot;&quot; &quot;2021-BFN-0000578&quot; &quot;2021-BFN-0000578&quot; ...</code></pre>
+<p>Extract only numeric columns and save as a new dataframe
+<strong>data_num</strong></p>
+<pre class="r nocopy"><code>lt_num_col &lt;- c(&#39;price&#39;, &#39;minimum_nights&#39;, &#39;number_of_reviews&#39;, &#39;reviews_per_month&#39;, &#39;availability_365&#39;)
+data_num &lt;- ab_listing_cln[lt_num_col]
+
+# remove NA 
+data_num &lt;- na.omit(data_num)</code></pre>
+<p>Calculate correlation between numeric columns in
+<strong>data_num</strong></p>
+<pre class="r nocopy"><code>## calculate the correlation matrix 
+m &lt;- cor(data_num)
+print(m)</code></pre>
+<pre><code>##                          price minimum_nights number_of_reviews
+## price              1.000000000    -0.02371576      -0.007670987
+## minimum_nights    -0.023715762     1.00000000      -0.203996638
+## number_of_reviews -0.007670987    -0.20399664       1.000000000
+## reviews_per_month -0.004795330    -0.38285847       0.629794109
+## availability_365   0.034870555     0.16650887      -0.082388843
+##                   reviews_per_month availability_365
+## price                   -0.00479533       0.03487055
+## minimum_nights          -0.38285847       0.16650887
+## number_of_reviews        0.62979411      -0.08238884
+## reviews_per_month        1.00000000      -0.13221878
+## availability_365        -0.13221878       1.00000000</code></pre>
+<p>Correlation plot 1</p>
+<pre class="r nocopy"><code>corrplot(m, method = &#39;square&#39;,  type = &#39;lower&#39;, diag = FALSE)</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>Correlation plot 2</p>
+<pre class="r nocopy"><code>corrplot(m, method = &#39;ellipse&#39;, type = &#39;upper&#39;)</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 <div id="create-spatial-data-from-table" class="section level4">
-<h4>5.3.3 Create Spatial Data from Table</h4>
+<h4>5.3.4 Create Spatial Data from Table</h4>
 <p>Check object class of “ab_listing”</p>
 <pre class="r nocopy"><code># class
-class(ab_listing)</code></pre>
+class(ab_listing_cln)</code></pre>
 <p>“ab_listing” is a data frame. The two columns <code>longitude</code>
 and <code>latitude</code> contain spatial information of listings. Let’s
 use these two columns to convert “ab_listing” to spatial data (simple
 features) and save it as a new variable <code>sf_ab_listing</code>.</p>
-<p><strong>[Q7]</strong>: Compared to the data frame “ab_listing”, which
+<p><strong>[Q8]</strong>: Compared to the data frame “ab_listing”, which
 new column has been added to “sf_ab_listing”?</p>
 <pre class="r nocopy"><code># table to simple features
-sf_ab_listing &lt;- st_as_sf(ab_listing, 
+sf_ab_listing &lt;- st_as_sf(ab_listing_cln, 
                           coords = c(&quot;longitude&quot;, &quot;latitude&quot;), 
                           crs=4326)
 
 # class of sf_ab_listing
-class(sf_ab_listing)
-
-# open data 
-View(sf_ab_listing)</code></pre>
+class(sf_ab_listing)</code></pre>
+<pre><code>## [1] &quot;sf&quot;         &quot;data.frame&quot;</code></pre>
+<pre class="r nocopy"><code># open data 
+head(sf_ab_listing)</code></pre>
+<pre><code>## Simple feature collection with 6 features and 14 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: -105.0021 ymin: 39.72021 xmax: -104.9111 ymax: 39.76672
+## Geodetic CRS:  WGS 84
+##      id                                                        name host_id
+## 1   360 Sit in the Peaceful Garden of the Chickadee Cottage in LoHi     666
+## 2   364                         Lodo / RiNo LOFT  via airport train     783
+## 3   590                           Comfortable  - and a great value!     933
+## 4   592                                                     private     933
+## 5  1940             Baker Studio: Private-full kitchen-W/D-walkable    2150
+## 6 21745                    Alexandra&#39;s King Bed Room Long-term Only     990
+##             host_name       room_type price minimum_nights number_of_reviews
+## 1 Jennifer &amp; Giovanni Entire home/apt   161             30               181
+## 2               Jason Entire home/apt   179            185                87
+## 3                Jill    Private room    70              1               726
+## 4                Jill    Private room    64             15               175
+## 5              Joanne Entire home/apt    88              1               183
+## 6           Alexandra    Private room    43             30               236
+##   last_review reviews_per_month calculated_host_listings_count availability_365
+## 1  2024-03-02              2.53                              2              110
+## 2  2016-04-26              0.47                              1              358
+## 3  2024-05-22              3.91                              2              236
+## 4  2024-06-02              0.94                              2              219
+## 5  2024-06-27              2.02                              1              231
+## 6  2024-04-13              1.36                              1              320
+##   number_of_reviews_ltm          license                   geometry
+## 1                     3 2017-BFN-0002177 POINT (-105.0021 39.76641)
+## 2                     0                  POINT (-104.9791 39.76672)
+## 3                    24 2021-BFN-0000578 POINT (-104.9111 39.75511)
+## 4                     7 2021-BFN-0000578 POINT (-104.9111 39.75481)
+## 5                    51 2018-BFN-0002596 POINT (-104.9975 39.72021)
+## 6                     2                   POINT (-104.9771 39.7449)</code></pre>
 </div>
 <div id="mapping" class="section level4">
-<h4>5.3.4 Mapping</h4>
-<p><strong>MAP1</strong>: Quick interactive mapping of Airbnb listings
-in Denver.</p>
-<pre class="r nocopy"><code># set mode to &quot;view&quot; for interactive mapping 
-tmap_mode(&quot;view&quot;)
-
-# MAP1: basic map of Airbnb listing in denver   
-tm_shape(sf_ab_listing) + tm_dots()</code></pre>
-<p><strong>[Q8]</strong>: Run the chunk of code below and try to explain
-the purposes of the following commands:</p>
+<h4>5.3.5 Mapping</h4>
+<p>Quick Map of three datasets:</p>
 <ul>
-<li><code>tm_dots()</code></li>
-<li><code>size = "price"</code></li>
-<li><code>col = "room_type"</code></li>
-<li><code>alpha = 0.7</code></li>
+<li>sf_ab_listing: spatial points of Airbnb listings</li>
+<li>co_place: cities and towns in Colorado</li>
+<li>ab_nghbr: neighborhood boundaries in Denver</li>
 </ul>
-<pre class="r nocopy"><code># improve MAP1 
-tm_shape(sf_ab_listing) + tm_dots(size = &quot;price&quot;, col = &quot;room_type&quot;, alpha=0.7)</code></pre>
+<pre class="r nocopy"><code>plot(ab_nghbr$geometry)</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<pre class="r nocopy"><code>plot(co_place$geometry)</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-20-2.png" width="672" /></p>
+<pre class="r nocopy"><code>plot(sf_ab_listing$geometry)</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-20-3.png" width="672" /></p>
 </div>
 </div>
 <div id="coordinate-reference-system-crs" class="section level3">
@@ -614,62 +748,116 @@ convert WGS 84 to NAD 83.</p>
 <pre class="r nocopy"><code># convert &quot;ab_nghbr&quot; and &quot;sf_ab_listing&quot; from WGS84 to NAD83
 ab_nghbr &lt;- st_transform(ab_nghbr, st_crs(co_place))
 sf_ab_listing &lt;- st_transform(sf_ab_listing, st_crs(co_place))</code></pre>
+<pre class="r nocopy"><code># check their coordinate systems again, they all share the same CRS which is NAD83 
+ab_nghbr$geometry     
+sf_ab_listing$geometry  </code></pre>
 </div>
-<div id="viz-mapping-neighborhoods" class="section level3">
-<h3>5.5 Viz: Mapping Neighborhoods</h3>
+<div id="viz-combine-multiple-layers-for-mapping"
+class="section level3">
+<h3>5.5 Viz: Combine Multiple Layers for Mapping</h3>
+<div id="airbnb-listings-in-denver" class="section level4">
+<h4>5.5.1 AirBnb Listings in Denver</h4>
+<p><strong>MAP1</strong>: Quick interactive mapping of Airbnb listings
+in Denver.</p>
+<pre class="r nocopy"><code># set mode to &quot;view&quot; for interactive mapping 
+tmap_mode(&quot;view&quot;)
+
+# MAP1: basic map of Airbnb listing in denver   
+tm_shape(sf_ab_listing) + tm_dots()</code></pre>
+<p><strong>[Q10]</strong>: Run the chunk of code below and try to
+explain the purposes of the following commands:</p>
+<ul>
+<li><code>tm_dots()</code></li>
+<li><code>size = "price"</code></li>
+<li><code>fill = "room_type"</code></li>
+<li><code>fill_alpha=0.5</code></li>
+<li><code>fill.scale = tm_scale_categorical(values = 'cols4all.friendly9')</code></li>
+</ul>
+<pre class="r nocopy"><code># improve map1 
+tm_shape(sf_ab_listing) + tm_dots(size = &#39;price&#39;,
+                                  fill = &quot;room_type&quot;, fill_alpha=0.5,
+                                  fill.scale = tm_scale_categorical(values = &#39;cols4all.friendly9&#39;),
+                                  size.scale = tm_scale_continuous(trans=&#39;log1p&#39;, values.scale = 0.7))</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+</div>
 <div id="neighborhoods-in-denver" class="section level4">
-<h4>5.5.1 Neighborhoods in Denver</h4>
+<h4>5.5.2 Neighborhoods in Denver</h4>
 <p>We have loaded the spatial data about neighborhoods in Denver in <a
 href="https://fuzhen-yin.github.io/uccs_geoviz/lab5.html#531_Libraries__Data">Step
 5.3.1</a>. .</p>
 <p>Have a look at the neighborhood data <code>ab_nghbr</code>.</p>
-<pre class="r nocopy"><code>View(ab_nghbr)</code></pre>
+<pre class="r nocopy"><code>head(ab_nghbr)</code></pre>
+<pre><code>## Simple feature collection with 6 features and 1 field
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -105.0253 ymin: 39.66038 xmax: -104.9594 ymax: 39.79832
+## Geodetic CRS:  NAD83
+##    neighbourhood                       geometry
+## 1   Chaffee Park MULTIPOLYGON (((-104.9981 3...
+## 2      Sunnyside MULTIPOLYGON (((-104.9982 3...
+## 3       Highland MULTIPOLYGON (((-104.9982 3...
+## 4     University MULTIPOLYGON (((-104.9594 3...
+## 5     Globeville MULTIPOLYGON (((-104.9688 3...
+## 6 Jefferson Park MULTIPOLYGON (((-105.0095 3...</code></pre>
 <p>Let’s do a quick map of it. <em><strong>Hint</strong>: the following
 command will produce an error message (no worries, errors are a natural
 and inevitable part of coding)</em>.</p>
-<p><strong>[Q10]</strong>: What error message pops up in the Console?
-Please try to interpret it using your own words.</p>
+<p>The <em><strong>error</strong> message “Error: Loop 0 is not valid:
+Edge 44 is degenerate (duplicate vertex)”</em> suggests that one
+geometry in the <strong>ab_nghbr</strong> is invalid.</p>
 <pre class="r nocopy"><code># quick map 
-tm_shape(ab_nghbr) + tm_polygons(alpha = 0, lwd = 1)</code></pre>
+tm_shape(ab_nghbr) + tm_polygons(fill_alpha = 0.5, lwd = 1) + tm_text(text = &quot;neighbourhood&quot;, size = 0.3)</code></pre>
 <p>It seems that the data <code>ab_nghbr</code> contains some invalid
 polygons. Let’s make them valid using the function
 <code>st_make_valid()</code>.</p>
 <pre class="r nocopy"><code># make valid
 ab_nghbr &lt;- st_make_valid(ab_nghbr)</code></pre>
-</div>
-<div id="mapping-1" class="section level4">
-<h4>5.5.2 Mapping</h4>
-<p>MAP2: neighborhoods in Denver</p>
-<pre class="r nocopy"><code># set plot mode to static 
-tmap_mode(&quot;plot&quot;)
-
-# map 2
-map2_den_nghbr &lt;- tm_shape(ab_nghbr) + tm_polygons(alpha = 0, lwd = 1) +
-  tm_compass() + tm_scale_bar(width = 0.15) + 
+<p><strong>MAP2</strong>: neighborhoods in Denver</p>
+<pre class="r nocopy"><code># change mapping mode to &#39;plot&#39; for static map 
+tmap_mode(&quot;plot&quot;)</code></pre>
+<pre><code>## ℹ tmap modes &quot;plot&quot; - &quot;view&quot;
+## ℹ toggle with `tmap::ttm()`</code></pre>
+<pre class="r nocopy"><code>#map 
+map2_den_nghbr &lt;- tm_shape(ab_nghbr) + tm_polygons(fill_alpha = 0.5, lwd = 1) +
+  tm_compass() + tm_scalebar(width = 10) + 
   tm_text(text = &quot;neighbourhood&quot;, size = 0.3)
 
-# export 
-pdf(&quot;plot/map2_denver_neighborhood.pdf&quot;)
+map2_den_nghbr</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<pre class="r nocopy"><code>pdf(&quot;plot/map2_denver_neighborhood.pdf&quot;, height = 10, width = 10)
 print(map2_den_nghbr)
 dev.off()</code></pre>
-<p>MAP3: Overlap three maps together (listing, neighborhoods, Denver
-city boundary)</p>
+</div>
+<div id="cities-and-towns-in-colorado" class="section level4">
+<h4>5.5.3 Cities and Towns in Colorado</h4>
+<p><strong>MAP3</strong>: Cities and towns in Colorado</p>
+<pre class="r nocopy"><code>tmap_mode(&quot;view&quot;)
+tm_shape(co_place) + tm_polygons(fill=&quot;#81D8D0&quot;, fill_alpha = 0.3, lwd = 1)</code></pre>
+<pre class="r nocopy"><code># Let&#39;s extract the row of Denver 
+den_city &lt;- co_place %&gt;% filter(NAME == &quot;Denver&quot;)
+tm_shape(den_city) + tm_polygons(fill=&quot;pink&quot;, fill_alpha = 0.3, lwd = 2)</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+</div>
+<div id="combine-all-layers-together" class="section level4">
+<h4>5.5.4 Combine all layers together</h4>
+<p><strong>MAP4</strong>: Overlap three maps together (listing,
+neighborhoods, Denver city boundary)</p>
 <p><strong>[Q11]</strong>: Provide a screenshot of
 “map3_denver_airbnb_listing_point.pdf”.</p>
-<pre class="r nocopy"><code># extract Denver city boundary from &quot;co_place&quot; 
-den_city &lt;- co_place %&gt;% filter(NAME == &quot;Denver&quot;)
-
-# map 3
-map_den_listing &lt;- tm_shape(den_city) + tm_polygons(alpha = 0, lwd = 2) +
-  tm_shape(ab_nghbr) + tm_polygons(alpha = 0, lwd = 1) + 
-  tm_shape(sf_ab_listing) + tm_dots(size = &quot;price&quot;, 
-                                    col = &quot;room_type&quot;, 
-                                    alpha=0.5) +
-  tm_compass() + tm_scale_bar(width = 0.15) + 
+<pre class="r nocopy"><code># plot 
+tmap_mode(&quot;plot&quot;)
+map_den_listing &lt;- tm_shape(den_city) + tm_polygons(fill_alpha = 0, lwd = 2) +
+  tm_shape(ab_nghbr) + tm_polygons(fill_alpha = 0, lwd = 1) + 
+  tm_shape(sf_ab_listing) + tm_dots(size = &#39;price&#39;,
+                                    fill = &quot;room_type&quot;,fill_alpha=0.3,
+                                    fill.scale = tm_scale_categorical(values = &#39;cols4all.friendly9&#39;),
+                                    size.scale = tm_scale_continuous(trans=&#39;log1p&#39;, values.scale = 0.5)) + 
+  tm_compass() + tm_scalebar(width = 15) + 
   tm_layout(legend.position = c(&quot;left&quot;, &quot;top&quot;), frame = F)
 
-# export 
-pdf(&quot;plot/map3_denver_airbnb_listing_point.pdf&quot;, width = 12, height = 8)
+map_den_listing</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<pre class="r nocopy"><code>pdf(&quot;plot/map3_denver_airbnb_listing_point.pdf&quot;, width = 12, height = 8)
 print(map_den_listing)
 dev.off()</code></pre>
 </div>
@@ -692,6 +880,7 @@ mean prices?</p>
 <p>Examine the <code>sf_ab_listing</code> data.</p>
 <pre class="r nocopy"><code># count columns in &quot;sf_ab_listing&quot;
 ncol(sf_ab_listing)</code></pre>
+<pre><code>## [1] 15</code></pre>
 <p>Spatial joining two data <code>sf_ab_listing</code> and
 <code>ab_nghbr</code> using the function <code>st_join()</code> as long
 as the geometries intersect. Save the joined data as a new variable
@@ -704,10 +893,50 @@ has a new column compared to <code>sf_ab_listing</code>. Please compare
 those two data and answer <strong>[Q12]</strong>: What is the new column
 has been added to <code>sf_ab_listing_nghbr</code>?</p>
 <pre class="r nocopy"><code># count columns in the new variable &quot;sf_ab_listing_nghbr&quot; 
-ncol(sf_ab_listing_nghbr)
-
-# open data 
-View(sf_ab_listing_nghbr)</code></pre>
+ncol(sf_ab_listing_nghbr)</code></pre>
+<pre><code>## [1] 16</code></pre>
+<pre class="r nocopy"><code># open data 
+head(sf_ab_listing_nghbr)</code></pre>
+<pre><code>## Simple feature collection with 6 features and 15 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: -105.0021 ymin: 39.72021 xmax: -104.9111 ymax: 39.76672
+## Geodetic CRS:  NAD83
+##      id                                                        name host_id
+## 1   360 Sit in the Peaceful Garden of the Chickadee Cottage in LoHi     666
+## 2   364                         Lodo / RiNo LOFT  via airport train     783
+## 3   590                           Comfortable  - and a great value!     933
+## 4   592                                                     private     933
+## 5  1940             Baker Studio: Private-full kitchen-W/D-walkable    2150
+## 6 21745                    Alexandra&#39;s King Bed Room Long-term Only     990
+##             host_name       room_type price minimum_nights number_of_reviews
+## 1 Jennifer &amp; Giovanni Entire home/apt   161             30               181
+## 2               Jason Entire home/apt   179            185                87
+## 3                Jill    Private room    70              1               726
+## 4                Jill    Private room    64             15               175
+## 5              Joanne Entire home/apt    88              1               183
+## 6           Alexandra    Private room    43             30               236
+##   last_review reviews_per_month calculated_host_listings_count availability_365
+## 1  2024-03-02              2.53                              2              110
+## 2  2016-04-26              0.47                              1              358
+## 3  2024-05-22              3.91                              2              236
+## 4  2024-06-02              0.94                              2              219
+## 5  2024-06-27              2.02                              1              231
+## 6  2024-04-13              1.36                              1              320
+##   number_of_reviews_ltm          license      neighbourhood
+## 1                     3 2017-BFN-0002177           Highland
+## 2                     0                         Five Points
+## 3                    24 2021-BFN-0000578    North Park Hill
+## 4                     7 2021-BFN-0000578    North Park Hill
+## 5                    51 2018-BFN-0002596              Baker
+## 6                     2                  North Capitol Hill
+##                     geometry
+## 1 POINT (-105.0021 39.76641)
+## 2 POINT (-104.9791 39.76672)
+## 3 POINT (-104.9111 39.75511)
+## 4 POINT (-104.9111 39.75481)
+## 5 POINT (-104.9975 39.72021)
+## 6  POINT (-104.9771 39.7449)</code></pre>
 </div>
 <div id="preparation" class="section level4">
 <h4>5.6.2 Preparation</h4>
@@ -720,21 +949,13 @@ lt_airbnb_cols &lt;- c(&quot;neighbourhood&quot;, &quot;room_type&quot;, &quot;p
 df_listing_nghbr &lt;- sf_ab_listing_nghbr[lt_airbnb_cols]
 
 # remove geometry for more efficient calculation
-st_geometry(df_listing_nghbr) &lt;- NULL</code></pre>
-</div>
-<div id="cleaning-missing-values" class="section level4">
-<h4>5.6.3 Cleaning: Missing Values</h4>
-<p>Missing values “NA” (not available).</p>
-<pre class="r nocopy"><code>## Check how many rows contain NA in the column &quot;price&quot;
-df_listing_nghbr[is.na(df_listing_nghbr$price),] %&gt;% nrow()
+st_geometry(df_listing_nghbr) &lt;- NULL
 
-
-## remove NA
-df_listing_nghbr &lt;- na.omit(df_listing_nghbr)
+# each row is ONE airbnb lising 
 df_listing_nghbr[&quot;n_listing&quot;] &lt;- 1</code></pre>
 </div>
 <div id="analysis-statistics" class="section level4">
-<h4>5.6.4 Analysis: Statistics</h4>
+<h4>5.6.3 Analysis: Statistics</h4>
 <p>Count room types in each neighborhood using one-hot encoding.</p>
 <blockquote>
 <p><a href="https://www.geeksforgeeks.org/ml-one-hot-encoding/">One-hot
@@ -762,32 +983,101 @@ df_nghbr_2 &lt;- df_listing_nghbr %&gt;% group_by(neighbourhood) %&gt;%
 <p>Join the two data frames <code>df_nghbr</code> and
 <code>df_nghbr_2</code>.</p>
 <pre class="r nocopy"><code># join two neighborhood tables 
-df_nghbr_2 &lt;- left_join(df_nghbr_2, df_nghbr, by=c(&quot;neighbourhood&quot;=&quot;neighbourhood&quot;))</code></pre>
+df_nghbr_2 &lt;- left_join(df_nghbr_2, df_nghbr, by=c(&quot;neighbourhood&quot;=&quot;neighbourhood&quot;))
+
+
+# see the first 5 rows 
+head(df_nghbr_2, 5)</code></pre>
+<pre><code>## # A tibble: 5 × 10
+##   neighbourhood mean_price median_price max_price min_price n_ttl
+##   &lt;chr&gt;              &lt;dbl&gt;        &lt;dbl&gt;     &lt;int&gt;     &lt;int&gt; &lt;dbl&gt;
+## 1 Athmar Park         152.         128        688        28    53
+## 2 Auraria             186.         175        293        99     4
+## 3 Baker               944.         110      99713        40   123
+## 4 Barnum              154.         116.       421        63    32
+## 5 Barnum West         139.         115        277        45    23
+## # ℹ 4 more variables: `Entire home/apt` &lt;dbl&gt;, `Hotel room` &lt;dbl&gt;,
+## #   `Private room` &lt;dbl&gt;, `Shared room` &lt;dbl&gt;</code></pre>
 </div>
 <div id="calculation-percentage" class="section level4">
-<h4>5.6.5 Calculation: Percentage</h4>
+<h4>5.6.4 Calculation: Percentage</h4>
 <p>Calculate percentage of listings of different room types.</p>
 <pre class="r nocopy"><code>## calculate percentage for columns 7:10
-df_nghbr_2[, 7:10]
-df_nghbr_2[, 7:10] &lt;- 100 * df_nghbr_2[, 7:10] / df_nghbr_2$n_ttl</code></pre>
+df_nghbr_2[, 7:10]</code></pre>
+<pre><code>## # A tibble: 77 × 4
+##    `Entire home/apt` `Hotel room` `Private room` `Shared room`
+##                &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;         &lt;dbl&gt;
+##  1                40            0             13             0
+##  2                 4            0              0             0
+##  3               109            0             14             0
+##  4                30            0              2             0
+##  5                19            0              4             0
+##  6                 3            0              3             0
+##  7                 9            0              1             0
+##  8               160            0              6             0
+##  9               121            0              2             0
+## 10               103            2             17             4
+## # ℹ 67 more rows</code></pre>
+<pre class="r nocopy"><code>df_nghbr_2[, 7:10] &lt;- 100 * df_nghbr_2[, 7:10] / df_nghbr_2$n_ttl
+
+# check results 
+print(df_nghbr_2[, 7:10])</code></pre>
+<pre><code>## # A tibble: 77 × 4
+##    `Entire home/apt` `Hotel room` `Private room` `Shared room`
+##                &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;         &lt;dbl&gt;
+##  1              75.5         0             24.5           0   
+##  2             100           0              0             0   
+##  3              88.6         0             11.4           0   
+##  4              93.8         0              6.25          0   
+##  5              82.6         0             17.4           0   
+##  6              50           0             50             0   
+##  7              90           0             10             0   
+##  8              96.4         0              3.61          0   
+##  9              98.4         0              1.63          0   
+## 10              81.7         1.59          13.5           3.17
+## # ℹ 67 more rows</code></pre>
 <p>Join the attribute table <code>df_nghbr_2</code> to the spatial data
 <code>ab_nghbr</code>.</p>
 <pre class="r nocopy"><code>## join &quot;df_nghbr_2&quot; with the simple feature &quot;ab_nghbr&quot;
-ab_nghbr_var &lt;- left_join(ab_nghbr, df_nghbr_2, by=&quot;neighbourhood&quot; )</code></pre>
-<p>Have a look at the data <code>ab_nghbr_var</code> and
-<strong>[Q14]</strong>: paste the screenshot of the table to your
-report.</p>
-<pre class="r nocopy"><code>View(ab_nghbr_var)</code></pre>
+ab_nghbr_var &lt;- left_join(ab_nghbr, df_nghbr_2, by=&quot;neighbourhood&quot; )
+
+## check the results 
+head(ab_nghbr_var)</code></pre>
+<pre><code>## Simple feature collection with 6 features and 10 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -105.0253 ymin: 39.66038 xmax: -104.9594 ymax: 39.79832
+## Geodetic CRS:  NAD83
+##    neighbourhood mean_price median_price max_price min_price n_ttl
+## 1   Chaffee Park   209.6571          152       535        37    35
+## 2      Sunnyside   879.7308          166     85428        55   130
+## 3       Highland   619.3210          167     99570        40   271
+## 4     University   182.0606          109      1126        45    33
+## 5     Globeville   116.5000           96       299        59    38
+## 6 Jefferson Park   305.4182          158      9999        41   110
+##   Entire home/apt Hotel room Private room Shared room
+## 1        91.42857          0     8.571429           0
+## 2        93.07692          0     6.923077           0
+## 3        95.20295          0     4.797048           0
+## 4        75.75758          0    24.242424           0
+## 5        89.47368          0    10.526316           0
+## 6        84.54545          0    15.454545           0
+##                         geometry
+## 1 MULTIPOLYGON (((-104.9981 3...
+## 2 MULTIPOLYGON (((-104.9984 3...
+## 3 MULTIPOLYGON (((-104.9984 3...
+## 4 MULTIPOLYGON (((-104.96 39....
+## 5 MULTIPOLYGON (((-104.9688 3...
+## 6 MULTIPOLYGON (((-105.0101 3...</code></pre>
 </div>
-<div id="mapping-2" class="section level4">
-<h4>5.6.6 Mapping</h4>
+<div id="mapping-1" class="section level4">
+<h4>5.6.5 Mapping</h4>
 <p>MAP4: Quick map for all variables in <code>ab_nghbr_var</code>.</p>
-<p><strong>[Q15]</strong>: paste the screenshot of
+<p><strong>[Q14]</strong>: paste the screenshot of
 “map4_quick_plot_neighborhoods_airbnb.pdf”.</p>
 <pre class="r nocopy"><code># quick map &amp; export 
-pdf(&quot;plot/map4_quick_plot_neighborhoods_airbnb.pdf&quot;)
-plot(ab_nghbr_var)
-dev.off()</code></pre>
+plot(ab_nghbr_var)</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
 <p>In mapping, <strong>Data Classification</strong> refers to the
 process of breaking data into different groups. <a
 href=""><code>tmap</code></a> provides different ways to classify data
@@ -814,31 +1104,33 @@ mappings by visualizing two variables <code>mean_price</code> and
 <p>Create a function for mapping (it’s okay that you don’t understand
 the code below).</p>
 <pre class="r nocopy"><code># write a function 
-f_map_nghbr_price &lt;- function(data, column, mapping_style, n_breaks, c_palette){
+f_map_airbnb &lt;- function(data, column, mapping_style, n_breaks, c_palette){
   p &lt;- tm_shape(data) + 
-  tm_polygons(col = as.character(column), style = as.character(mapping_style), n=n_breaks, palette = as.character(c_palette)) +
-  tm_layout(title = as.character(mapping_style))
+    tm_polygons(fill = as.character(column), 
+                fill.scale = tm_scale_intervals(style = as.character(mapping_style),
+                                                 n=n_breaks,
+                                                 values = as.character(c_palette) )) +
+    tm_title(text = as.character(mapping_style))
   
   return(p)
 }</code></pre>
 <p>MAP5: Mean listing price in neighborhoods</p>
 <pre class="r nocopy"><code># histogram - quick 
-hist(ab_nghbr_var$mean_price)
+hist(ab_nghbr_var$mean_price)</code></pre>
+<p><strong>[Q15]</strong>: In the pidf
+“map5_denver_neighborhood_meanprice_classifications.pdf”, discuss which
+data classification method do you like the most (please pay attention
+both to the map and the legends).</p>
+<pre class="r nocopy"><code># number of breaks &amp; color palette 
+n_brk &lt;- 7
+color_pal&lt;- &quot;met.hokusai3&quot;
 
-# number of breaks &amp; color palette 
-n_brk = 7
-color_pal = &quot;Blues&quot;</code></pre>
-<p><strong>[Q16]</strong>: paste the screenshot of
-“map5_denver_neighborhood_meanprice_classifications.pdf” and discuss
-which data classification method do you like the most (please pay
-attention both to the map and the legends).</p>
-<pre class="r nocopy"><code># mapping using different styles
-
-map5_pretty &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;mean_price&quot;, &quot;pretty&quot;, n_brk, color_pal)
-map5_jenks &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;mean_price&quot;, &quot;jenks&quot;, n_brk, color_pal)
-map5_equal &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;mean_price&quot;, &quot;equal&quot;, n_brk, color_pal)
-map5_quantile &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;mean_price&quot;, &quot;quantile&quot;, n_brk, color_pal)
-map5_sd &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;mean_price&quot;, &quot;sd&quot;, n_brk, color_pal)
+# mapping using different styles
+map5_pretty &lt;- f_map_airbnb(ab_nghbr_var, &quot;mean_price&quot;, &quot;pretty&quot;, n_brk, color_pal)
+map5_jenks &lt;- f_map_airbnb(ab_nghbr_var, &quot;mean_price&quot;, &quot;jenks&quot;, n_brk, color_pal)
+map5_equal &lt;- f_map_airbnb(ab_nghbr_var, &quot;mean_price&quot;, &quot;equal&quot;, n_brk, color_pal)
+map5_quantile &lt;- f_map_airbnb(ab_nghbr_var, &quot;mean_price&quot;, &quot;quantile&quot;, n_brk, color_pal)
+map5_sd &lt;- f_map_airbnb(ab_nghbr_var, &quot;mean_price&quot;, &quot;sd&quot;, n_brk, color_pal)
 
 
 ## combine all maps together 
@@ -847,38 +1139,42 @@ map5_meanprice &lt;- tmap_arrange(map5_pretty,map5_jenks,
                                map5_sd, 
                                ncol = 2)
 
-## export 
+map5_meanprice</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<pre class="r nocopy"><code>## export 
 pdf(&quot;plot/map5_denver_neighborhood_meanprice_classifications.pdf&quot;, width = 10, height = 10)
 print(map5_meanprice)
 dev.off()</code></pre>
 <p>MAP6: Total rooms listing price in neighborhoods.</p>
 <pre class="r nocopy"><code># histogram 
-hist(ab_nghbr_var$n_ttl)
+hist(ab_nghbr_var$n_ttl)</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<pre class="r nocopy"><code># number of breaks 
+n_brk &lt;- 7
+color_pal &lt;-  &quot;carto.blu_yl&quot;
 
-# number of breaks 
-n_brk = 7
-color_pal = &quot;Greens&quot;
-
-map6_pretty &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;n_ttl&quot;, &quot;pretty&quot;, n_brk, color_pal)
-map6_jenks &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;n_ttl&quot;, &quot;jenks&quot;, n_brk, color_pal)
-map6_equal &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;n_ttl&quot;, &quot;equal&quot;, n_brk, color_pal)
-map6_quantile &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;n_ttl&quot;, &quot;quantile&quot;, n_brk, color_pal)
-map6_sd &lt;- f_map_nghbr_price(ab_nghbr_var, &quot;n_ttl&quot;, &quot;sd&quot;, n_brk, color_pal)
+map6_pretty &lt;- f_map_airbnb(ab_nghbr_var, &quot;n_ttl&quot;, &quot;pretty&quot;, n_brk, color_pal)
+map6_jenks &lt;- f_map_airbnb(ab_nghbr_var, &quot;n_ttl&quot;, &quot;jenks&quot;, n_brk, color_pal)
+map6_equal &lt;- f_map_airbnb(ab_nghbr_var, &quot;n_ttl&quot;, &quot;equal&quot;, n_brk, color_pal)
+map6_quantile &lt;- f_map_airbnb(ab_nghbr_var, &quot;n_ttl&quot;, &quot;quantile&quot;, n_brk, color_pal)
+map6_sd &lt;- f_map_airbnb(ab_nghbr_var, &quot;n_ttl&quot;, &quot;sd&quot;, n_brk, color_pal)
 
 ## combine all maps together 
 map6_ttl &lt;- tmap_arrange(map6_pretty, map6_jenks, 
                          map6_equal, map6_quantile, 
                          map6_sd, 
-                         ncol = 2) 
+                         ncol = 2)
 
-## export 
+map6_ttl</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-50-2.png" width="672" /></p>
+<pre class="r nocopy"><code>## export 
 pdf(&quot;plot/map6_denver_neighborhood_count_total_listings_classifications.pdf&quot;, width = 10, height = 10)
 print(map6_ttl)
 dev.off()</code></pre>
-<p><strong>[Q17]</strong>: paste the screenshot of
-“map6_denver_neighborhood_count_total_listings_classifications.pdf” and
-discuss which data classification method do you like the most (please
-pay attention both to the map and the legends).</p>
+<p><strong>[Q16]</strong>: In
+map6_denver_neighborhood_count_total_listings_classifications.pdf,
+please discuss which data classification method do you like the most
+(please pay attention both to the map and the legends).</p>
 </div>
 </div>
 <div id="close-exit" class="section level3">
