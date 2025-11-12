@@ -13,7 +13,7 @@
 
 <title>Chapter 3: The Data Analysis &amp; Visualization Workflow</title>
 
-<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -349,9 +349,6 @@ div.tocify {
 <li>
   <a href="lab8.html">Lab 8</a>
 </li>
-<li>
-  <a href="lab9.html">Lab 9</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -567,8 +564,9 @@ install.packages(&quot;dplyr&quot;)
 Everytime you open or restart an R project/script, you would need to
 call libraries. But you don’t need to install them every time</em></p>
 <pre class="r"><code>## Library 
-library(ggplot2)  # plot
-library(dplyr)    # data manipulation</code></pre>
+library(ggplot2)  # plot</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.4.3</code></pre>
+<pre class="r"><code>library(dplyr)    # data manipulation</code></pre>
 <div id="create-population-data-2010-2022" class="section level4">
 <h4>3.3.1 Create Population Data 2010-2022</h4>
 <p>Data is the fundamentals of visualization. Here, we create a data

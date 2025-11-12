@@ -11,7 +11,7 @@
 
 
 
-<title>Chapter 8: Network Visualization (1) Flow &amp; Mobility</title>
+<title>Chapter 8: Network Visualization</title>
 
 <script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -35,6 +35,11 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/d3-4.9.1/d3.min.js"></script>
+<script src="site_libs/sankey-1/sankey.js"></script>
+<script src="site_libs/sankeyNetwork-binding-0.4.1/sankeyNetwork.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -349,9 +354,6 @@ div.tocify {
 <li>
   <a href="lab8.html">Lab 8</a>
 </li>
-<li>
-  <a href="lab9.html">Lab 9</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -364,14 +366,13 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Chapter 8: Network Visualization (1) Flow
-&amp; Mobility</h1>
+<h1 class="title toc-ignore">Chapter 8: Network Visualization</h1>
 
 </div>
 
 
 <div id="lab-goals" class="section level3">
-<h3>7.1 Lab Goals</h3>
+<h3>8.1 Lab Goals</h3>
 <p>In this chapter, you will learn</p>
 <ul>
 <li><strong>clean</strong> &amp; <strong>organize</strong> network
@@ -379,19 +380,21 @@ data</li>
 <li>create network based on <strong>nodes</strong> and
 <strong>edges</strong></li>
 <li><strong>map</strong> network</li>
+<li>Build <strong>interactive sankey chart</strong> to visualize
+non-spatial networks</li>
 </ul>
 </div>
 <div id="good-practice" class="section level3">
-<h3>7.2 Good Practice</h3>
+<h3>8.2 Good Practice</h3>
 <div id="organizing-folders-sub-folders" class="section level4">
-<h4>7.2.1 Organizing Folders &amp; Sub-folders</h4>
+<h4>8.2.1 Organizing Folders &amp; Sub-folders</h4>
 <p>Under the course folder, please create a folder called
-“<strong>lab7</strong>”. Next, in the <strong>lab7</strong> folder,
+“<strong>lab8</strong>”. Next, in the <strong>lab8</strong> folder,
 please create two <u>sub-folders</u> that one is called
 “<strong>data</strong>” and another one is “<strong>plot</strong>”.</p>
 </div>
 <div id="data" class="section level4">
-<h4>7.2.2 Data</h4>
+<h4>8.2.2 Data</h4>
 <p>This chapter explores the <a
 href="https://lehd.ces.census.gov/data/">Longitudinal Employer-Household
 Dynamics</a> data from US Census. Particularly, we will play with the <a
@@ -410,26 +413,16 @@ transitions.</li>
 <p>These statistics are available at the national, state, and
 metropolitan area levels and by worker and firm characteristics.</p>
 </blockquote>
-<div class="bluebox">
-<div class="left">
-<p><u><strong>Heads-Up! </strong></u></p>
-</div>
-<p>You would need to use <a
-href="https://j2jexplorer.ces.census.gov/">Job-to-Job Flows (J2J)</a>
-for Assignment 3.</p>
-</div>
 <p>Please follow the steps below to <u>download</u> data, <u>unzip</u>
 it and <u>move</u> the data to the required folder.</p>
 <ul>
 <li><strong>Go</strong> to <a
-href="https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab7_data.zip"
-class="uri">https://github.com/fuzhen-yin/uccs_geoviz/blob/main/data/lab7_data.zip</a></li>
-<li><strong>Download</strong> the file <em>“lab7_data.zip”</em></li>
-<li><strong>Unzip</strong> folder <em>“lab7_data.zip”</em></li>
-<li><strong>Move</strong> all files from the “<em>lab7_data</em>” folder
-to the <em>“data”</em> folder under “<em>lab7</em>” see <a
-href="https://fuzhen-yin.github.io/uccs_geoviz/lab7.html#721_Organizing_Folders__Sub-folders">Step
-7.2.1</a></li>
+href="https://github.com/fuzhen-yin/uccs_geoviz/blob/main/archive/data/lab8_data.zip"
+class="uri">https://github.com/fuzhen-yin/uccs_geoviz/blob/main/archive/data/lab8_data.zip</a></li>
+<li><strong>Download</strong> the file <em>“lab8_data.zip”</em></li>
+<li><strong>Unzip</strong> folder <em>“lab8_data.zip”</em></li>
+<li><strong>Move</strong> all files from the “<em>lab8_data</em>” folder
+to the <em>“data”</em> folder under “<em>lab8</em>” see</li>
 </ul>
 <p>If there you have any questions about the above-mentioned steps,
 please refer to <a
@@ -437,7 +430,7 @@ href="https://fuzhen-yin.github.io/uccs_geoviz/lab3.html#322_Data">Chapter
 3.2.3</a> for detailed instructions.</p>
 </div>
 <div id="launching-r-studio" class="section level4">
-<h4>7.2.3 Launching R Studio</h4>
+<h4>8.2.3 Launching R Studio</h4>
 <p>Again, we would like to start a <strong>new project</strong> from
 scratch with a <strong>clean R Script</strong>. Please do the following
 steps. If you have any questions about these steps, please refer to the
@@ -452,7 +445,7 @@ href="https://fuzhen-yin.github.io/uccs_geoviz/lab2.html#25_Close__Exit">Chapter
 2.5</a>).</li>
 </ul></li>
 <li>Step 2: Create a <strong>New Project</strong> using <strong>Existing
-Directory</strong>, navigate to <strong>lab7</strong>, click
+Directory</strong>, navigate to <strong>lab8</strong>, click
 <strong>open</strong>, then <strong>Create Project</strong>. (see <a
 href="https://fuzhen-yin.github.io/uccs_geoviz/lab1.html#13_Launching_RStudio">Chapter
 1.3</a>).</li>
@@ -463,33 +456,38 @@ name.</li>
 </ul>
 </div>
 <div id="before-start" class="section level4">
-<h4>7.2.4 Before Start</h4>
+<h4>8.2.4 Before Start</h4>
 <div class="bluebox">
 <div class="left">
 <p><u><strong>Heads-Up! </strong></u></p>
 </div>
-<p>All scripts are <strong>non-copyable</strong>. Lab questions are at
-the end of this tutorial.</p>
+<p>All scripts are <strong>non-copyable</strong> except for the FUNCTION
+cell in <em>Section 8.6.4</em>.</p>
 </div>
 <p><br></p>
 </div>
 </div>
 <div id="library-data" class="section level3">
-<h3>7.3 Library &amp; Data</h3>
+<h3>8.3 Library &amp; Data</h3>
 <div id="load-libraries" class="section level4">
-<h4>7.3.1 Load Libraries</h4>
+<h4>8.3.1 Load Libraries</h4>
 <pre class="r nocopy"><code># Library ----
 library(dplyr)
 library(data.table)
 library(sf)
-library(tidyverse)
-library(forcats)    # Reorder factor levels
 library(igraph)     # network object
-library(randomcoloR) # random color generator</code></pre>
+library(randomcoloR) # random color generator
+library(tidyverse)
+library(purrr) # random color generator
+
+library(ggplot2)    # plot 
+library(ggspatial)    # north arrow in ggplot 
+library(networkD3)  # sankey network </code></pre>
 </div>
 <div id="data-1" class="section level4">
-<h4>7.3.2 Data</h4>
-<pre class="r nocopy"><code># US Census Cartographic Boundaries: US States (simple features)
+<h4>8.3.2 Data</h4>
+<pre class="r nocopy"><code>## US Census ----
+### State boundaries (simple features)
 sf_us_state &lt;- st_read(&quot;data/cb_2023_us_state/cb_2023_us_state_5m.shp&quot;)</code></pre>
 <pre><code>## Reading layer `cb_2023_us_state_5m&#39; from data source 
 ##   `D:\OneDrive\UCCS\Teaching\GES4070_5070_GeoViz\Labs\01_git_wk\00_code_uccs_geoviz\data\cb_2023_us_state\cb_2023_us_state_5m.shp&#39; 
@@ -499,75 +497,76 @@ sf_us_state &lt;- st_read(&quot;data/cb_2023_us_state/cb_2023_us_state_5m.shp&qu
 ## Dimension:     XY
 ## Bounding box:  xmin: -179.1473 ymin: -14.55255 xmax: 179.7785 ymax: 71.35256
 ## Geodetic CRS:  NAD83</code></pre>
-<pre class="r nocopy"><code># Job-to-job flow (j2j) ----
-### metadata: request info
-j2j_meta_info &lt;- read.csv(&quot;data/job_to_job_FROM_Colorado/request_info.csv&quot;)
-### metadata: state
-j2j_meta_state &lt;- read.csv(&quot;data/job_to_job_FROM_Colorado/labels_state.csv&quot;)
-### metadata: North American Industry Classification System (NAICS) code 
-j2j_meta_naics &lt;- read.csv(&quot;data/job_to_job_FROM_Colorado/labels_naics2_orig.csv&quot;)
+<pre class="r nocopy"><code># 2023 Q1-Q3 Job-to-job flow (j2j) ----
+### job outflows: separations from COLORADO 
+j2j_from_co &lt;- read.csv(&quot;data/cln_j2j_outflow_from_colorado.csv&quot;)
 
-### flows: separations from COLORADO 
-j2j_from_co &lt;- read.csv(&quot;data/job_to_job_FROM_Colorado/table.csv&quot;)
-### flows: hires to COLORADO
-j2j_to_co &lt;- read.csv(&quot;data/job_to_job_TO_Colorado/table.csv&quot;)</code></pre>
+### job inflows: hires to COLORADO
+j2j_to_co &lt;- read.csv(&quot;data/cln_j2j_inflow_to_colorado.csv&quot;)
+
+### job inflow to CO between industry 
+j2j_inflow_industry &lt;- read.csv(&quot;data/j2j_inflow_CO_industry_table.csv&quot;)</code></pre>
 </div>
 </div>
 <div id="j2j-viz-j2j-flow-by-industry" class="section level3">
-<h3>7.4 J2J Viz: J2J Flow by Industry</h3>
-<div id="metadata" class="section level4">
-<h4>7.4.1 Metadata</h4>
-<pre class="r nocopy"><code>### metadata of the request info. 
-### scroll down. flags, Year/Quarter: 2023 Q1; 2023 Q2; 2023 Q3
-View(j2j_meta_info)
-### metadata of state
-View(j2j_meta_state)
-### metadata of NAICS Sectors 
-View(j2j_meta_naics)</code></pre>
+<h3>8.4 J2J Viz: J2J Flow by Industry</h3>
+<div id="exploring-the-j2j-network-data" class="section level4">
+<h4>8.4.1 Exploring the J2J network data</h4>
+<p><strong>[Q1]</strong>: Have a look at the job outflow dataset
+<strong>j2j_from_co</strong> and provide a brief description for each
+column’s content.</p>
+<pre class="r nocopy"><code>## Examine the outflow data 
+View(j2j_from_co) </code></pre>
+<p><strong>[Q2]</strong>: Both data frames <strong>j2j_from_co</strong>
+and <strong>j2j_to_co</strong> tell about the job flows related to
+Colorado. Please compare the two columns <em>from_state</em>,
+<em>to_state</em> and compare how <strong>j2j_from_co</strong> and
+<strong>j2j_to_co</strong> different.</p>
+<pre class="r nocopy"><code>## Examine the inflow data 
+View(j2j_to_co) </code></pre>
 </div>
-<div id="j2j-job-outflow" class="section level4">
-<h4>7.4.2 J2J Job Outflow</h4>
-<pre class="r nocopy"><code>### j2j_from_co: What states do workers move to? search &#39;.flag&#39;
-View(j2j_from_co)
-### data frame shape: 20 obs. 101 variables
-str(j2j_from_co)</code></pre>
-<div id="tidy-data" class="section level5">
-<h5>7.4.2.1 Tidy Data</h5>
-<pre class="r nocopy"><code>### tidy the data 
-j2j_from_co_cln &lt;- j2j_from_co %&gt;% 
-  pivot_longer(cols = 2:ncol(j2j_from_co), 
-               names_to = &quot;to_state&quot;, values_to = &quot;avg_n_job&quot;)</code></pre>
-<pre class="r nocopy"><code>#### remove the record with &quot;.flag&quot;. &quot;!&quot;;    %like% operator.  find names containing the pattern &quot;.flag&quot;
-j2j_from_co_cln &lt;- j2j_from_co_cln %&gt;% 
-  filter(!to_state %like% &quot;.flag&quot;)
-
-#### remove missing values (na - not available) 
-j2j_from_co_cln &lt;- j2j_from_co_cln %&gt;% na.omit()
-
-#### update first column name from &quot;X&quot; to &quot;naics_sector&quot;
-setnames(j2j_from_co_cln, old=&quot;X&quot;, new=&quot;naics_sector&quot;)
-
-#### add a new column indicating the origin state of job flow
-j2j_from_co_cln$from_state &lt;- &quot;Colorado&quot;
-
-#### add a new column showing flow director 
-j2j_from_co_cln$direction &lt;- &quot;outflow_from_co&quot;
-
-#### correct state names by replacing dot &quot;.&quot; with space &quot; &quot;
-j2j_from_co_cln$to_state &lt;- gsub(&quot;\\.&quot;, &quot; &quot; ,j2j_from_co_cln$to_state )</code></pre>
-<pre class="r nocopy"><code>#### re-order columns
-j2j_from_co_cln &lt;- j2j_from_co_cln[c(&quot;from_state&quot;, &quot;to_state&quot;, 
-                                     &quot;direction&quot;, &quot;naics_sector&quot;, &quot;avg_n_job&quot;)]</code></pre>
+<div id="data-cleaning" class="section level4">
+<h4>8.4.2 Data cleaning</h4>
+<p>The column <em>avg_n_job</em> has NA values. For example, the job
+outflow from Colorado to Alaska in Agriculture, Forestry, Fishing and
+Hunting industry is <strong>NA</strong>.</p>
+<pre class="r nocopy"><code>### NA values
+j2j_from_co[2, &quot;avg_n_job&quot;]</code></pre>
+<pre class="r nocopy"><code># Remove rows with NA 
+j2j_from_co_cln &lt;- j2j_from_co %&gt;% na.omit()
+j2j_to_co_cln &lt;- j2j_to_co %&gt;% na.omit()</code></pre>
 </div>
-<div id="quick-plot" class="section level5">
-<h5>7.4.2.2 Quick Plot</h5>
-<p>plot: job outflow from Colorado by industry</p>
+<div id="exploratory-analysis" class="section level4">
+<h4>8.4.3 Exploratory Analysis</h4>
+<p>Let’s use boxplots to compare job flows by industry. &gt;
+<strong>Boxplot</strong> is a statistical visualization that displays
+the 1st quantile (25%), median, 3rd qunatile (75%) and outliers.</p>
+<div id="job-inflow-by-industry" class="section level5">
+<h5>8.4.3.1 job INFLOW by industry</h5>
+<p><strong>[Q3]</strong>: What are the top three industries with the
+highest median values in job <strong>INFLOW</strong> to Colorado?</p>
+<pre class="r nocopy"><code>##### data preparation
+data &lt;- j2j_to_co_cln 
+
+#### box plot, reorder by median
+ggplot(data = data, aes(x = reorder(naics_sector, avg_n_job), y=avg_n_job, fill =naics_sector )) + 
+  geom_boxplot() + 
+  xlab(&quot;NAICS Sector&quot;) +
+  ylab(&quot;Job Counts&quot;) + 
+  ggtitle(&quot;2023 Q1-Q3 Quaterly Average Job Inflow to Colorado&quot;) +
+  theme(legend.position = &quot;none&quot;, 
+        axis.text.x = element_text(angle = 30, vjust = 1, hjust=1)) </code></pre>
+<p><img src="lab8_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="job-outflow-by-industry" class="section level5">
+<h5>8.4.3.2 job OUTFLOW by industry</h5>
+<p><strong>[Q4]</strong>: What are the top three industries with the
+highest median values in job <strong>OUTFLOW</strong> from Colorado?</p>
 <pre class="r nocopy"><code>##### data preparation
 data &lt;- j2j_from_co_cln 
 
 #### box plot, reorder by median
-ggplot(data = data, aes(x = reorder(naics_sector, avg_n_job), 
-                        y=avg_n_job, fill =naics_sector )) + 
+ggplot(data = data, aes(x = reorder(naics_sector, avg_n_job), y=avg_n_job, fill =naics_sector )) + 
   geom_boxplot() + 
   xlab(&quot;NAICS Sector&quot;) +
   ylab(&quot;Job Counts&quot;) + 
@@ -577,210 +576,346 @@ ggplot(data = data, aes(x = reorder(naics_sector, avg_n_job),
 <p><img src="lab8_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 </div>
-<div id="j2j-job-inflow" class="section level4">
-<h4>7.4.3 J2J Job Inflow</h4>
-<div id="tidy-cleaning" class="section level5">
-<h5>7.4.3.1 Tidy &amp; Cleaning</h5>
-<p>Use the pipe operator <code>%&gt;%</code> to chain functions
-together.</p>
-<pre class="r nocopy"><code>### tidy data; remove records with &quot;.flag&quot; suffix, remove na
-j2j_to_co_cln &lt;-  j2j_to_co %&gt;% 
-  pivot_longer(cols = 2:ncol(.), 
-               names_to = &quot;naics_sector&quot;, values_to = &quot;avg_n_job&quot; ) %&gt;% 
-  filter(!naics_sector %like% &quot;.flag&quot;) %&gt;% 
-  na.omit() %&gt;% 
-  setnames(old=&quot;X&quot;, new=&quot;from_state&quot;) %&gt;% 
-  mutate(to_state = &quot;Colorado&quot;, direction=&quot;inflow_to_co&quot;) %&gt;% 
-  select(from_state, to_state, direction, naics_sector, avg_n_job)</code></pre>
-<p>Correct naics names. <strong>Hint</strong>: the code below is
-<strong>copyable</strong>.</p>
-<pre class="r"><code>j2j_to_co_cln$naics_sector &lt;- j2j_to_co_cln$naics_sector %&gt;% 
-  gsub(&quot;\\.\\.&quot;, &quot;, &quot;, .) %&gt;% 
-  gsub(&quot;\\.&quot;, &quot; &quot;, .) %&gt;% 
-  gsub(&quot;Other Services, except Public Administration&quot;, 
-       &quot;Other Services (except Public Administration)&quot;, .) %&gt;% 
-  gsub(&quot;^\\s+|\\s+$&quot;, &quot;&quot;, .)</code></pre>
 </div>
-<div id="box-plot-of-job-inflow-by-industry" class="section level5">
-<h5>7.4.3.2 Box Plot of Job Inflow by Industry</h5>
-<pre class="r nocopy"><code>##### data preparation
-data &lt;- j2j_to_co_cln 
-
-#### box plot, reorder by median
-ggplot(data = data, 
-       aes(x = reorder(naics_sector, avg_n_job), 
-           y=avg_n_job, 
-           fill =naics_sector )) + 
-  geom_boxplot() + 
-  xlab(&quot;NAICS Sector&quot;) +
-  ylab(&quot;Job Counts&quot;) + 
-  ggtitle(&quot;2023 Q1-Q3 Quaterly Average Job Inflow to Colorado&quot;) +
-  theme(legend.position = &quot;none&quot;, 
-        axis.text.x = element_text(angle = 30, vjust = 1, hjust=1)) </code></pre>
-<p><img src="lab8_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-</div>
-</div>
-</div>
-<div id="j2j-viz-network" class="section level3">
-<h3>7.5 J2J Viz: Network</h3>
-<div id="data-preparation" class="section level4">
-<h4>7.5.1 Data Preparation</h4>
+<div id="j2j-viz-flow-network" class="section level3">
+<h3>8.5 J2J Viz: Flow Network</h3>
+<p>Let’s prepare the data a little bit by combining the inflow and
+outflow data together, and count the total job flows in all industry
+sectors. #### 8.5.1 Data Preparation</p>
 <pre class="r nocopy"><code>### combine inflow &amp; outflow dataframe together
 j2j_co_bysector &lt;- rbind(j2j_from_co_cln, j2j_to_co_cln)
-### combine all sectors together 
+### combine all sectors together by counting the 
 j2j_co_aggsector &lt;- aggregate(avg_n_job ~ from_state + to_state + direction, 
                         data = j2j_co_bysector %&gt;% select(-naics_sector), 
                         FUN = sum)
 j2j_co_aggsector$naics_sector &lt;- &quot;all_sectors&quot;
 
-
-### Final data
+## have a look at the combined dataset
+head(j2j_co_aggsector)</code></pre>
+<pre><code>##    from_state to_state    direction avg_n_job naics_sector
+## 1     Alabama Colorado inflow_to_co       271  all_sectors
+## 2     Arizona Colorado inflow_to_co      1534  all_sectors
+## 3    Arkansas Colorado inflow_to_co       226  all_sectors
+## 4  California Colorado inflow_to_co      3291  all_sectors
+## 5 Connecticut Colorado inflow_to_co       163  all_sectors
+## 6    Delaware Colorado inflow_to_co        33  all_sectors</code></pre>
+<pre class="r nocopy"><code>## combine the two dataframes &quot;j2j_co_bysector&quot; and &quot;j2j_co_aggsector&quot; by rows 
 j2j_co &lt;- rbind(j2j_co_aggsector, j2j_co_bysector)</code></pre>
+<pre class="r nocopy"><code>## Have a look at the final dataset 
+View(j2j_co)</code></pre>
+<p>Create a list of unique states and a list of unique NAICS
+sectors.</p>
 <pre class="r nocopy"><code>### list of unique states in j2j_co
 lt_state &lt;- unique(c(j2j_co$from_state, j2j_co$to_state))
-### list of unique naics sectors in j2j_co
-lt_sector &lt;- unique(j2j_co$naics_sector)</code></pre>
-<pre class="r nocopy"><code>### visualize job inflow network
-data &lt;- j2j_co %&gt;% filter(naics_sector == &quot;all_sectors&quot;, 
-                          direction == &quot;inflow_to_co&quot;)
+print(lt_state)</code></pre>
+<pre><code>##  [1] &quot;Alabama&quot;              &quot;Arizona&quot;              &quot;Arkansas&quot;            
+##  [4] &quot;California&quot;           &quot;Connecticut&quot;          &quot;Delaware&quot;            
+##  [7] &quot;District of Columbia&quot; &quot;Florida&quot;              &quot;Georgia&quot;             
+## [10] &quot;Hawaii&quot;               &quot;Idaho&quot;                &quot;Illinois&quot;            
+## [13] &quot;Indiana&quot;              &quot;Iowa&quot;                 &quot;Kansas&quot;              
+## [16] &quot;Kentucky&quot;             &quot;Louisiana&quot;            &quot;Maine&quot;               
+## [19] &quot;Maryland&quot;             &quot;Massachusetts&quot;        &quot;Minnesota&quot;           
+## [22] &quot;Missouri&quot;             &quot;Montana&quot;              &quot;Nebraska&quot;            
+## [25] &quot;Nevada&quot;               &quot;New Hampshire&quot;        &quot;New Jersey&quot;          
+## [28] &quot;New Mexico&quot;           &quot;New York&quot;             &quot;North Dakota&quot;        
+## [31] &quot;Ohio&quot;                 &quot;Oklahoma&quot;             &quot;Oregon&quot;              
+## [34] &quot;Pennsylvania&quot;         &quot;Rhode Island&quot;         &quot;South Carolina&quot;      
+## [37] &quot;South Dakota&quot;         &quot;Tennessee&quot;            &quot;Texas&quot;               
+## [40] &quot;Utah&quot;                 &quot;Vermont&quot;              &quot;Virginia&quot;            
+## [43] &quot;Washington&quot;           &quot;West Virginia&quot;        &quot;Wisconsin&quot;           
+## [46] &quot;Wyoming&quot;              &quot;Colorado&quot;</code></pre>
+<pre class="r nocopy"><code>### list of unique naics sectors in j2j_co
+lt_sector &lt;- unique(j2j_co$naics_sector)
+print(lt_sector)</code></pre>
+<pre><code>##  [1] &quot;all_sectors&quot;                                                             
+##  [2] &quot;Agriculture, Forestry, Fishing and Hunting&quot;                              
+##  [3] &quot;Mining, Quarrying, and Oil and Gas Extraction&quot;                           
+##  [4] &quot;Utilities&quot;                                                               
+##  [5] &quot;Construction&quot;                                                            
+##  [6] &quot;Manufacturing&quot;                                                           
+##  [7] &quot;Wholesale Trade&quot;                                                         
+##  [8] &quot;Retail Trade&quot;                                                            
+##  [9] &quot;Transportation and Warehousing&quot;                                          
+## [10] &quot;Information&quot;                                                             
+## [11] &quot;Finance and Insurance&quot;                                                   
+## [12] &quot;Real Estate and Rental and Leasing&quot;                                      
+## [13] &quot;Professional, Scientific, and Technical Services&quot;                        
+## [14] &quot;Management of Companies and Enterprises&quot;                                 
+## [15] &quot;Administrative and Support and Waste Management and Remediation Services&quot;
+## [16] &quot;Educational Services&quot;                                                    
+## [17] &quot;Health Care and Social Assistance&quot;                                       
+## [18] &quot;Arts, Entertainment, and Recreation&quot;                                     
+## [19] &quot;Accommodation and Food Services&quot;                                         
+## [20] &quot;Other Services (except Public Administration)&quot;                           
+## [21] &quot;Public Administration&quot;</code></pre>
+<div id="quick-network-plot" class="section level4">
+<h4>8.5.2 Quick Network Plot</h4>
+<p>Since we have combined the job “inflow” and “outflow” in different
+sectors together into a single dataframe <strong>j2j_co</strong>. We can
+now filter records from this main data frame.</p>
+<p><code>{eval=TRUE, message = FALSE, warning = FALSE, class.source = "nocopy"} ### visualize job inflow network in "all_sectors"  data &lt;- j2j_co %&gt;% filter(naics_sector == "all_sectors",                            direction == "inflow_to_co")</code></p>
+<p><strong>[Q5]</strong>: Have a look at the data, and explain what it
+shows?</p>
+<pre class="r nocopy"><code>View(data)</code></pre>
+<p>Let’s create a network object from the dataframe.</p>
+<blockquote>
+<p><code>graph_from_data_frame()</code> is a function that creates an
+igraph graph from one or two data frames containing the (symbolic) edge
+list and edge/vertex attributes.</p>
+</blockquote>
+<pre class="r nocopy"><code># create network 
+network &lt;- graph_from_data_frame(d=data, directed=T) 
 
-# Create a network object 
-network &lt;- graph_from_data_frame(d=data, directed=F) 
-
-# Network summary 
+# get network summary 
 summary(network)</code></pre>
-<pre><code>## IGRAPH f4e8a13 UN-- 47 46 -- 
-## + attr: name (v/c), direction (e/c), avg_n_job (e/n), naics_sector
-## | (e/c)</code></pre>
-</div>
-<div id="network-visualization" class="section level4">
-<h4>7.5.2 Network Visualization</h4>
-<p>Quick plot of network</p>
-<pre class="r nocopy"><code>plot(network)</code></pre>
+<pre><code>## IGRAPH 801f0b1 DN-- 47 920 -- 
+## + attr: name (v/c), direction (e/c), naics_sector (e/c), avg_n_job
+## | (e/n)</code></pre>
+<pre class="r nocopy"><code>### quick plot
+plot(network, edge.arrow.size=0.2)</code></pre>
 <p><img src="lab8_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<p>Improve network viz. </p>
-<pre class="r nocopy"><code>plot(network, vertex.size = 12, 
-     edge.arrow.size = 0.5,
+<p>Let’s improve the network by configuring the edge width so that it is
+proportional to the count of “avg_n_job” in all sectors</p>
+<pre class="r nocopy"><code>plot(network, vertex.size = 10, 
+     edge.arrow.size = 0.2,
      edge.width=E(network)$avg_n_job * 0.002, 
      edge.curved = TRUE, main = &quot;Job inflow to Colorado&quot;)</code></pre>
 <p><img src="lab8_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
 </div>
-<div id="viz-mapping-j2j-network" class="section level3">
-<h3>7.6 Viz: Mapping J2J Network</h3>
-<div id="data-preparation-1" class="section level4">
-<h4>7.6.1 Data Preparation</h4>
+<div id="mapping-j2j-network" class="section level3">
+<h3>8.6 Mapping J2J Network</h3>
+<div id="data-preparation" class="section level4">
+<h4>8.6.1 Data Preparation</h4>
+<p>Prepare state boundaries</p>
 <pre class="r nocopy"><code>#### project to sf_us_state to CRS NAD83 / Colorado North (ftUS)
-sf_us_state_j2j &lt;- sf_us_state %&gt;%
+sf_us_state_j2j &lt;- sf_us_state %&gt;% 
   filter(NAME %in% lt_state) %&gt;% st_transform(., 2231)</code></pre>
+<p>Prepare network nodes</p>
 <pre class="r nocopy"><code>#### get state centroid  
-df_node &lt;- sf_us_state_j2j %&gt;% select(NAME) %&gt;% st_centroid()
+df_node &lt;- sf_us_state_j2j %&gt;% st_centroid()
+
 #### split point data into lat &amp; long 
-df_node &lt;- df_node %&gt;% mutate( long = unlist(map(df_node$geometry, 1)),
-                               lat = unlist(map(df_node$geometry, 2)))
-st_geometry(df_node) &lt;- NULL</code></pre>
-<pre class="r nocopy"><code>#### join coordinates to edge 
-j2j_co_xy &lt;- j2j_co %&gt;% 
-  left_join(., df_node, by=c(&quot;from_state&quot;=&quot;NAME&quot;)) %&gt;% 
+df_node &lt;- df_node %&gt;% mutate(long = unlist(map(df_node$geometry, 1)),
+                              lat = unlist(map(df_node$geometry, 2)))
+#### remove geometry 
+st_geometry(df_node) &lt;- NULL
+
+## Check the data 
+head(df_node)</code></pre>
+<pre><code>##   STATEFP  STATENS     GEOIDFQ GEOID STUSPS       NAME LSAD        ALAND
+## 1      35 00897535 0400000US35    35     NM New Mexico   00 314198587197
+## 2      48 01779801 0400000US48    48     TX      Texas   00 676686238592
+## 3      21 01779786 0400000US21    21     KY   Kentucky   00 102266598312
+## 4      39 01085497 0400000US39    39     OH       Ohio   00 105823831336
+## 5      13 01705317 0400000US13    13     GA    Georgia   00 149485311347
+## 6      05 00068085 0400000US05    05     AR   Arkansas   00 134660466558
+##        AWATER    long        lat
+## 1   726463919 2813962  -799042.3
+## 2 18982083586 4950201 -1816478.6
+## 3  2384223544 8812324  1009637.3
+## 4 10274524796 9265129  2154720.5
+## 5  4419673221 9781161  -599407.7
+## 6  3122251184 6918226  -331098.9</code></pre>
+<pre class="r nocopy"><code>#### create a simplified version that only contains the node&#39;s name, latitude, and longitude
+df_node_name &lt;- df_node[c(&quot;NAME&quot;,&quot;long&quot;,&quot;lat&quot;)]
+
+## Check the data 
+head(df_node_name)</code></pre>
+<pre><code>##         NAME    long        lat
+## 1 New Mexico 2813962  -799042.3
+## 2      Texas 4950201 -1816478.6
+## 3   Kentucky 8812324  1009637.3
+## 4       Ohio 9265129  2154720.5
+## 5    Georgia 9781161  -599407.7
+## 6   Arkansas 6918226  -331098.9</code></pre>
+<p>Prepare network edges</p>
+<pre class="r nocopy"><code>## get the coordinates for the start and end points of edges 
+j2j_co_xy &lt;- j2j_co %&gt;% left_join(., df_node_name, by=c(&quot;from_state&quot;=&quot;NAME&quot;)) %&gt;% 
   setnames(old=c(&quot;long&quot;,&quot;lat&quot;), new=c(&quot;long_start&quot;,&quot;lat_start&quot;)) %&gt;% 
-  left_join(., df_node, by=c(&quot;to_state&quot;=&quot;NAME&quot;)) %&gt;% 
+  left_join(., df_node_name, by=c(&quot;to_state&quot;=&quot;NAME&quot;)) %&gt;% 
   setnames(old=c(&quot;long&quot;,&quot;lat&quot;), new=c(&quot;long_end&quot;,&quot;lat_end&quot;))</code></pre>
 </div>
-<div id="mapping-job-inflow-network" class="section level4">
-<h4>7.6.2 Mapping Job Inflow Network</h4>
-<pre class="r nocopy"><code>#### filter data 
-data &lt;- j2j_co_xy %&gt;% filter(direction == &quot;inflow_to_co&quot;, 
-                             naics_sector == &quot;all_sectors&quot;)
+<div id="quick-map-of-j2j-network" class="section level4">
+<h4>8.6.2 Quick Map of J2J Network</h4>
+<pre class="r nocopy"><code>## filter data 
+data &lt;- j2j_co_xy %&gt;% filter(direction == &quot;inflow_to_co&quot;, naics_sector == &quot;all_sectors&quot;)
 
 #### plot 
-ggplot(sf_us_state_j2j) + 
+p0_inflow &lt;- ggplot(sf_us_state_j2j) + 
   geom_sf() + 
   geom_segment(data = data,
                aes(x = long_start, y = lat_start, 
-                   xend = long_end, yend = lat_end, 
-                   size = avg_n_job, alpha = 0.5)) + 
+                   xend = long_end, yend = lat_end, linewidth = avg_n_job, alpha = 0.5)) + 
   scale_size_continuous(range = c(0.1, 3)) + 
-  geom_point(data =df_node , aes(x = long, y = lat), 
+  geom_point(data =df_node , aes(x = long, y = lat),           # draw nodes
              shape = 18, fill = &quot;white&quot;,
              color = &#39;black&#39;, stroke = 0.5) + 
-  geom_text(data =df_node, 
-            aes(x = long, y = lat, label = NAME), 
-            size=2) + 
+  geom_text(data =df_node, aes(x = long, y = lat, label = NAME), size=2) + 
   ggtitle(&quot;Job Inflow to Colorado&quot;) + 
-    ylab(&quot;Latitude&quot;) + 
-    xlab(&quot;Longitude&quot;)</code></pre>
-<p><img src="lab8_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+  xlab(&quot;Latitude&quot;) + 
+  ylab(&quot;Longitude&quot;)
+
+p0_inflow</code></pre>
+<p><img src="lab8_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 </div>
-<div id="function-job-outflow-network" class="section level4">
-<h4>7.6.2 Function: Job Outflow Network</h4>
-<pre class="r nocopy"><code>### create a function to plot job outflow by sectors  
-map_j2j &lt;- function(idx, full_data, state_boundary, state_point, 
-                    c_direction, c_sector, edge_color){
+<div id="map-improvement" class="section level4">
+<h4>8.6.3 Map Improvement</h4>
+<p>Make edge color scale to the strength of job flow; use state
+abbreviation</p>
+<pre class="r nocopy"><code>p0_1 &lt;- ggplot(sf_us_state_j2j) + 
+  geom_sf(fill = &quot;white&quot;) + 
+  geom_segment(data = data,
+               aes(x = long_start, y = lat_start, 
+                   xend = long_end, yend = lat_end, linewidth = avg_n_job, colour = avg_n_job),
+               alpha = 0.8) + 
+  scale_colour_gradient(low=&quot;#FFFFC5&quot;, high = &quot;blue&quot;) + 
+  scale_size_continuous(range = c(0.001, 5)) +
+  geom_text(data =df_node, aes(x = long, y = lat, label = STUSPS), size=2) + 
+  ggtitle(&quot;Job Inflow to Colorado&quot;) + 
+  theme_bw() + 
+  ylab(&quot;Latitude&quot;) + 
+  xlab(&quot;Longitude&quot;)
+
+print(p0_1)</code></pre>
+<p><img src="lab8_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<pre class="r nocopy"><code>## add north arrow and scale bars 
+p0_2 &lt;- p0_1 + annotation_scale(location = &quot;bl&quot;, width_hint = 0.1) + 
+  annotation_north_arrow(location = &quot;bl&quot;, 
+                         pad_x = unit(0.1, &quot;in&quot;), 
+                         pad_y = unit(0.3, &quot;in&quot;),
+                         height = unit(0.3, &quot;in&quot;),
+                         width = unit(0.3, &quot;in&quot;)) 
+
+print(p0_2)</code></pre>
+<p><img src="lab8_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+</div>
+<div id="function" class="section level4">
+<h4>8.6.4 Function</h4>
+<p>Let’s create a function to automate the mapping process and use it to
+plot j2j flow by industry sectors.</p>
+<p><strong>HINT</strong>: The code below is
+<strong>COPYABLE</strong></p>
+<pre class="r"><code>### create a function to plot job outflow by sectors  
+map_j2j &lt;- function(idx, full_data, state_boundary, state_point, c_direction, c_sector, edge_color){
+  # extract data 
   data &lt;- full_data %&gt;% filter(direction == as.character(c_direction),
                                naics_sector == as.character(c_sector))
-  title &lt;- paste(&quot;Job-to-job&quot;, as.character(c_direction), 
-                 as.character(c_sector), sep=&quot; &quot;)
+  # create title label 
+  title &lt;- paste(&quot;Job-to-job&quot;, as.character(c_direction), as.character(c_sector), sep=&quot; &quot;)
+  # create plot 
   p &lt;- ggplot(state_boundary) + 
-    geom_sf() + 
+    geom_sf(fill = &quot;white&quot;) + 
     geom_segment(data = data,
                  aes(x = long_start, y = lat_start, 
-                     xend = long_end, yend = lat_end, 
-                     size = avg_n_job, alpha = 0.5), 
-                 colour = edge_color) + 
+                     xend = long_end, yend = lat_end, linewidth = avg_n_job, alpha = 0.9, colour = avg_n_job)) + 
+    scale_colour_gradient(low=&quot;#FFFFC5&quot;, high = edge_color) +  
     scale_size_continuous(range = c(0.01, 4)) + 
-    geom_point(data =state_point , aes(x = long, y = lat), 
-               shape = 18, fill = &quot;white&quot;,
-               color = &#39;black&#39;, stroke = 0.5) + 
-    geom_text(data =state_point, 
-              aes(x = long, y = lat, label = NAME), 
-              size=2) + 
+    geom_point(data =state_point , aes(x = long, y = lat),           # draw nodes
+               shape = 18, fill = &quot;white&quot;, size=1,
+               color = &#39;grey&#39;, stroke = 0.5) + 
+    geom_text(data =state_point, aes(x = long, y = lat, label = STUSPS), size=2) + 
     ggtitle(title) + 
     theme_bw() + 
     ylab(&quot;Latitude&quot;) + 
     xlab(&quot;Longitude&quot;)
   
+  p &lt;- p + annotation_scale(location = &quot;bl&quot;, width_hint = 0.1) + 
+    annotation_north_arrow(location = &quot;bl&quot;, 
+                           pad_x = unit(0.1, &quot;in&quot;), 
+                           pad_y = unit(0.3, &quot;in&quot;),
+                           height = unit(0.3, &quot;in&quot;),
+                           width = unit(0.3, &quot;in&quot;)) 
+  
   pdf(sprintf(&quot;plot/p%s_%s.pdf&quot;, idx, title),  width = 10, height = 5)
   print(p)
   dev.off()
 }</code></pre>
-<p>Mapping job outflow by industry</p>
-<pre class="r nocopy"><code>### random color set 
-n &lt;- length(lt_sector)
+<p>Apply the function <strong>map_j2j</strong> to automate the mapping
+process. The graphics are saved to the <strong>plot</strong> folder. You
+should see a list of files as shown in the screenshot below.</p>
+<p><strong>[Q6]</strong> Please pick <strong>2 plots</strong> to discuss
+your findings. <strong>Hint</strong>: the data frame <code>j2j_co</code>
+contains the original data of the plots.</p>
+<pre class="r nocopy"><code>n &lt;- length(lt_sector)
 col_random &lt;- randomColor(n)
 
-
-### map 
 for (i in 1:length(lt_sector)) {
   edge_color = col_random[[i]]
   sector_toviz &lt;- lt_sector[[i]]
   
-  map_j2j(i, j2j_co_xy, sf_us_state_j2j, df_node, &quot;outflow_from_co&quot;, 
-          sector_toviz, edge_color)
+  map_j2j(i, j2j_co_xy, sf_us_state_j2j, df_node, &quot;outflow_from_co&quot;, sector_toviz, edge_color)
 }</code></pre>
+<div class="float">
+<img src="figs/lab8_plot_outflow.png" style="width:50.0%"
+alt="Figure 8.1: Network Maps by Industry Sectors" />
+<div class="figcaption">Figure 8.1: Network Maps by Industry
+Sectors</div>
+</div>
+<p><br></p>
 </div>
 </div>
-<div id="lab-questions" class="section level3">
-<h3>7.7 Lab Questions</h3>
-<p><strong>[Q1]</strong> Please list <strong>3-5 functions</strong> that
-you have learnt from this tutorial and explain when and how to use them.
-<strong>Hint</strong>: a function is an object followed by
-<code>()</code>. For example, <code>left_join()</code>,
-<code>str()</code> are functions.</p>
-<p><strong>[Q2]</strong> Please open the <em><em>plot</em></em> folder,
-you should be able to see 21 plots. Please pick <strong>2 plots</strong>
-to discuss your findings. <strong>Hint</strong>: the data frame
-<code>j2j_co</code> contains the original data of the plots.</p>
-<p><strong>[Q3]</strong> Have a look at the map <strong>p1_Job-to-job
-outflow_from_co all_sectors.pdf</strong>, how would you like to improve
-it?</p>
+<div id="sankey-chart-of-flow-between-industries"
+class="section level3">
+<h3>8.7 Sankey Chart of Flow Between Industries</h3>
+<p>This section produces an <strong>interactive sankey chart</strong> to
+visualize j2j flows from top 10 industries to top 10 industries in
+Colorado. #### 8.7.1 Data preparation</p>
+<pre class="r nocopy"><code># tidy and clean the data 
+j2j_inflow_ind_cln &lt;- j2j_inflow_industry %&gt;% 
+  pivot_longer(cols = 2:ncol(.), names_to = &quot;to_co_sector&quot;, values_to = &quot;avg_n_job&quot; ) %&gt;% 
+  filter(!to_co_sector %like% &quot;.flag&quot;) %&gt;% 
+  na.omit() %&gt;% 
+  setnames(old=&quot;X&quot;, new=&quot;from_sector&quot;) %&gt;% 
+  select(from_sector, to_co_sector, avg_n_job)
+
+# clean sector names to make them consistent 
+j2j_inflow_ind_cln$to_co_sector &lt;- j2j_inflow_ind_cln$to_co_sector %&gt;% 
+  gsub(&quot;\\.\\.&quot;, &quot;, &quot;, .) %&gt;% 
+  gsub(&quot;\\.&quot;, &quot; &quot;, .) %&gt;% 
+  gsub(&quot;Other Services, except Public Administration&quot;, &quot;Other Services (except Public Administration)&quot;, .) %&gt;% 
+  gsub(&quot;^\\s+|\\s+$&quot;, &quot;&quot;, .)</code></pre>
+<p>Prepare network data: edge &amp; node</p>
+<pre class="r nocopy"><code># edges 
+df_edge &lt;- j2j_inflow_ind_cln
+
+# top 10 industry with highest inflow to colorado
+df_ten_industry &lt;- df_edge %&gt;% select(to_co_sector, avg_n_job) %&gt;% 
+  group_by(to_co_sector) %&gt;% 
+  summarise(n_ttl = sum(avg_n_job)) %&gt;% 
+  slice_max(n_ttl, n=10)
+
+# extract edges from and to the top ten industries 
+df_edge &lt;- df_edge %&gt;% 
+  filter(from_sector %in% df_ten_industry$to_co_sector) %&gt;% 
+  filter(to_co_sector %in% df_ten_industry$to_co_sector)
+# add space to &quot;to_co_sector&quot;
+df_edge$to_co_sector &lt;- paste(df_edge$to_co_sector, &quot; &quot;, sep=&quot;&quot;)</code></pre>
+<pre class="r nocopy"><code># nodes
+df_node &lt;- data.frame(name = unique(c(df_edge$from_sector,
+                                      df_edge$to_co_sector)))
+
+# edges add id for nodes 
+df_edge$id_from &lt;- match(df_edge$from_sector, df_node$name) - 1
+df_edge$id_to &lt;- match(df_edge$to_co_sector, df_node$name) - 1 </code></pre>
+<div id="sankey-chart" class="section level4">
+<h4>8.7.2 Sankey Chart</h4>
+<pre class="r nocopy"><code># interactive sankey chart - network
+sankeyNetwork(Links = df_edge, Nodes = df_node,
+              Source = &quot;id_from&quot;, Target = &quot;id_to&quot;,
+              Value = &quot;avg_n_job&quot;, NodeID = &quot;name&quot;,
+              sinksRight=FALSE, nodeWidth=15, fontSize=10, nodePadding=10)</code></pre>
+<div class="sankeyNetwork html-widget html-fill-item" id="htmlwidget-aaac93018377924ffc96" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-aaac93018377924ffc96">{"x":{"links":{"source":[0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9],"target":[10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19],"value":[5511,382,336,431,301,468,987,114,197,365,536,1488,576,478,335,806,793,144,266,558,366,431,1204,418,335,534,463,82,186,229,816,604,653,6005,1017,681,1356,519,1568,2678,404,303,438,772,2618,239,826,120,374,592,401,475,524,437,192,6158,845,354,539,366,1146,1130,663,958,746,1097,4074,354,1704,1080,97,102,93,291,166,411,274,2675,775,371,239,196,202,800,297,592,1059,844,10267,923,691,593,341,2808,770,534,1327,517,1548,11150]},"nodes":{"name":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "],"group":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":10,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":false}},"evals":[],"jsHooks":[]}</script>
+</div>
 </div>
 <div id="close-exit" class="section level3">
-<h3>7.7 Close &amp; Exit</h3>
+<h3>8.8 Close &amp; Exit</h3>
 <p>Congratulations!! You have completed the entire tutorial and learnt
 the intro to network visualization!! Excellent work.</p>
 <p>Please go “File”–&gt; “Close Project” – a pop window asking “Do you
 want to save these changes” –&gt; “Yes”.</p>
-<p>Don’t forget to submit the <strong>lab7 report</strong> and your
+<p>Don’t forget to submit the <strong>lab8 report</strong> and your
 <strong>script</strong> to Canvas.</p>
 </div>
 
