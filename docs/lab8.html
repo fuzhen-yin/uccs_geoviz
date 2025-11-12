@@ -655,7 +655,9 @@ print(lt_sector)</code></pre>
 <p>Since we have combined the job “inflow” and “outflow” in different
 sectors together into a single dataframe <strong>j2j_co</strong>. We can
 now filter records from this main data frame.</p>
-<p><code>{eval=TRUE, message = FALSE, warning = FALSE, class.source = "nocopy"} ### visualize job inflow network in "all_sectors"  data &lt;- j2j_co %&gt;% filter(naics_sector == "all_sectors",                            direction == "inflow_to_co")</code></p>
+<pre class="r nocopy"><code>### visualize job inflow network in &quot;all_sectors&quot; 
+data &lt;- j2j_co %&gt;% filter(naics_sector == &quot;all_sectors&quot;, 
+                          direction == &quot;inflow_to_co&quot;)</code></pre>
 <p><strong>[Q5]</strong>: Have a look at the data, and explain what it
 shows?</p>
 <pre class="r nocopy"><code>View(data)</code></pre>
@@ -670,19 +672,19 @@ network &lt;- graph_from_data_frame(d=data, directed=T)
 
 # get network summary 
 summary(network)</code></pre>
-<pre><code>## IGRAPH 6f1d05f DN-- 47 920 -- 
-## + attr: name (v/c), direction (e/c), naics_sector (e/c), avg_n_job
-## | (e/n)</code></pre>
+<pre><code>## IGRAPH 7eacfa4 DN-- 47 46 -- 
+## + attr: name (v/c), direction (e/c), avg_n_job (e/n), naics_sector
+## | (e/c)</code></pre>
 <pre class="r nocopy"><code>### quick plot
 plot(network, edge.arrow.size=0.2)</code></pre>
-<p><img src="lab8_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="lab8_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>Let’s improve the network by configuring the edge width so that it is
 proportional to the count of “avg_n_job” in all sectors</p>
 <pre class="r nocopy"><code>plot(network, vertex.size = 10, 
      edge.arrow.size = 0.2,
      edge.width=E(network)$avg_n_job * 0.002, 
      edge.curved = TRUE, main = &quot;Job inflow to Colorado&quot;)</code></pre>
-<p><img src="lab8_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="lab8_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 </div>
 <div id="mapping-j2j-network" class="section level3">
@@ -759,7 +761,7 @@ p0_inflow &lt;- ggplot(sf_us_state_j2j) +
   ylab(&quot;Longitude&quot;)
 
 p0_inflow</code></pre>
-<p><img src="lab8_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="lab8_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 <div id="map-improvement" class="section level4">
 <h4>8.6.3 Map Improvement</h4>
@@ -780,7 +782,7 @@ abbreviation</p>
   xlab(&quot;Longitude&quot;)
 
 print(p0_1)</code></pre>
-<p><img src="lab8_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="lab8_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <pre class="r nocopy"><code>## add north arrow and scale bars 
 p0_2 &lt;- p0_1 + annotation_scale(location = &quot;bl&quot;, width_hint = 0.1) + 
   annotation_north_arrow(location = &quot;bl&quot;, 
@@ -790,7 +792,7 @@ p0_2 &lt;- p0_1 + annotation_scale(location = &quot;bl&quot;, width_hint = 0.1) 
                          width = unit(0.3, &quot;in&quot;)) 
 
 print(p0_2)</code></pre>
-<p><img src="lab8_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="lab8_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 <div id="function" class="section level4">
 <h4>8.6.4 Function</h4>
@@ -907,8 +909,8 @@ sankeyNetwork(Links = df_edge, Nodes = df_node,
               Source = &quot;id_from&quot;, Target = &quot;id_to&quot;,
               Value = &quot;avg_n_job&quot;, NodeID = &quot;name&quot;,
               sinksRight=FALSE, nodeWidth=15, fontSize=10, nodePadding=10)</code></pre>
-<div class="sankeyNetwork html-widget html-fill-item" id="htmlwidget-ad0cad7f197b02ca84e4" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-ad0cad7f197b02ca84e4">{"x":{"links":{"source":[0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9],"target":[10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19],"value":[5511,382,336,431,301,468,987,114,197,365,536,1488,576,478,335,806,793,144,266,558,366,431,1204,418,335,534,463,82,186,229,816,604,653,6005,1017,681,1356,519,1568,2678,404,303,438,772,2618,239,826,120,374,592,401,475,524,437,192,6158,845,354,539,366,1146,1130,663,958,746,1097,4074,354,1704,1080,97,102,93,291,166,411,274,2675,775,371,239,196,202,800,297,592,1059,844,10267,923,691,593,341,2808,770,534,1327,517,1548,11150]},"nodes":{"name":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "],"group":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":10,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":false}},"evals":[],"jsHooks":[]}</script>
+<div class="sankeyNetwork html-widget html-fill-item" id="htmlwidget-1854ec036fc8a97c84e5" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-1854ec036fc8a97c84e5">{"x":{"links":{"source":[0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9],"target":[10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19],"value":[5511,382,336,431,301,468,987,114,197,365,536,1488,576,478,335,806,793,144,266,558,366,431,1204,418,335,534,463,82,186,229,816,604,653,6005,1017,681,1356,519,1568,2678,404,303,438,772,2618,239,826,120,374,592,401,475,524,437,192,6158,845,354,539,366,1146,1130,663,958,746,1097,4074,354,1704,1080,97,102,93,291,166,411,274,2675,775,371,239,196,202,800,297,592,1059,844,10267,923,691,593,341,2808,770,534,1327,517,1548,11150]},"nodes":{"name":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "],"group":["Construction","Manufacturing","Wholesale Trade","Retail Trade","Transportation and Warehousing","Professional, Scientific, and Technical Services","Administrative and Support and Waste Management and Remediation Services","Educational Services","Health Care and Social Assistance","Accommodation and Food Services","Construction ","Manufacturing ","Wholesale Trade ","Retail Trade ","Transportation and Warehousing ","Professional, Scientific, and Technical Services ","Administrative and Support and Waste Management and Remediation Services ","Educational Services ","Health Care and Social Assistance ","Accommodation and Food Services "]},"options":{"NodeID":"name","NodeGroup":"name","LinkGroup":null,"colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":10,"fontFamily":null,"nodeWidth":15,"nodePadding":10,"units":"","margin":{"top":null,"right":null,"bottom":null,"left":null},"iterations":32,"sinksRight":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="close-exit" class="section level3">
